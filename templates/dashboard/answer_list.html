@@ -1,0 +1,32 @@
+{% extends 'site_base.html' %}
+{% load static %}
+{% load materialize %}
+
+{% block content %}
+
+<h3>{{ classroom.name }}</h3>
+<div class="row">
+    <div class="col s12">
+      <div class="card grey lighten-4">
+        <div class="card-content">
+            <table class="bordered">
+                {% for assignment, answers, graded in object_list %}
+                    <tr>
+                        <td>{{ assignment.name }}</td>
+                        <td>{{ answers|length }} Answers</td>
+                        <td>
+                            {% if graded %}
+                                <a href="{% url 'download-grades' classroom_pk=classroom.pk assignment_pk=assignment.pk %}" class='btn right'>Download Grades</a>
+                            {% else %}
+                                <a href="{% url 'grade' classroom_pk=classroom.pk assignment_pk=assignment.pk %}" class='btn right'>Grade</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

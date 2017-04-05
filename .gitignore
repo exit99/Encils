@@ -1,0 +1,9 @@
+*.pyc
+*~
+db.sqlite3
+
+next/.next
+next/node_modules
+.!*
+*.sqlite3
+*.swp

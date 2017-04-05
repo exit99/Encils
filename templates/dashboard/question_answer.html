@@ -1,0 +1,100 @@
+{% extends 'display_base.html' %}
+{% load static %}
+{% load materialize %}
+
+{% block content %}
+<div class="asked-question grey lighten-2 z-depth-2">
+</div>
+<center><h4 style="color: black;"><b>{{ question.question }}</b></h4></center>
+
+<div id="display" class="row">
+</div>
+
+<div class="fixed-footer fixed-footer-left waiting-on">
+  <div class="card grey lighten-2">
+    <div class="card-content">
+      <p id="waiting-list-header"><b>Waiting on...</b></p>
+      <p id="waiting-list"></p>
+    </div>
+  </div>
+</div>
+
+{% if next_index %}
+<a href="{% url 'start-assignment' assignment_pk=assignment_pk classroom_pk=classroom_pk question_index=next_index %}" 
+    class="fixed-button btn-floating btn-large waves-effect waves-light red">
+    <i class="material-icons">play_arrow</i>
+</a>
+{% else %}
+<a href="{% url 'assignment-complete' classroom_pk=classroom_pk %}"
+    class="fixed-button btn-floating btn-large waves-effect waves-light red">
+    <i class="material-icons">done</i>
+</a>
+{% endif %}
+{% endblock %}
+
+
+{% block scripts %}
+  <script>
+    var STUDENTS = {{ students|safe }};
+    var index = 0;
+    var length = STUDENTS.length;
+
+    var updateWaitingList = function() {
+        if (STUDENTS.length == 0) {
+            $("#waiting-list-header").remove();
+            $("#waiting-list").text("Done!");
+        }
+        var error = null;
+        try {
+            $("#waiting-list").text(STUDENTS[index].name);
+        } catch (e) {
+            index = 0;
+            error = true;
+        }
+        if (error == null) {
+            index += 1;
+        }
+        if (index >= STUDENTS.length) {
+            index = 0;
+        }
+    }
+
+    setInterval(function() {
+        updateWaitingList();
+    }, 1000);
+
+    var socket = new WebSocket('ws://' + window.location.host + '/question/answer/{{ question.pk }}/{{ classroom_pk }}');
+
+    socket.onopen = function open() {
+      console.log('WebSockets connection created.');
+    };
+
+    socket.onmessage = function message(event) {
+      var data = JSON.parse(event.data);
+      console.log(data);
+      if (Object.keys(data).indexOf('is_logged_in') > -1) { return };
+
+      var card = $("#student-" + data.pk);
+      if (card.length > 0) {
+        card.find(".student-name").text(data.name);
+        card.find(".student-answer").text(data.answer);
+      } else {
+        var newCard = '<div id="student-' + data.pk + '" class="col s12 m3"><div class="card grey lighten-4"><div class="card-content">';
+        newCard += '<span class="card-title student-name">' + data.name + '</span>';
+        newCard += '<p class="student-answer">' + data.answer + '</p></div></div></div>'
+        $('#display').append(newCard);
+        for (var i = 0; i < length; i++) {
+            if (STUDENTS[i].pk == data.pk) {
+                console.log("SPLICE");
+                STUDENTS.splice(i, 1);
+                break;
+            }
+        }
+      }
+    };
+
+    if (socket.readyState == WebSocket.OPEN) {
+      socket.onopen();
+    }
+  </script> 
+{% endblock %}

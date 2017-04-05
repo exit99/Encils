@@ -1,0 +1,47 @@
+{% extends 'site_base.html' %}
+{% load static %}
+{% load materialize %}
+{% load l10n %}
+
+
+{% block content %}
+<h2>{{ classroom.name }}: {{ assignment.name }}</h2>
+  <div class="row">
+        <div class="col s12">
+            <div class="card grey lighten-4">
+                <div class="card-content">
+                    <form method="POST" action="{% url 'grade-save' classroom_pk=classroom.pk assignment_pk=assignment.pk %}">
+                        {% csrf_token %}
+                        {% for question, question_answers in answers %}
+                            <div class="row">
+                                <h5>{{ question.question }}</h5>
+                            </div>
+                            <table class="bordered">
+                                {% for answer in question_answers %}
+                                <tr>
+                                    <td>{{ answer.student.name }}</td>
+                                    <td>{{ answer.text }}</td>
+                                    <td>
+                                        <div class="input-field inline">
+                                            <input name="answer-{{ answer.pk}}" id="answer-{{ answer.pk }}" type="number" class="validate" value="5" max="5" min="0">
+                                            <label for="answer-{{ answer.pk }}">Grade</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        {% endfor %}
+
+                        <div class="fixed-action-btn">
+                          <button class="btn-floating btn-large red" href="{% url 'attendance' classroom_pk=classroom.pk %}">
+                            <i class="large material-icons">done</i>
+                          </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

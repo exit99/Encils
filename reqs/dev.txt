@@ -1,0 +1,4 @@
+-r base.txt
+ipython==2.4.1
+ipdb==0.10.1
+django-extensions

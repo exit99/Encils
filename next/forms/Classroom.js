@@ -23,7 +23,6 @@ export default class extends React.Component {
   render() {
     return (
       <CardForm handleSubmit={this.handleSubmit.bind(this)} sizeClass={ "col sm12 m8 offset-m2" } title={ "Create Classroom" }>
-        {this.renderError('name')}
         <Input type="text" name="name" label="Name" />
         {this.renderError('school')}
         <Input type="text" name="school" label="School" />

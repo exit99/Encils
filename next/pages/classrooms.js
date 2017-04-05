@@ -66,9 +66,9 @@ export default class extends React.Component {
                     <div className="col s12 m6">
                       <div className="row">
                         <div className="col s2 offset-m4"><center><a className="btn-floating waves-effect waves-light orange accent-3 tooltipped" data-position="bottom" data-delay="20" data-tooltip="Take Attendance"><i className="material-icons">person_pin</i></a></center></div>
-                        <div className="col s2"><center><a className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Add Students"><i className="material-icons">add</i></a></center></div>
-                        <div className="col s2"><center><a className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit Classroom" href="#editClassroomModal"><i className="material-icons">edit</i></a></center></div>
-                        <div className="col s2"><center><a className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete Classroom" href="#deleteModal"><i className="material-icons">delete</i></a></center></div>
+                        <div className="col s2"><center><a onClick={() => Router.push('/students/add') } className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Add Students"><i className="material-icons">add</i></a></center></div>
+                        <div className="col s2"><center><a className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit Classroom"><i className="material-icons">edit</i></a></center></div>
+                        <div className="col s2"><center><a className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete Classroom"><i className="material-icons">delete</i></a></center></div>
                       </div>
                     </div>
                   </div>

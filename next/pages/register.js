@@ -1,16 +1,22 @@
 import React from 'react'
 import MainLayout from '../layouts/main'
-import Form from '../forms/Register'
+import CardForm from '../forms/CardForm'
+import Router from 'next/router'
 
 export default class extends React.Component {
-  handleSubmit(e, data) {
-    debugger;
+  onSuccess(data) { 
+    Router.push("/login")
   }
 
   render() {
+    const inputs = [
+      { name: "email", type: "email" },
+      { name: "password", type: "password" }
+    ]
+
     return (
       <MainLayout>
-        <Form />
+        <CardForm title={ "Register" } inputs={ inputs } endpoint={ "/auth/register/" } onSuccess={ this.onSuccess } />
       </MainLayout>
     )
   }

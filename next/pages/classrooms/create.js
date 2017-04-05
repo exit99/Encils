@@ -1,7 +1,23 @@
 import React from 'react'
-import Layout from '../../layouts/main'
-import Form from '../../forms/Classroom'
+import DashboardLayout from '../../layouts/dashboard'
+import CardForm from '../../forms/CardForm'
+import Router from 'next/router'
 
 export default class extends React.Component {
-    render () { return <Layout><Form /></Layout> }
+  onSuccess() {
+    Router.push("/classrooms");
+  }
+
+  render () { 
+    const inputs = [
+      { name: "name", type: "text" },
+      { name: "school", type: "text" }
+    ]
+
+    return (
+      <DashboardLayout>
+        <CardForm title={ "Create Classroom" } inputs={ inputs } endpoint={ "/classrooms/" } onSuccess={ this.onSuccess } />
+      </DashboardLayout>
+    )
+  }
 }

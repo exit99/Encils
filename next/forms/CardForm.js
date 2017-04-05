@@ -1,20 +1,45 @@
-import React from 'react'
+import React from 'react';
 import { Form, Input } from 'formsy-react-components';
+import capitalize from 'lodash/capitalize';
+import { request } from './../rest';
 
 export default class extends React.Component {
-  render() {
-    const { sizeClass, title, children, handleSubmit } = this.props;
+  componentWillMount() {
+    this.state = { errors: {} };
+  }
 
+  handleSubmit(data) {
+    const { endpoint, onSuccess } = this.props;
+    request("POST", endpoint, data, onSuccess, (errors) => { this.setState({ errors: errors }) });
+  }
+ 
+  renderError(field) {
+    const { errors } = this.state
+    return errors ? <span style={ { color: 'red' } }>{ errors[field] }</span> : null
+  }
+
+  renderInput({ name, type }) {
+    return (
+      <div>
+        {this.renderError(name)}
+        <Input type={ type } name={ name } label={ capitalize(name) } />
+      </div>
+    );
+  }
+
+  render() {
+    const { title, inputs } = this.props;
     return (
       <div className="container">
           <div className="row">
-              <div className={ sizeClass }>
+              <div className="col sm12 m8 offset-m2">
                   <div className="card grey lighten-4">
                       <div className="card-content">
-                          <Form onSubmit={handleSubmit}>
+                          <Form onSubmit={this.handleSubmit.bind(this)}>
                             <span className="card-title">{ title }</span>
                                 
-                            { children }
+                            { inputs.map(this.renderInput.bind(this)) }
+                            { this.renderError('non_field_errors') }
       
                             <div className="card-action">
                                 <center>

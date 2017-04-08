@@ -10,7 +10,6 @@ export default class extends React.Component {
         <td>{ student.phone }</td>
         <td><span className="badge left" data-badge-caption="Present">{ student.attendance.preset || 0 }</span></td>
         <td><span className="badge left" data-badge-caption="Absent">{ student.attendance.absent || 0 }</span></td>
-        <td><span className="badge left" data-badge-caption="Late">{ student.attendance.late || 0 }</span></td>
         <td><a style={ {cursor: "pointer" } } onClick={ () => Router.push(`/students/edit?pk=${student.pk}`) } className="tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit"><i className="material-icons">edit</i></a></td>
         <td><a style={ {cursor: "pointer" } } onClick={ () => this.props.onDelete(student) } className="tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete"><i className="material-icons">delete</i></a></td>
       </tr>
@@ -28,7 +27,6 @@ export default class extends React.Component {
           <tr>
             <th>Name</th>
             <th>Number</th>
-            <th></th>
             <th></th>
             <th></th>
             <th></th>

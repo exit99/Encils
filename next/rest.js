@@ -27,4 +27,3 @@ const request = (method, endpoint, data, success, err) => {
 }
 
 export { request }
-

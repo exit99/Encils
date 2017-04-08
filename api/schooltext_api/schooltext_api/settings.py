@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'sms',
     'rest_framework',
     'rest_framework.authtoken',
+    'channels',
     'djoser',
     'rest_framework_swagger',
     'corsheaders',
@@ -141,3 +142,16 @@ REST_FRAMEWORK = {
     ),
 }
 
+CHANNEL_LAYERS = {
+    "default": {
+        # Change for production.
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "sms.routing.channel_routing",
+    },
+}
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user': 'sms.serializers.TeacherSerializer',
+    },
+}

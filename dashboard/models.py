@@ -5,8 +5,13 @@ from jsonfield import JSONField
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.dispatch import receiver
 from django.db import models
+from django.db.models.signals import post_save
 from django.utils import timezone
+
+from sms.consumers import send_object_as_message
+from sms.serializers import StudentSerializer
 
 
 class Teacher(models.Model):
@@ -91,3 +96,8 @@ class Attendance(models.Model):
         if self.pk is None:
             self.date = timezone.now()
         return super(Attendance, self).save(*args, **kwargs)
+
+
+@receiver(post_save, sender=Student, dispatch_uid="student_updated")
+def student_updated(sender, student, **kwargs):
+    send_object_as_message(student, StudentSerializer)

@@ -62,6 +62,17 @@ class Classroom(models.Model):
     school = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now_add=True)
 
+    def activate(self):
+        active_item, _ = ActiveItem.objects.get_or_create(teacher=self.teacher)
+        active_item.classroom = self
+        active_item.save()
+
+    def deactivate(self):
+        active_item, _ = ActiveItem.objects.get_or_create(teacher=self.teacher)
+        if active_item.classroom == self:
+            active_item.classroom = self
+            active_item.save()
+
 
 class Student(models.Model):
     classroom = models.ForeignKey(Classroom)

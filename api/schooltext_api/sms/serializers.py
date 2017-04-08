@@ -6,7 +6,14 @@ from sms.models import (
     Classroom,
     Question,
     Student,
+    Teacher
 )
+
+
+class TeacherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = ('pk', 'email', 'sms')
 
 
 class ClassroomSerializer(serializers.ModelSerializer):

@@ -10,14 +10,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bufferutil": "^3.0.0",
     "formsy-material-ui": "^0.5.5",
     "formsy-react": "^0.19.2",
     "formsy-react-components": "^0.10.1",
+    "fs": "0.0.1-security",
     "material-ui": "^0.17.1",
     "next": "^2.0.1",
     "react": "^15.4.2",
     "react-cookie": "^1.0.5",
     "react-dom": "^15.4.2",
-    "react-tap-event-plugin": "^2.0.1"
+    "react-tap-event-plugin": "^2.0.1",
+    "react-websocket": "^1.1.6",
+    "ws": "^2.2.3"
   }
 }

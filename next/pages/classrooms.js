@@ -4,6 +4,7 @@ import DashboardLayout from '../layouts/dashboard'
 import SidebarButton from '../components/SidebarButton'
 import Students from '../components/Students'
 import { request } from '../rest'
+import filter from 'lodash/filter'
 
 export default class extends React.Component {
   componentWillMount() {
@@ -39,6 +40,21 @@ export default class extends React.Component {
     const active = classroom.pk == this.state.selectedClassroom.pk;
     return <SidebarButton text={ classroom.name } active={ active } handleClick={ this.changeClassroom(classroom).bind(this) } />
   }
+
+  deleteClassroom(classroom) {
+    request("DELETE", `/classrooms/${classroom.pk}/`, null, (data) => { 
+      let classrooms = filter(this.state.classrooms, (obj) => { return obj.pk != classroom.pk });
+      this.setState({ classrooms: classrooms, selectedClassroom: {} });
+    }, null)
+  }
+
+  deleteStudent(student) {
+    request("DELETE", `/students/${student.pk}/`, null, (data) => { 
+      let students = filter(this.state.students, (obj) => { return obj.pk != student.pk });
+      this.setState({ students: students });
+    }, null)
+  }
+
 
   render() {
     const { 
@@ -76,12 +92,13 @@ export default class extends React.Component {
                         <div className="col s2 offset-m4"><center><a className="btn-floating waves-effect waves-light orange accent-3 tooltipped" data-position="bottom" data-delay="20" data-tooltip="Take Attendance"><i className="material-icons">person_pin</i></a></center></div>
                         <div className="col s2"><center><a onClick={() => Router.push('students/add?classroomPk=' + selectedClassroom.pk.toString())} className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Add Students"><i className="material-icons">add</i></a></center></div>
                         <div className="col s2"><center><a onClick={() => Router.push(`/classrooms/create?pk=${selectedClassroom.pk}`)} className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit Classroom"><i className="material-icons">edit</i></a></center></div>
-                        <div className="col s2"><center><a className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete Classroom"><i className="material-icons">delete</i></a></center></div>
+                        <div className="col s2"><center><a onClick={() => this.deleteClassroom(selectedClassroom) }className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete Classroom"><i className="material-icons">delete</i></a></center></div>
                       </div>
                     </div>
                   </div>
 
-                  <Students students={ students } />
+                  <Students students={ students } onDelete={ this.deleteStudent.bind(this) } />
+
                 </div>
               </div>
             </div>

@@ -11,11 +11,11 @@ export default class extends React.Component {
   render () { 
     const inputs = [
       { name: "name", type: "text" },
-      { name: "school", type: "text" }
+      { name: "phone", type: "text" }
     ];
     const pk = this.props.url.query.pk;    
-    const endpoint = "/classrooms/"
-    const title = "Classroom"
+    const endpoint = "/students/"
+    const title = "Student"
 
     return (
       <DashboardLayout>

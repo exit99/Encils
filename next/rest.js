@@ -20,8 +20,16 @@ const request = (method, endpoint, data, success, err) => {
     if (token !== null) { options.headers.Authorization = token; }
 
     return fetch(makeUrl(endpoint), options).then((response) => {
-      const func = response.status.toString().startsWith("2") ? success : err;
-      if (func !== null) { response.json().then((data) => { func(data) }); }
+      const statusCode = response.status.toString();
+      if (statusCode === '200' || statusCode === '201') { 
+        response.json().then((data) => { success(data) }); 
+      } else if (statusCode == '204') {
+        success({});
+      } else if (statusCode.startsWith('4')) {
+        response.json().then((data) => { err(data) });
+      } else {
+        console.error(`Cannot handle HTTP code ${statusCode}!`);
+      }
     });
 
 }

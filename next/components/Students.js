@@ -1,17 +1,18 @@
 import React from 'react'
+import Router from 'next/router'
 
 export default class extends React.Component {
   renderStudent(student) {
+    console.log(student);
     return (
       <tr>
         <td>{ student.name }</td>
         <td>{ student.phone }</td>
-        <td>{ student.grade }%</td>
-        <td><span className="badge left" data-badge-caption="Present">10</span></td>
-        <td><span className="badge left" data-badge-caption="Absent">0</span></td>
-        <td><span className="badge left" data-badge-caption="Late">0</span></td>
-        <td><a className="tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit"><i className="material-icons">edit</i></a></td>
-        <td><a href="#deleteModal" className="tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete"><i className="material-icons">delete</i></a></td>
+        <td><span className="badge left" data-badge-caption="Present">{ student.attendance.preset || 0 }</span></td>
+        <td><span className="badge left" data-badge-caption="Absent">{ student.attendance.absent || 0 }</span></td>
+        <td><span className="badge left" data-badge-caption="Late">{ student.attendance.late || 0 }</span></td>
+        <td><a style={ {cursor: "pointer" } } onClick={ () => Router.push(`/students/edit?pk=${student.pk}`) } className="tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit"><i className="material-icons">edit</i></a></td>
+        <td><a style={ {cursor: "pointer" } } onClick={ () => this.props.onDelete(student) } className="tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete"><i className="material-icons">delete</i></a></td>
       </tr>
     )
   }
@@ -27,7 +28,6 @@ export default class extends React.Component {
           <tr>
             <th>Name</th>
             <th>Number</th>
-            <th>Grade</th>
             <th></th>
             <th></th>
             <th></th>

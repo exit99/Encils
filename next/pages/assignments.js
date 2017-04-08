@@ -25,7 +25,7 @@ export default class extends React.Component {
   changeAssignment(assignment) {
     return () => {
       request("GET", "/questions/?assignment=" + assignment.pk.toString(), null, (data) => {
-         this.setState({ selectedAssignment: classroom, questions: data });
+         this.setState({ selectedAssignment: assignment, questions: data });
       });
     }
   }
@@ -38,7 +38,7 @@ export default class extends React.Component {
   deleteAssignment(assignment) {
     request("DELETE", `/assignment/${assignment.pk}/`, null, (data) => { 
       let assignments = filter(this.state.assignments, (obj) => { return obj.pk != assignment.pk });
-      this.setState({ classrooms: classrooms, selectedClassroom: {} });
+      this.setState({ assignments: assignments, selectedAssignment: {} });
     }, null)
   }
 

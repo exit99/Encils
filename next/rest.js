@@ -26,4 +26,20 @@ const request = (method, endpoint, data, success, err) => {
 
 }
 
-export { request }
+const websocket = (endpoint, onMessage, onLogin) => {
+    const token = cookie.load("token");
+    const baseUrl = "localhost:8000";
+    const ws = new WebSocket(`ws://${baseUrl}${endpoint}/?token=${token}`)
+    ws.onmessage = ({ data }) => { 
+      data = JSON.parse(data);
+      if (data.is_logged_in) {
+        if(onLogin !== null) { onLogin(); }
+      } else {
+        onMessage(data); 
+      }
+    }
+    return ws;
+}
+
+
+export { request, websocket }

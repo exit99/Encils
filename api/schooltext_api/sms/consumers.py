@@ -20,7 +20,10 @@ def user_from_channel_message(message):
 
     """
     request = AsgiRequest(message)
-    request.META['HTTP_AUTHORIZATION'] = request.GET.get('token')
+    token = request.GET.get('token')
+    if not token:
+        return None
+    request.META['HTTP_AUTHORIZATION'] = token
     user, _ = TokenAuthentication().authenticate(request)
     return user
 

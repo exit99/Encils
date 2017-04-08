@@ -1,7 +1,7 @@
 import React from 'react';
 import DisplayLayout from '../../layouts/display';
 import cookie from 'react-cookie';
-import { request } from '../../rest';
+import { request, websocket } from '../../rest';
 
 const style = { "overflow": "hidden" }
 
@@ -17,11 +17,8 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    const { url } = this.props
-    this.connection = new WebSocket('ws://localhost:8000/students/' + url.query.classroomPk);
-    this.connection.onmessage = (data) => { 
-      debugger;
-    }
+    const { url } = this.props;
+    this.connection = websocket(`/students/${url.query.classroomPk}`, (data) => { debugger }, null)
   }   
 
   renderStudent(student) {
@@ -42,7 +39,7 @@ export default class extends React.Component {
     const { students, sms } = this.state;
 
     return ( 
-       <DisplayLayout text={ "Hello Students!  Text your name to " + sms } showSpinner={ sms.length === 0 }>
+       <DisplayLayout text={ `Hello Students!  Text your name to ${sms}` } showSpinner={ sms.length === 0 }>
          { students.map(this.renderStudent.bind(this)) }
        </DisplayLayout>
     )

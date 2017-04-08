@@ -30,9 +30,9 @@ class NavbarMain extends Component {
             <div className="nav-content light-blue accent-3 center">
               <div className="container">
                   <ul className="tabs tabs-transparent tabs-fixed-width">
-                    <li className="tab"><a>Classrooms</a></li>
-                    <li className="tab"><a>Assignments</a></li>
-                    <li className="tab"><a>Grade Answers</a></li>
+                    <li onClick={() => Router.push("/classrooms")} className="tab"><a>Classrooms</a></li>
+                    <li onClick={() => Router.push("/assignments")} className="tab"><a>Assignments</a></li>
+                    <li onClick={() => Router.push("/answers")} className="tab"><a>Grade Answers</a></li>
                   </ul>
               </div>
             </div>

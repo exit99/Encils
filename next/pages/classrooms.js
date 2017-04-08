@@ -17,14 +17,8 @@ export default class extends React.Component {
     request("GET", "/classrooms/", null, (data) => {
       if (data) { 
         this.setState({ classrooms: data })
-        this.selectClassroom(data[0]);
+        this.changeClassroom(data[0])();
       }
-    });
-  }
-
-  selectClassroom(classroom) {
-    request("GET", "/students/?classroom=" + classroom.pk.toString(), null, (data) => {
-        this.setState({ selectedClassroom: classroom, students: data });
     });
   }
 
@@ -79,6 +73,7 @@ export default class extends React.Component {
               </div>
             </div>
 
+          { assignments.length > 0 ? 
             <div className="col s12 m9">
               <div className="card white">
                 <div className="card-content">
@@ -102,6 +97,8 @@ export default class extends React.Component {
                 </div>
               </div>
             </div>
+          : null }
+
           </div>
       </DashboardLayout>
     )

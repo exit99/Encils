@@ -3,7 +3,6 @@ import Router from 'next/router'
 
 export default class extends React.Component {
   renderStudent(student) {
-    console.log(student);
     return (
       <tr>
         <td>{ student.name }</td>

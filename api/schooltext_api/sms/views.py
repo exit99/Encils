@@ -97,18 +97,21 @@ class AnswerList(generics.ListAPIView):
     serializer_class = AnswerSerializer
     permission_classes = (permissions.IsAuthenticated,)
     filter_fields = ('classroom', 'student')
+    ordering = ('username', 'student__name')
 
     def get_queryset(self):
         teacher = self.request.user
         answers = teacher.answer_set
+        answers = self.filter_by_assignment_if_specified(answers)
+        return answers.all()
 
+    def filter_by_assignment_if_specified(self, answers):
         pk =  self.request.query_params.get('assignment', None)
         if pk:
             assignment = Assignment.objects.filter(pk=pk).first()
             questions = Question.objects.filter(assignment=assignment).all().values_list('pk')
             answers = answers.filter(question__in=questions)
-
-        return answers.all()
+        return answers
 
 
 class AnswerDetail(generics.RetrieveUpdateAPIView):

@@ -59,6 +59,8 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
+    student = StudentSerializer(read_only=True)
+
     class Meta:
         model = Answer
         fields = ('pk', 'student', 'question', 'classroom', 'text', 'grade', 'created')

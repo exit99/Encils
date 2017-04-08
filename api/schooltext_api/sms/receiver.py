@@ -11,39 +11,42 @@ class SMSMessage(object):
         self.type = sms['type']
         self.text = sms['text']
         self.teacher = Teacher.objects.filter(sms=sms['to']).first()
-        self.student = Student.objects.filter(phone=self.phone).first()
-        self.active_item = self.teacher.active_item
-        self.classroom =self.active_item.classroom
-        self.question = self.active_item.question
+        activeitem = self.teacher.activeitem
+        self.classroom = activeitem.classroom
+        self.question = activeitem.question
+        self.student = Student.objects.filter(
+            classroom=self.classroom, phone=self.phone).first()
 
     def execute(self):
         if self.question and self.classroom and self.student:
-            return self.create_answer()
-        elif self.active_item.classroom:
-            return self.create_student()
+            return self.create_or_update_answer()
+        elif self.classroom:
+            return self.create_or_update_student()
 
-    def create_answer():
-        return Answer.objects.create(
+    def create_or_update_answer(self):
+        answer, _ = Answer.objects.get_or_create(
             question=self.question,
             classroom=self.classroom,
             student=self.student, 
-            text=self.text,
         )
+        answer.text = self.text
+        answer.save()
 
-    def create_student():
-        return Student.objects.create(
+    def create_or_update_student(self):
+        student, _ = Student.objects.get_or_create(
             classroom=self.classroom,
-            name=self.text,
             phone=self.phone,
         )
+        student.name = self.text
+        student.save()
 
     @staticmethod
     def _default():
         data = {
             "keyword": "THIS",
             "msisdn": "18137660689",
-            "text": "The study of the earth",
-            "to": "18133893559",
+            "text": "John Campell",
+            "to": "13232022665",
             "message-timestamp": "2017-03-12 00:43:33",
             "messageId": "0B0000003B7C8DE8",
             "type": "text"

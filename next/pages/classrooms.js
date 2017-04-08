@@ -27,9 +27,17 @@ export default class extends React.Component {
     });
   }
 
+  changeClassroom(classroom) {
+    return () => {
+      request("GET", "/students/?classroom=" + classroom.pk.toString(), null, (data) => {
+         this.setState({ selectedClassroom: classroom, students: data });
+      });
+    }
+  }
+
   renderClassroomButton(classroom) {
     const active = classroom.pk == this.state.selectedClassroom.pk;
-    return <SidebarButton text={ classroom.name } active={ active } />
+    return <SidebarButton text={ classroom.name } active={ active } handleClick={ this.changeClassroom(classroom).bind(this) } />
   }
 
   render() {

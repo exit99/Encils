@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import decorators, generics, permissions, response
 
 from sms.models import (
@@ -116,9 +117,11 @@ class AnswerDetail(generics.RetrieveUpdateAPIView):
     permission_classes = (IsOwner,)
 
 
-@decorators.api_view(['GET'])
+@decorators.api_view(['GET', 'POST'])
 @decorators.permission_classes([FromSMSGateway])
 def receive_sms(request):
-    msg = SMSMessage(request.GET)
-    res = msg.execute()
-    return response.Response(res)
+    if request.GET or settings.DEBUG:
+        msg = SMSMessage(request.GET)
+        res = msg.execute()
+        return response.Response(res)
+    return response.Response(400)

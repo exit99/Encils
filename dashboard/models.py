@@ -96,8 +96,3 @@ class Attendance(models.Model):
         if self.pk is None:
             self.date = timezone.now()
         return super(Attendance, self).save(*args, **kwargs)
-
-
-@receiver(post_save, sender=Student, dispatch_uid="student_updated")
-def student_updated(sender, student, **kwargs):
-    send_object_as_message(student, StudentSerializer)

@@ -36,7 +36,7 @@ export default class extends React.Component {
           </tr>
         </thead>
         <tbody>
-          { students.map(renderStudent.bind(this)) }
+          { students.map(this.renderStudent.bind(this)) }
         </tbody>
       </table>
     );

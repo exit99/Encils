@@ -1,7 +1,7 @@
 import json
 
 from channels import Group
-from channels.auth import channel_session_user, channel_session_user_from_http
+from channels.auth import channel_session_user_from_http
 from channels.handler import AsgiRequest
 from django.shortcuts import get_object_or_404
 from rest_framework.authentication import TokenAuthentication
@@ -38,9 +38,9 @@ def send_message(name, data):
     })
 
 
-def send_object_as_message(obj, serializer):
+def send_teachers_obj_as_message(obj, serializer):
     serializer = serializer(obj)
-    send_message(channel_name(obj), serializer.data)
+    send_message(channel_name(obj.teacher), serializer.data)
 
 
 @channel_session_user_from_http
@@ -57,7 +57,7 @@ def ws_student_connect(message, classroom_pk):
     })
 
 
-@channel_session_user
+@channel_session_user_from_http
 def ws_student_disconnect(message, classroom_pk):
     classroom = get_object_or_404(Classroom, pk=classroom_pk)
     classroom.deactivate()
@@ -88,7 +88,7 @@ def ws_question_answer_connect(message, question_pk, classroom_pk):
     })
 
 
-@channel_session_user
+@channel_session_user_from_http
 def ws_question_answer_disconnect(message, question_pk, classroom_pk):
     Group(channel_name(question)).send({
         'text': json.dumps({

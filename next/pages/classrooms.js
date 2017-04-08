@@ -55,7 +55,7 @@ export default class extends React.Component {
                 <div className="card-content">
                   <span className="card-title">Classrooms</span>
                   <br />
-                  <center><a onClick={() => Router.push("/classrooms/create")} className="btn waves-effect waves-light orange accent-3" style={{ "width": "100%", "font-size": "12px" }}>New Classroom</a></center>
+                  <center><a onClick={() => Router.push(`/classrooms/create`)} className="btn waves-effect waves-light orange accent-3" style={{ "width": "100%", "font-size": "12px" }}>New Classroom</a></center>
                 </div>
                 <div className="card-action">
                   { classrooms.map(this.renderClassroomButton.bind(this)) } 
@@ -75,7 +75,7 @@ export default class extends React.Component {
                       <div className="row">
                         <div className="col s2 offset-m4"><center><a className="btn-floating waves-effect waves-light orange accent-3 tooltipped" data-position="bottom" data-delay="20" data-tooltip="Take Attendance"><i className="material-icons">person_pin</i></a></center></div>
                         <div className="col s2"><center><a onClick={() => Router.push('students/add?classroomPk=' + selectedClassroom.pk.toString())} className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Add Students"><i className="material-icons">add</i></a></center></div>
-                        <div className="col s2"><center><a className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit Classroom"><i className="material-icons">edit</i></a></center></div>
+                        <div className="col s2"><center><a onClick={() => Router.push(`/classrooms/create?pk=${selectedClassroom.pk}`)} className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit Classroom"><i className="material-icons">edit</i></a></center></div>
                         <div className="col s2"><center><a className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete Classroom"><i className="material-icons">delete</i></a></center></div>
                       </div>
                     </div>

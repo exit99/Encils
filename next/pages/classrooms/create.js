@@ -1,9 +1,14 @@
 import React from 'react'
 import DashboardLayout from '../../layouts/dashboard'
-import CardForm from '../../forms/CardForm'
+import ModelCardForm from '../../forms/ModelCardForm'
 import Router from 'next/router'
 
 export default class extends React.Component {
+  componenetWillMount() {
+    this.state = {
+    }
+  }
+
   onSuccess() {
     Router.push("/classrooms");
   }
@@ -12,11 +17,14 @@ export default class extends React.Component {
     const inputs = [
       { name: "name", type: "text" },
       { name: "school", type: "text" }
-    ]
+    ];
+    const pk = this.props.url.query.pk;    
+    const endpoint = "/classrooms/"
+    const title = "Classroom"
 
     return (
       <DashboardLayout>
-        <CardForm title={ "Create Classroom" } inputs={ inputs } endpoint={ "/classrooms/" } onSuccess={ this.onSuccess } />
+        <ModelCardForm title={ title } pk={ pk } inputs={ inputs } endpoint={ endpoint } onSuccess={ this.onSuccess } />
       </DashboardLayout>
     )
   }

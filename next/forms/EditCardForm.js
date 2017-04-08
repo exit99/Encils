@@ -5,7 +5,11 @@ import { request } from './../rest';
 
 export default class extends React.Component {
   componentWillMount() {
-    this.state = { errors: {} };
+    this.state = { errors: {}, instance: null };
+
+    if (this.props.pk) {
+      request("GET", endpoint, null, (instance) => this.setState({ instance: instance }), null);
+    }
   }
 
   handleSubmit(data) {
@@ -18,17 +22,25 @@ export default class extends React.Component {
     return errors ? <span style={ { color: 'red' } }>{ errors[field] }</span> : null
   }
 
-  renderInput(data) {
+  renderInput({ name, type }) {
+    const { instance } = this.state;
+    const value = instance ? instance[name] : null;
+
     return (
       <div>
-        {this.renderError(data.name)}
-        <Input type={ data.type } name={ data.name } label={ capitalize(data.name) } />
+        {this.renderError(name)}
+        <Input type={ type } name={ name } label={ capitalize(name) } value={ value } />
       </div>
     );
   }
 
+  renderTitle(title) {
+    return this.props.pk ? `Edit ${title}` : `Create ${title}`; 
+  }
+
   render() {
     const { title, inputs } = this.props;
+
     return (
       <div className="container">
           <div className="row">
@@ -36,7 +48,7 @@ export default class extends React.Component {
                   <div className="card grey lighten-4">
                       <div className="card-content">
                           <Form onSubmit={this.handleSubmit.bind(this)}>
-                            <span className="card-title">{ title }</span>
+                            <span className="card-title">{ this.renderTitle(title) }</span>
                                 
                             { inputs.map(this.renderInput.bind(this)) }
                             { this.renderError('non_field_errors') }

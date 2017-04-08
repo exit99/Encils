@@ -30,14 +30,14 @@ export default class extends React.Component {
     return errors ? <span style={ { color: 'red' } }>{ errors[field] }</span> : null
   }
 
-  renderInput({ name, type }) {
+  renderInput({ name, type, value, label }) {
     const { instance } = this.state;
-    const value = instance ? instance[name] : undefined;
+    let inputValue = value ? value : (instance ? instance[name] : undefined);
 
     return (
       <div>
         {this.renderError(name)}
-        <Input type={ type } name={ name } label={ capitalize(name) } value={ value } />
+        <Input type={ type } name={ name } label={ capitalize((label ? label : name)) } value={ inputValue } />
       </div>
     );
   }

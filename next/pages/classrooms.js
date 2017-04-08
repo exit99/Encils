@@ -38,7 +38,11 @@ export default class extends React.Component {
   deleteClassroom(classroom) {
     request("DELETE", `/classrooms/${classroom.pk}/`, null, (data) => { 
       let classrooms = filter(this.state.classrooms, (obj) => { return obj.pk != classroom.pk });
-      this.setState({ classrooms: classrooms, selectedClassroom: {} });
+      this.setState({ classrooms: classrooms });
+      if (classrooms.length > 0) {
+        this.changeClassroom(classrooms[0])()
+      }
+
     }, null)
   }
 
@@ -48,7 +52,6 @@ export default class extends React.Component {
       this.setState({ students: students });
     }, null)
   }
-
 
   render() {
     const { 
@@ -73,7 +76,7 @@ export default class extends React.Component {
               </div>
             </div>
 
-          { assignments.length > 0 ? 
+          { classrooms.length > 0 ? 
             <div className="col s12 m9">
               <div className="card white">
                 <div className="card-content">

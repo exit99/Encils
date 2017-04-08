@@ -17,7 +17,8 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    this.connection = new WebSocket('ws://localhost:8000/students/');
+    const { url } = this.props
+    this.connection = new WebSocket('ws://localhost:8000/students/' + url.query.classroomPk);
     this.connection.onmessage = (data) => { 
       debugger;
     }

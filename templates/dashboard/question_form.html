@@ -1,6 +1,0 @@
-{% extends 'dashboard/generic_form.html' %}
-{% load static %}
-{% load materialize %}
-
-{% block form_url %}{% url 'question-create' assignment_pk=view.kwargs.assignment_pk %}{% endblock %}
-{% block title %}New Question{% endblock %}

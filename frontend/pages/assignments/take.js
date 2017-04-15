@@ -6,8 +6,6 @@ import Router from 'next/router'
 import DisplayLayout from '../../layouts/display';
 import { request, websocket } from '../../rest';
 
-const style = { "overflow": "hidden" }
-
 export default class extends React.Component {
 
   componentWillMount() {
@@ -39,18 +37,22 @@ export default class extends React.Component {
   addAnswer(answer) {
     const { answers } = this.state;
 
-    let newAnswerArray = filter(answers, (s) => { return s.pk != answer.pk });
-    newAnswerArray.push(student);
+    let newAnswerArray = filter(answers, (a) => { return a.pk != answer.pk });
+    newAnswerArray.push(answer);
   
     this.setState({ "answers": newAnswerArray });
   }
 
   renderAnswer(answer) {
+    const cardStyle = { "overflow": "hidden" };
+    const contentStyle = { "padding": "14px" };
+    const titleStyle = { "fontSize": "1.3rem" };
+
     return (
       <div className="col s12 m3">
-        <div className="card grey lighten-4" style={ style }>
-          <div className="card-content">
-            <span className="card-title student-name">{ answer.student }</span>
+        <div className="card grey lighten-4" style={ cardStyle }>
+          <div className="card-content" style={ contentStyle }>
+            <span className="card-title student-name" style={ titleStyle }>{ answer.student.name }</span>
             { answer.text }
           </div>
         </div>

@@ -2,8 +2,8 @@
 *~
 db.sqlite3
 
-next/.next
-next/node_modules
+frontend/.next
+frontend/node_modules
 .!*
 *.sqlite3
 *.swp

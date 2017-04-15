@@ -72,13 +72,13 @@ def ws_student_disconnect(message, classroom_pk):
 
 @channel_session_user_from_http
 def ws_question_answer_connect(message, question_pk, classroom_pk):
-    #teacher = user_from_channel_message(message)
-    #classroom = get_object_or_404(Classroom, pk=classroom_pk, teacher=teacher)
-    #question = get_object_or_404(Question, pk=question_pk)
-    #if question.teacher != teacher:
-    #    raise Http404
-    #classroom.activate()
-    #question.activate()
+    teacher = user_from_channel_message(message)
+    classroom = get_object_or_404(Classroom, pk=classroom_pk, teacher=teacher)
+    question = get_object_or_404(Question, pk=question_pk)
+    if question.teacher != teacher:
+        raise Http404
+    classroom.activate()
+    question.activate()
 
     Group(channel_name(teacher)).add(message.reply_channel)
     Group(channel_name(teacher)).send({

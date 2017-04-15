@@ -19,8 +19,10 @@ class SMSMessage(object):
 
     def execute(self):
         if self.question and self.classroom and self.student:
+            print("CREATE ANSWEE")
             return self.create_or_update_answer()
         elif self.classroom:
+            print("UPDATE STUDENTS")
             return self.create_or_update_student()
 
     def create_or_update_answer(self):

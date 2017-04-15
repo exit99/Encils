@@ -35,7 +35,7 @@ export default class extends React.Component {
 
   renderStudent(student) {
     return (
-      <div id="student-12" className="col s12 m3">
+      <div className="col s12 m3">
         <div className="card grey lighten-4" style={ style }>
           <div className="card-content">
             <span className="card-title student-name">{ student.name }</span>

@@ -35,7 +35,6 @@ def ws_student_connect(message, classroom_pk):
 
 @channel_session_user
 def ws_student_disconnect(message, classroom_pk):
-    print(classroom_pk)
     Group(channel_name(message.user)).send({
         'text': json.dumps({
             'is_logged_in': False
@@ -46,7 +45,6 @@ def ws_student_disconnect(message, classroom_pk):
 
 ##### TODO: Either need to deactivate a question on each new question activate.  Or to fixe the deactivate. Maybe deactive in middleware. ####
 ##### TODO: Need to detect who is in class via the attendance ######
-##### TODO: Need a loader on the display screen. ######
 
 @channel_session_user_from_http
 def ws_question_answer_connect(message, question_pk, classroom_pk):
@@ -57,8 +55,8 @@ def ws_question_answer_connect(message, question_pk, classroom_pk):
     teacher.active_classroom = classroom
     teacher.save()
 
-    Group(channel_name(question)).add(message.reply_channel)
-    Group(channel_name(question)).send({
+    Group(channel_name(message.user)).add(message.reply_channel)
+    Group(channel_name(message.user)).send({
         'text': json.dumps({
             'is_logged_in': True,
         })
@@ -67,9 +65,9 @@ def ws_question_answer_connect(message, question_pk, classroom_pk):
 
 @channel_session_user
 def ws_question_answer_disconnect(message, question_pk, classroom_pk):
-    Group(channel_name(question)).send({
+    Group(channel_name(message.user)).send({
         'text': json.dumps({
             'is_logged_in': False
         })
     })
-    Group(channel_name(question)).discard(message.reply_channel)
+    Group(channel_name(message.user)).discard(message.reply_channel)

@@ -19,6 +19,7 @@ def send_message(obj, data):
 
 def add_student_connect(message, classroom_pk):
     # We need to check the token here.
+    print("HHHHHHHHH")
     classroom = get_object_or_404(Classroom, pk=classroom_pk)
     classroom.activate()
 
@@ -32,7 +33,6 @@ def add_student_connect(message, classroom_pk):
 
 @channel_session_user
 def add_student_disconnect(message, classroom_pk):
-    print(classroom_pk)
     Group(channel_name(message.user)).send({
         'text': json.dumps({
             'is_logged_in': False
@@ -47,6 +47,7 @@ def add_student_disconnect(message, classroom_pk):
 
 @channel_session_user_from_http
 def ws_question_answer_connect(message, question_pk, classroom_pk):
+    print("HHHHHHHHH")
     question = get_object_or_404(Question, pk=question_pk)
     classroom = get_object_or_404(Classroom, pk=classroom_pk)
     teacher = question.assignment.user.teacher

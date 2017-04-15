@@ -16,7 +16,7 @@ class NavbarMain extends Component {
         
             <div className="nav-wrapper light-blue darken-2">
               <div className="container">
-                <a href="#" className="brand-logo">Logo</a>
+                <a href="#" className="brand-logo">Encils</a>
                 <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
                 <ul id="nav-mobile" className="right hide-on-med-and-down">
                   <li><a onClick={ this.logout }>Logout</a></li>
@@ -36,7 +36,6 @@ class NavbarMain extends Component {
                   </ul>
               </div>
             </div>
-
         
           </nav>
         </div>

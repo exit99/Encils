@@ -70,7 +70,7 @@ class Classroom(models.Model):
     def deactivate(self):
         active_item, _ = ActiveItem.objects.get_or_create(teacher=self.teacher)
         if active_item.classroom == self:
-            active_item.classroom = self
+            active_item.classroom = None
             active_item.save()
 
 
@@ -118,6 +118,17 @@ class Question(models.Model):
     @property
     def teacher(self):
         return self.assignment.teacher
+
+    def activate(self):
+        active_item, _ = ActiveItem.objects.get_or_create(teacher=self.teacher)
+        active_item.question = self
+        active_item.save()
+
+    def deactivate(self):
+        active_item, _ = ActiveItem.objects.get_or_create(teacher=self.teacher)
+        if active_item.question == self:
+            active_item.question = None
+            active_item.save()
 
 
 class Answer(models.Model):

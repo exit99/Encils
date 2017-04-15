@@ -4,7 +4,7 @@ import DashboardLayout from '../layouts/dashboard'
 import SidebarButton from '../components/SidebarButton'
 import Answers from '../components/Answers'
 import { request } from '../rest'
-import filter from 'lodash/filter'
+import find from 'lodash/find'
 import isUndefined from 'lodash/isUndefined'
 
 export default class extends React.Component {
@@ -36,10 +36,10 @@ export default class extends React.Component {
 
   onGradeChange(answer, grade) {
     request("PATCH", `/answers/${answer.pk}/`, {grade: grade}, (data) => {
-        let answer = find(this.state.answers, ans => ans.pk === answer.pk;
-        answer.grade = grade
-        debugger; 
-      }
+      console.log(this.state);
+      let targetAnswer = find(this.state.answers, ans => ans.pk === answer.pk);
+      targetAnswer.grade = grade;
+      this.setState(this.state);
     });
   }
 

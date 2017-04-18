@@ -1,12 +1,16 @@
 import React from 'react'
 import Router from 'next/router'
+import ReactTooltip from 'react-tooltip'
 
 export default class extends React.Component {
   renderQuestion(question) {
     return (
       <tr>
         <td>{ question.text }</td>
-        <td><a style={ {cursor: "pointer" } } onClick={ () => this.props.onDelete(question) } className="tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete"><i className="material-icons">delete</i></a></td>
+        <td>
+          <a style={ {cursor: "pointer" } } onClick={ () => this.props.onDelete(question) } data-tip="Delete"><i className="material-icons">delete</i></a>
+          <ReactTooltip place="bottom" type="dark" effect="solid" wrapper="body"/>
+        </td>
       </tr>
     )
   }

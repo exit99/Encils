@@ -27,10 +27,11 @@ export default class extends React.Component {
     const { currentQuestion } = this.state;
     const classroomPk = this.props.url.query.classroomPk;
     const assignmentPk = this.props.url.query.assignmentPk;
+    const questionIndex = this.props.url.query.questionIndex;
 
     request("GET", `/questions?assignment=${assignmentPk}`, null, (data) => {
-        this.setState({ "questions": data, "currentQuestion": data[0] })
-        this.connection = websocket(`/question/answer/${data[0].pk}/${classroomPk}`, this.addAnswer.bind(this), null)
+        this.setState({ "questions": data, "currentQuestion": data[questionIndex] })
+        this.connection = websocket(`/question/answer/${data[questionIndex].pk}/${classroomPk}`, this.addAnswer.bind(this), null)
     }, null);
   }   
 
@@ -41,6 +42,25 @@ export default class extends React.Component {
     newAnswerArray.push(answer);
   
     this.setState({ "answers": newAnswerArray });
+  }
+
+  getNextQuestionOrFinish() {
+    const classroomPk = this.props.url.query.classroomPk;
+    const assignmentPk = this.props.url.query.assignmentPk;
+    const questionIndex = parseInt(this.props.url.query.questionIndex)
+    const { questions } = this.state;
+
+    if (this.onLastQuestion()) {
+      Router.push("/classrooms");
+    } else {
+      Router.push(`/assignments/take?classroomPk=${classroomPk}&assignmentPk=${assignmentPk}&questionIndex=${questionIndex+1}`)
+    }
+  }
+
+  onLastQuestion() {
+    const questionIndex = parseInt(this.props.url.query.questionIndex)
+    const { questions } = this.state;
+    return questions.length - 1 == questionIndex;
   }
 
   renderAnswer(answer) {
@@ -86,9 +106,9 @@ export default class extends React.Component {
            </div>
          </div>
 
-         <div className="fixed-action-btn">
+         <div className="fixed-action-btn" onClick={this.getNextQuestionOrFinish.bind(this)}>
            <a className="btn-floating btn-large orange accent-3">
-             <i className="large material-icons" onClick={ () => Router.push('/classrooms') }>play_arrow</i>
+             <i className="large material-icons">{this.onLastQuestion() ? 'done' : 'play_arrow'}</i>
            </a>
          </div>
        </DisplayLayout>

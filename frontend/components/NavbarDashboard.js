@@ -33,6 +33,7 @@ class NavbarMain extends Component {
                     <li onClick={() => Router.push("/classrooms")} className="tab"><a>Classrooms</a></li>
                     <li onClick={() => Router.push("/assignments")} className="tab"><a>Assignments</a></li>
                     <li onClick={() => Router.push("/answers")} className="tab"><a>Grade Answers</a></li>
+                    <li onClick={() => Router.push(`/assignments/select`)} className="tab"><a>Start Assignment</a></li>
                   </ul>
               </div>
             </div>

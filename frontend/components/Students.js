@@ -1,5 +1,6 @@
 import React from 'react'
 import Router from 'next/router'
+import ReactTooltip from 'react-tooltip'
 
 export default class extends React.Component {
   renderStudent(student) {
@@ -9,8 +10,9 @@ export default class extends React.Component {
         <td>{ student.phone }</td>
         <td><span className="badge left" data-badge-caption="Present">{ student.attendance.preset || 0 }</span></td>
         <td><span className="badge left" data-badge-caption="Absent">{ student.attendance.absent || 0 }</span></td>
-        <td><a style={ {cursor: "pointer" } } onClick={ () => Router.push(`/students/edit?pk=${student.pk}`) } className="tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit"><i className="material-icons">edit</i></a></td>
-        <td><a style={ {cursor: "pointer" } } onClick={ () => this.props.onDelete(student) } className="tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete"><i className="material-icons">delete</i></a></td>
+        <td><a style={ {cursor: "pointer" } } onClick={ () => Router.push(`/students/edit?pk=${student.pk}`) } data-tip="Edit"><i className="material-icons">edit</i></a></td>
+        <td><a style={ {cursor: "pointer" } } onClick={ () => this.props.onDelete(student) } data-tip="Delete"><i className="material-icons">delete</i></a></td>
+        <ReactTooltip place="bottom" type="dark" effect="solid" wrapper="body"/>
       </tr>
     )
   }

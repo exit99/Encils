@@ -5,6 +5,7 @@ import SidebarButton from '../components/SidebarButton'
 import Students from '../components/Students'
 import { request } from '../rest'
 import filter from 'lodash/filter'
+import ReactTooltip from 'react-tooltip'
 
 export default class extends React.Component {
   componentWillMount() {
@@ -87,10 +88,11 @@ export default class extends React.Component {
                     </div>
                     <div className="col s12 m6">
                       <div className="row">
-                        <div className="col s2 offset-m4">{students.length > 0 ? <center><a onClick={() => Router.push(`/attendance?classroomPk=${selectedClassroom.pk}`)} className="btn-floating waves-effect waves-light orange accent-3 tooltipped" data-position="bottom" data-delay="20" data-tooltip="Take Attendance"><i className="material-icons">person_pin</i></a></center> : null }</div>
-                        <div className="col s2"><center><a onClick={() => Router.push(`/students/add?classroomPk=${selectedClassroom.pk}`)} className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Add Students"><i className="material-icons">add</i></a></center></div>
-                        <div className="col s2"><center><a onClick={() => Router.push(`/classrooms/create?pk=${selectedClassroom.pk}`)} className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit Classroom"><i className="material-icons">edit</i></a></center></div>
-                        <div className="col s2"><center><a onClick={() => this.deleteClassroom(selectedClassroom) }className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete Classroom"><i className="material-icons">delete</i></a></center></div>
+                        <div className="col s2 offset-m4"><center><a onClick={() => Router.push(`/attendance?classroomPk=${selectedClassroom.pk}`)} className="btn-floating waves-effect waves-light orange accent-3" data-tip="Take Attendance"><i className="material-icons">person_pin</i></a></center></div>
+                        <div className="col s2"><center><a onClick={() => Router.push(`/students/add?classroomPk=${selectedClassroom.pk}`)} className="btn-floating waves-effect waves-light grey" data-tip="Add Students"><i className="material-icons">add</i></a></center></div>
+                        <div className="col s2"><center><a onClick={() => Router.push(`/classrooms/create?pk=${selectedClassroom.pk}`)} className="btn-floating waves-effect waves-light grey" data-tip="Edit Classroom"><i className="material-icons">edit</i></a></center></div>
+                        <div className="col s2"><center><a onClick={() => this.deleteClassroom(selectedClassroom) }className="btn-floating waves-effect waves-light grey" data-tip="Delete Classroom"><i className="material-icons">delete</i></a></center></div>
+                        <ReactTooltip place="bottom" type="dark" effect="solid"/>
                       </div>
                     </div>
                   </div>

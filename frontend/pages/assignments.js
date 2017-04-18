@@ -5,6 +5,7 @@ import SidebarButton from '../components/SidebarButton'
 import Questions from '../components/Questions'
 import { request } from '../rest'
 import filter from 'lodash/filter'
+import ReactTooltip from 'react-tooltip'
 
 export default class extends React.Component {
   componentWillMount() {
@@ -87,10 +88,10 @@ export default class extends React.Component {
                   </div>
                   <div className="col s12 m6">
                     <div className="row">
-                      <div className="col s2 offset-m4">{ questions.length > 0 ? <center><a onClick={() => Router.push(`/assignments/select`)} className="btn-floating waves-effect waves-light grey tooltipped orange accent-3" data-position="bottom" data-delay="20" data-tooltip="Start Assignment"><i className="material-icons">assignment</i></a></center> : null }</div>
-                      <div className="col s2"><center><a onClick={() => Router.push(`/questions/create?assignmentPk=${selectedAssignment.pk}`)} className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Add Question"><i className="material-icons">add</i></a></center></div>
-                      <div className="col s2"><center><a onClick={() => Router.push(`/assignments/create?pk=${selectedAssignment.pk}`)} className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Edit Assignment"><i className="material-icons">edit</i></a></center></div>
-                      <div className="col s2"><center><a onClick={() => this.deleteAssignment(selectedAssignment)} className="btn-floating waves-effect waves-light grey tooltipped" data-position="bottom" data-delay="20" data-tooltip="Delete Assignment"><i className="material-icons">delete</i></a></center></div>
+                      <div className="col s2 offset-s6"><center><a onClick={() => Router.push(`/questions/create?assignmentPk=${selectedAssignment.pk}`)} className="btn-floating waves-effect waves-light grey" data-tip="Add Question"><i className="material-icons">add</i></a></center></div>
+                      <div className="col s2"><center><a onClick={() => Router.push(`/assignments/create?pk=${selectedAssignment.pk}`)} className="btn-floating waves-effect waves-light grey" data-tip="Edit Assignment"><i className="material-icons">edit</i></a></center></div>
+                      <div className="col s2"><center><a onClick={() => this.deleteAssignment(selectedAssignment)} className="btn-floating waves-effect waves-light grey" data-tip="Delete Assignment"><i className="material-icons">delete</i></a></center></div>
+                      <ReactTooltip place="bottom" type="dark" effect="solid" wrapper="body"/>
                     </div>
                   </div>
                 </div>

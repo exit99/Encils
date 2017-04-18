@@ -52,7 +52,7 @@ export default class extends React.Component {
     } = this.state;
 
     let className = "btn orange accent-3 right";
-    let handleClick = () => Router.push(`/assignments/take?classroomPk=${selectedClassroom.pk}&assignmentPk=${selectedAssignment.pk}`)
+    let handleClick = () => Router.push(`/assignments/take?classroomPk=${selectedClassroom.pk}&assignmentPk=${selectedAssignment.pk}&questionIndex=0`)
     if (isEmpty(selectedClassroom) || isEmpty(selectedAssignment)) {
       className = `${className} disabled`;
       handleClick = () => null;

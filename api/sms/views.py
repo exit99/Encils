@@ -1,18 +1,22 @@
 from django.conf import settings
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import decorators, generics, permissions, response
 
 from sms.models import (
     Answer,
     Assignment,
+    Attendance,
     Classroom,
     Question,
     Student,
 )
-from sms.permissions import IsOwner, FromSMSGateway
+from sms.permissions import is_owner, IsOwner, FromSMSGateway
 from sms.receiver import SMSMessage
 from sms.serializers import (
     AnswerSerializer,
     AssignmentSerializer,
+    AttendanceSerializer,
     ClassroomSerializer,
     QuestionSerializer,
     StudentSerializer,
@@ -118,6 +122,34 @@ class AnswerDetail(generics.RetrieveUpdateAPIView):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     permission_classes = (IsOwner,)
+
+
+class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    permission_classes = (IsOwner,)
+
+
+class AttendanceList(generics.ListCreateAPIView):
+    queryset = Attendance.objects.all()
+    serializer_class = AttendanceSerializer
+    permission_classes = (IsOwner,)
+    filter_fields = ('date', 'student', 'classroom')
+
+
+class AttendanceDetail(generics.RetrieveUpdateAPIView):
+    queryset = Attendance.objects.all()
+    serializer_class = AttendanceSerializer
+    permission_classes = (IsOwner,)
+
+
+@decorators.api_view(['GET'])
+@decorators.permission_classes([])
+def attendance_today(request, pk):
+    classroom = get_object_or_404(Classroom, pk=pk)
+    if not is_owner(request.user, classroom):
+        raise Http404
+    return response.Response(Attendance.attendance_today(classroom))
 
 
 @decorators.api_view(['GET', 'POST'])

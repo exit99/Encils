@@ -14,5 +14,8 @@ urlpatterns = [
     url(r'^questions/(?P<pk>[0-9]+)/$', views.QuestionDetail.as_view()),
     url(r'^answers/$', views.AnswerList.as_view()),
     url(r'^answers/(?P<pk>[0-9]+)/$', views.AnswerDetail.as_view()),
+    url(r'^attendance/$', views.AttendanceList.as_view()),
+    url(r'^attendance/(?P<pk>[0-9]+)/$', views.AttendanceDetail.as_view()),
+    url(r'^attendance/(?P<pk>[0-9]+)/today/$', views.attendance_today),
     url(r'^receive/$', views.receive_sms),
 ]

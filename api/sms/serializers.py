@@ -3,6 +3,7 @@ from rest_framework import serializers
 from sms.models import (
     Answer,
     Assignment,
+    Attendance,
     Classroom,
     Question,
     Student,
@@ -65,3 +66,10 @@ class AnswerSerializer(serializers.ModelSerializer):
         model = Answer
         fields = ('pk', 'student', 'question', 'classroom', 'text', 'grade', 'created')
         read_only_fields = ('pk', 'student', 'question', 'classroom', 'text', 'created')
+
+
+class AttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attendance
+        fields = ('pk', 'student', 'classroom', 'date', 'status')
+        read_only_fields = ('pk', 'date')

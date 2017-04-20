@@ -36,7 +36,6 @@ export default class extends React.Component {
 
   onGradeChange(answer, grade) {
     request("PATCH", `/answers/${answer.pk}/`, {grade: grade}, (data) => {
-      console.log(this.state);
       let targetAnswer = find(this.state.answers, ans => ans.pk === answer.pk);
       targetAnswer.grade = grade;
       this.setState(this.state);
@@ -48,7 +47,6 @@ export default class extends React.Component {
 
     if (!isUndefined(selectedClassroom.pk) && !isUndefined(selectedAssignment.pk)) {
       let endpoint = `/answers/?classroom=${selectedClassroom.pk}&assignment=${selectedAssignment.pk}&ordering=question`;
-      console.log(endpoint);
       request("GET", endpoint, null, (data) => {
          this.setState({ answers: data });
       });
@@ -94,7 +92,6 @@ export default class extends React.Component {
       answers
     } = this.state;
 
-    console.log(answers);
     return (
       <DashboardLayout>
         <div className="row">

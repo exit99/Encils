@@ -2,53 +2,50 @@ import React from 'react'
 import Router from 'next/router'
 import DashboardLayout from '../layouts/dashboard'
 import { request } from '../rest'
-import map from 'lodash/map'
-import fromPairs from 'lodash/fromPairs'
 import sortBy from 'lodash/sortBy'
+import filter from 'lodash/filter'
+import find from 'lodash/find'
+import isUndefined from 'lodash/isUndefined'
 
 export default class extends React.Component {
   componentWillMount() {
     this.state = {
-      checked: {},
-      students: []
+      students: [],
+      attendance: []
     }
 
     request("GET", `/students/?classroom=${this.props.url.query.classroomPk}`, null, (data) => {
-      let students = sortBy(data, student => student.name)
-      let checked = fromPairs(map(students, i => [i.pk, true]));
-      this.setState({ students: students, checked: checked });
+      let students = sortBy(data, student => student.name);
+      this.setState({ students: students });
+    });
+    request("GET", `/attendance/${this.props.url.query.classroomPk}/today/`, null, (data) => {
+      this.setState({ attendance: data });
     });
   }
 
-  saveAttendance() {
-    // TODO: Save the attendance.
-    Router.push("/classrooms");
-  }
-
-  toggleChecked(pk) {
-    let checked = this.state.checked;
-    checked[pk] = !checked[pk]
-    this.setState({ checked: checked });
+  updateAttendance(pk, status) {
+    request("PATCH", `/attendance/${pk}/`, { status: status }, (data) => {
+      let targetAttendance = find(this.state.attendance, a => a.pk === data.pk);
+      targetAttendance.status = status;
+      this.setState(this.state);
+    });
   }
 
   renderStudentCheckbox(student) {
-    const { checked } = this.state;
+    const { attendance } = this.state;
+    const studentAttendance = filter(attendance, a => a.student === student.pk)[0];
+    if (isUndefined(studentAttendance)) { return null; }
+    const status = studentAttendance.status === "present" ? "absent" : "present";
+    const handleClick = () => this.updateAttendance(studentAttendance.pk, status);
+    const checked = studentAttendance.status === "present";
+    const className = studentAttendance.status === "present" ? "filled-in" : "";
 
-    if (checked[student.pk]) {
-      return (
-        <p>
-          <input onClick={() => this.toggleChecked(student.pk)} type="checkbox" id={ student.pk } className="filled-in" checked="checked"/>
-          <label onClick={() => this.toggleChecked(student.pk)}>{ student.name }</label>
-        </p>
-      );
-    } else {
-      return (
-        <p>
-          <input onClick={() => this.toggleChecked(student.pk)} type="checkbox" id={ student.pk } checked={ false }/>
-          <label onClick={() => this.toggleChecked(student.pk)}>{ student.name }</label>
-        </p>
-      );
-    }
+    return (
+      <p>
+        <input onClick={handleClick.bind(this)} type="checkbox" id={ student.pk } className={className} checked={ checked }/>
+        <label onClick={handleClick.bind(this)}>{ student.name }</label>
+      </p>
+    );
   }
 
   renderDate() {
@@ -63,7 +60,7 @@ export default class extends React.Component {
 
   render() {
     const { 
-      checked,
+      attendance,
       students
     } = this.state;
 
@@ -79,7 +76,7 @@ export default class extends React.Component {
                 { students.map(this.renderStudentCheckbox.bind(this)) }
                 <br />
                 <div className="card-action">
-                  <a onClick={ this.saveAttendance.bind(this) } className="btn orange accent-3">Save</a>
+                  <a onClick={ () => Router.push('/classrooms') } className="btn orange accent-3">Save</a>
                 </div>
               </div>
             </div>

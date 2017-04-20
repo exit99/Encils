@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import (
     MaxValueValidator,
@@ -96,12 +98,21 @@ class Student(models.Model):
 class Attendance(models.Model):
     student = models.ForeignKey(Student)
     classroom = models.ForeignKey(Classroom)
-    date = models.DateField()
-    status = models.CharField(max_length=7, choices=ATTENDANCE_STATUS_CHOICES, default="absent")
+    date = models.DateField(auto_now_add=True)
+    status = models.CharField(max_length=7, choices=ATTENDANCE_STATUS_CHOICES, default="present")
 
     @property
     def teacher(self):
         return self.classroom.teacher
+
+    @classmethod
+    def attendance_today(cls, classroom):
+        from sms.serializers import AttendanceSerializer
+        data = []
+        for student in classroom.student_set.all():
+            obj, _ = Attendance.objects.get_or_create(classroom=classroom, student=student)
+            data.append(AttendanceSerializer(obj).data)
+        return data 
 
 
 class Assignment(models.Model):

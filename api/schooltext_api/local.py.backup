@@ -1,0 +1,1 @@
+from schooltext_api.settings import *

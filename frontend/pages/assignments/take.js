@@ -2,7 +2,9 @@ import React from 'react';
 import cookie from 'react-cookie';
 import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
 import Router from 'next/router'
+import ReactInterval from 'react-interval';
 import DisplayLayout from '../../layouts/display';
 import { request, websocket } from '../../rest';
 
@@ -12,6 +14,7 @@ export default class extends React.Component {
     const classroomPk = this.props.url.query.classroomPk;
 
     this.state = {
+      "waitingOnIndex": 0,
       "students": [],
       "questions": [],
       "answers": [],
@@ -63,6 +66,19 @@ export default class extends React.Component {
     return questions.length - 1 == questionIndex;
   }
 
+  unAnsweredStudents() {
+      const { answers, students } = this.state;
+      const answeredPks = answers.map((ans) => ans.student.pk);
+      return filter(students, (s) => answeredPks.indexOf(s) === -1);
+  }
+
+  updateWaitingOnIndex() {
+      const { waitingOnIndex } = this.state;
+      const students = this.unAnsweredStudents();
+      const index = waitingOnIndex >= students.length - 1 ? 0 : waitingOnIndex + 1;
+      this.setState({ waitingOnIndex: index });
+  }
+
   renderAnswer(answer) {
     const cardStyle = { "overflow": "hidden" };
     const contentStyle = { "padding": "14px" };
@@ -80,6 +96,15 @@ export default class extends React.Component {
     )
   }
 
+  renderWaitingOnName() {
+    const { waitingOnIndex } = this.state;
+    const students = this.unAnsweredStudents();
+    const student = students[waitingOnIndex];
+    if (!isUndefined(student)) {
+      return student.name;
+    }
+  }
+
   render() {
     const { answers, currentQuestion, sms } = this.state;
 
@@ -87,7 +112,7 @@ export default class extends React.Component {
       position: 'fixed',
       bottom: '0em',
       left: '1em',
-      width: '14em'
+      width: '20em'
     };
 
     return ( 
@@ -101,7 +126,8 @@ export default class extends React.Component {
              <div className="card-content">
                <p><b>#: { sms }</b></p>
                <p><b>Waiting on...</b></p>
-               <p></p>
+               <h5>{this.renderWaitingOnName()}</h5>
+               <ReactInterval timeout={1000} enabled={true} callback={this.updateWaitingOnIndex.bind(this)} />
              </div>
            </div>
          </div>

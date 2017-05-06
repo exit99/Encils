@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "next",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0 -p 80"
   },
   "author": "",
   "license": "ISC",
@@ -26,5 +28,8 @@
     "react-tooltip": "^3.3.0",
     "react-websocket": "^1.1.6",
     "ws": "^2.2.3"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.4.0"
   }
 }

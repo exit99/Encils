@@ -13,3 +13,8 @@ A schooltext QA program without a cool name. (Cool name coming soon).
 This project is a proof of concept and has very bad code organization decision.
 We will deploy this for now and get an idea of how the project will work before
 refactoring.
+
+
+# For Production
+
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000

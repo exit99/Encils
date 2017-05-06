@@ -1,8 +1,9 @@
 import fetch from 'isomorphic-fetch'
 import cookie from 'react-cookie';
+import config from './config';
 
 const makeUrl = (endpoint) => { 
-  return "http://127.0.0.1:8000" + endpoint 
+  return `http://${config.host}${endpoint}`
 }
 
 const request = (method, endpoint, data, success, err) => {
@@ -36,7 +37,7 @@ const request = (method, endpoint, data, success, err) => {
 
 const websocket = (endpoint, onMessage, onLogin) => {
     const token = cookie.load("token");
-    const baseUrl = "localhost:8000";
+    const baseUrl = config.host;
     const ws = new WebSocket(`ws://${baseUrl}${endpoint}/?token=${token}`)
     ws.onmessage = ({ data }) => { 
       data = JSON.parse(data);

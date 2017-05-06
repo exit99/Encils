@@ -4,8 +4,10 @@ db.sqlite3
 
 frontend/.next
 frontend/node_modules
+frontend/config.js
 .!*
 *.sqlite3
 *.swp
 
 *local.py
+

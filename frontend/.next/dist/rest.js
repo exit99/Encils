@@ -66,7 +66,7 @@ var request = function request(method, endpoint, data, success, err) {
 var websocket = function websocket(endpoint, onMessage, onLogin) {
   var token = _reactCookie2.default.load("token");
   var baseUrl = _config2.default.host;
-  var ws = new WebSocket('ws://' + baseUrl + endpoint + '/?token=' + token + '/');
+  var ws = new WebSocket('ws://' + baseUrl + endpoint + '/?token=' + token);
   ws.onmessage = function (_ref) {
     var data = _ref.data;
 

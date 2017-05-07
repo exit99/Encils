@@ -38,7 +38,7 @@ const request = (method, endpoint, data, success, err) => {
 const websocket = (endpoint, onMessage, onLogin) => {
     const token = cookie.load("token");
     const baseUrl = config.host;
-    const ws = new WebSocket(`ws://${baseUrl}${endpoint}/?token=${token}/`)
+    const ws = new WebSocket(`ws://${baseUrl}${endpoint}/?token=${token}`)
     ws.onmessage = ({ data }) => { 
       data = JSON.parse(data);
       if (data.is_logged_in) {

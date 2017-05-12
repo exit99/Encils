@@ -11,9 +11,9 @@ class SMSMessage(object):
         self.type = sms['type']
         self.text = sms['text']
         self.teacher = Teacher.objects.filter(sms=sms['to']).first()
-        activeitem = self.teacher.activeitem
-        self.classroom = activeitem.classroom
-        self.question = activeitem.question
+        activeitem = getattr(self.teacher, 'activeitem', None)
+        self.classroom = activeitem.classroom if activeitem else None
+        self.question = activeitem.question if activeitem else None
         self.student = Student.objects.filter(
             classroom=self.classroom, phone=self.phone).first()
 

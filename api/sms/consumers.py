@@ -49,7 +49,9 @@ def ws_student_connect(message, classroom_pk):
     classroom = get_object_or_404(Classroom, pk=classroom_pk, teacher=teacher)
     classroom.activate()
 
+
     Group(channel_name(teacher)).add(message.reply_channel)
+    Group(channel_name(teacher)).send({"accept": True})
     Group(channel_name(teacher)).send({
         'text': json.dumps({
             'is_logged_in': True,
@@ -81,6 +83,7 @@ def ws_question_answer_connect(message, question_pk, classroom_pk):
     question.activate()
 
     Group(channel_name(teacher)).add(message.reply_channel)
+    message.reply_channel.send({"accept": True})
     Group(channel_name(teacher)).send({
         'text': json.dumps({
             'is_logged_in': True,

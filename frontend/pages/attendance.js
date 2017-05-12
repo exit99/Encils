@@ -76,7 +76,7 @@ export default class extends React.Component {
                 { students.map(this.renderStudentCheckbox.bind(this)) }
                 <br />
                 <div className="card-action">
-                  <a onClick={ () => Router.push('/classrooms') } className="btn orange accent-3">Save</a>
+                  <a onClick={ () => Router.push(`/classrooms?pk=${this.props.url.query.classroomPk}`) } className="btn orange accent-3">Save</a>
                 </div>
               </div>
             </div>

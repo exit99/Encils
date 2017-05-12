@@ -18,7 +18,9 @@ export default class extends React.Component {
     request("GET", "/classrooms/", null, (data) => {
       if (data) { 
         this.setState({ classrooms: data })
-        this.changeClassroom(data[0])();
+        const pk = this.props.url.query.pk;
+        const classroom = pk ? filter(data, (classroom) => classroom.pk == pk)[0] : data[0];
+        this.changeClassroom(classroom)();
       }
     });
   }

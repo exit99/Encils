@@ -56,7 +56,7 @@ export default class extends React.Component {
 
           <div className="fixed-action-btn">
             <a className="btn-floating btn-large orange accent-3">
-              <i className="large material-icons" onClick={ () => Router.push('/classrooms') }>done</i>
+              <i className="large material-icons" onClick={ () => Router.push(`/classrooms?pk=${this.props.url.query.classroomPk}`) }>done</i>
             </a>
           </div>
        </DisplayLayout>

@@ -5,7 +5,7 @@ import Router from 'next/router'
 
 export default class extends React.Component {
   onSuccess() {
-    Router.push("/classrooms");
+    Router.push(`/classrooms?pk=${this.props.url.query.pk}`);
   }
 
   render () { 
@@ -19,7 +19,7 @@ export default class extends React.Component {
 
     return (
       <DashboardLayout>
-        <ModelCardForm title={ title } pk={ pk } inputs={ inputs } endpoint={ endpoint } onSuccess={ this.onSuccess } />
+        <ModelCardForm title={ title } pk={ pk } inputs={ inputs } endpoint={ endpoint } onSuccess={ this.onSuccess.bind(this) } />
       </DashboardLayout>
     )
   }

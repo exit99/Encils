@@ -18,7 +18,9 @@ export default class extends React.Component {
     request("GET", "/assignments/", null, (data) => {
       if (data) { 
         this.setState({ assignments: data })
-        this.changeAssignment(data[0])();
+        const pk = this.props.url.query.pk;
+        const assignment = pk ? filter(data, (assignment) => assignment.pk == pk)[0] : data[0];
+        this.changeAssignment(assignment)();
       }
     });
   }

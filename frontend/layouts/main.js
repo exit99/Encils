@@ -5,9 +5,6 @@ import Html from '../components/Html'
 export default ({ children }) => (
   <Html>
     <NavbarMain />
-    <br /><br />
-    <div className="container">
-      { children }
-    </div>
+    { children }
   </Html>
 )

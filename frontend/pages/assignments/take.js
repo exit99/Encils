@@ -27,16 +27,20 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
+    this.startQuestion(0);
+  }   
+
+  startQuestion(questionIndex) {
     const { currentQuestion } = this.state;
     const classroomPk = this.props.url.query.classroomPk;
     const assignmentPk = this.props.url.query.assignmentPk;
-    const questionIndex = this.props.url.query.questionIndex;
 
+    Router.push(`/assignments/take?classroomPk=${classroomPk}&assignmentPk=${assignmentPk}&questionIndex=${questionIndex}`)
     request("GET", `/questions?assignment=${assignmentPk}`, null, (data) => {
-        this.setState({ "questions": data, "currentQuestion": data[questionIndex] })
+        this.setState({ "questions": data, "currentQuestion": data[questionIndex], answers: [] })
         this.connection = websocket(`/question/answer/${data[questionIndex].pk}/${classroomPk}`, this.addAnswer.bind(this), null)
     }, null);
-  }   
+  }
 
   addAnswer(answer) {
     const { answers } = this.state;
@@ -56,7 +60,7 @@ export default class extends React.Component {
     if (this.onLastQuestion()) {
       Router.push("/classrooms");
     } else {
-      Router.push(`/assignments/take?classroomPk=${classroomPk}&assignmentPk=${assignmentPk}&questionIndex=${questionIndex+1}`)
+      this.startQuestion(questionIndex + 1)
     }
   }
 
@@ -64,12 +68,6 @@ export default class extends React.Component {
     const questionIndex = parseInt(this.props.url.query.questionIndex)
     const { questions } = this.state;
     return questions.length - 1 == questionIndex;
-  }
-
-  unAnsweredStudents() {
-      const { answers, students } = this.state;
-      const answeredPks = answers.map((ans) => ans.student.pk);
-      return filter(students, (s) => answeredPks.indexOf(s) === -1);
   }
 
   updateWaitingOnIndex() {
@@ -94,6 +92,13 @@ export default class extends React.Component {
         </div>
       </div>
     )
+  }
+
+  unAnsweredStudents() {
+      const { answers, students } = this.state;
+      const answeredPks = answers.map((ans) => ans.student.pk);
+      console.log(answeredPks, students);
+      return filter(students, (s) => answeredPks.indexOf(s.pk) === -1);
   }
 
   renderWaitingOnName() {

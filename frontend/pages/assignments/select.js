@@ -51,7 +51,7 @@ export default class extends React.Component {
       selectedAssignment
     } = this.state;
 
-    let className = "btn orange accent-3 right";
+    let className = "btn  right";
     let handleClick = () => Router.push(`/assignments/take?classroomPk=${selectedClassroom.pk}&assignmentPk=${selectedAssignment.pk}&questionIndex=0`)
     if (isEmpty(selectedClassroom) || isEmpty(selectedAssignment)) {
       className = `${className} disabled`;
@@ -72,7 +72,7 @@ export default class extends React.Component {
 
         <div className="row">
           <div className="col s12 m12 l12">
-            <div className="card white">
+            <div className="card grey lighten-4">
               <div className="card-content">
                 <span className="card-title">Give assignment to classroom {this.renderStartButton.bind(this)()}</span>
               </div>
@@ -83,7 +83,7 @@ export default class extends React.Component {
         <div className="row">
 
           <div className="col m6">
-            <div className="card white">
+            <div className="card grey lighten-4">
               <div className="card-content">
                 <span className="card-title">Select Classroom</span>
                 {classrooms.map(this.renderClassroom.bind(this))}
@@ -92,7 +92,7 @@ export default class extends React.Component {
           </div>
 
           <div className="col m6">
-            <div className="card white">
+            <div className="card grey lighten-4">
               <div className="card-content">
                 <span className="card-title">Select Assignment</span>
                 {assignments.map(this.renderAssignment.bind(this))}

@@ -14,7 +14,7 @@ class NavbarMain extends Component {
         <div className="navbar-fixed">
           <nav className="nav-extended">
         
-            <div className="nav-wrapper light-blue darken-2">
+            <div className="nav-wrapper">
               <div className="container">
                 <a href="#" className="brand-logo">Encils</a>
                 <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
@@ -27,9 +27,9 @@ class NavbarMain extends Component {
               </div>
             </div>
 
-            <div className="nav-content light-blue accent-3 center">
+            <div className="nav-content center grey lighten-4">
               <div className="container">
-                  <ul className="tabs tabs-transparent tabs-fixed-width">
+                  <ul className="tabs tabs-fixed-width grey lighten-4">
                     <li onClick={() => Router.push("/classrooms")} className="tab"><a>Classrooms</a></li>
                     <li onClick={() => Router.push("/assignments")} className="tab"><a>Assignments</a></li>
                     <li onClick={() => Router.push("/answers")} className="tab"><a>Grade Answers</a></li>

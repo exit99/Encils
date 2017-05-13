@@ -97,14 +97,14 @@ export default class extends React.Component {
         <div className="row">
 
           <div className="col s12 m3">
-            <div className="card white">
+            <div className="card grey lighten-4">
               <div className="card-content">
                 <span className="card-title">Classrooms</span>
                 { classrooms.map(this.renderClassroomButton.bind(this)) }
               </div>
             </div>
 
-            <div className="card white">
+            <div className="card grey lighten-4">
               <div className="card-content">
                 <span className="card-title">Assignments</span>
                 { assignments.map(this.renderAssignmentButton.bind(this)) }
@@ -113,7 +113,7 @@ export default class extends React.Component {
           </div>
 
           <div className="col s12 m9">
-            <div className="card white">
+            <div className="card grey lighten-4">
               <div className="card-content">
                 <div className="row">
                   <div className="col s12">

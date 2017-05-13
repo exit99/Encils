@@ -8,7 +8,7 @@ export default class extends React.Component {
       <tr>
         <td>{ question.text }</td>
         <td>
-          <a style={ {cursor: "pointer" } } onClick={ () => this.props.onDelete(question) } data-tip="Delete"><i className="material-icons">delete</i></a>
+          <a className="right" style={ {cursor: "pointer" } } onClick={ () => this.props.onDelete(question) } data-tip="Delete"><div data-tip="Delete" className="btn-floating grey"><i className="material-icons">delete</i></div></a>
           <ReactTooltip place="bottom" type="dark" effect="solid" wrapper="body"/>
         </td>
       </tr>

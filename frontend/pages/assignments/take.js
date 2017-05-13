@@ -138,7 +138,7 @@ export default class extends React.Component {
          </div>
 
          <div className="fixed-action-btn" onClick={this.getNextQuestionOrFinish.bind(this)}>
-           <a className="btn-floating btn-large orange accent-3">
+           <a className="btn-floating btn-large ">
              <i className="large material-icons">{this.onLastQuestion() ? 'done' : 'play_arrow'}</i>
            </a>
          </div>

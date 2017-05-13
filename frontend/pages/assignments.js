@@ -67,11 +67,11 @@ export default class extends React.Component {
       <DashboardLayout>
         <div className="row">
           <div className="col s12 m3">
-            <div className="card white">
+            <div className="card grey lighten-4">
               <div className="card-content">
                 <span className="card-title">Assignments</span>
                 <br />
-                <center><a onClick={() => Router.push(`/assignments/create`)} className="btn waves-effect waves-light orange accent-3" style={ {width: "100%", fontSize: "12px" } }>New Assignment</a></center>
+                <center><a onClick={() => Router.push(`/assignments/create`)} className="btn waves-effect waves-light " style={ {width: "100%", fontSize: "12px" } }>New Assignment</a></center>
               </div>
               <div className="card-action">
                 { assignments.map(this.renderAssignmentButton.bind(this)) } 
@@ -81,7 +81,7 @@ export default class extends React.Component {
 
           { assignments.length > 0 ? 
           <div className="col s12 m9">
-            <div className="card white">
+            <div className="card grey lighten-4">
               <div className="card-content">
 
                 <div className="row">

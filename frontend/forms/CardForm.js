@@ -31,6 +31,7 @@ export default class extends React.Component {
     const { title, inputs } = this.props;
     return (
       <div className="container">
+          <br /><br />
           <div className="row">
               <div className="col sm12 m8 offset-m2">
                   <div className="card grey lighten-4">

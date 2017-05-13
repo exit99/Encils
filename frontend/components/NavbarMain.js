@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Link from 'next/link'
+import Link from 'next/link';
 
 class NavbarMain extends Component {
   render() {
@@ -7,7 +7,7 @@ class NavbarMain extends Component {
         <div className="navbar-fixed">
           <nav className="nav-extended">
         
-            <div className="nav-wrapper light-blue darken-2">
+            <div className="nav-wrapper">
               <div className="container">
                 <a href="#" className="brand-logo">Encils</a>
                 <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>

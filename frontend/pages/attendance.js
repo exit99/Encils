@@ -68,7 +68,7 @@ export default class extends React.Component {
       <DashboardLayout>
         <div className="row">
           <div className="col s12">
-            <div className="card white">
+            <div className="card grey lighten-4">
               <div className="card-content">
                 <span className="card-title">Attendance for: { this.renderDate() }</span>
                 <p>Uncheck students who are absent.</p>
@@ -76,7 +76,7 @@ export default class extends React.Component {
                 { students.map(this.renderStudentCheckbox.bind(this)) }
                 <br />
                 <div className="card-action">
-                  <a onClick={ () => Router.push(`/classrooms?pk=${this.props.url.query.classroomPk}`) } className="btn orange accent-3">Save</a>
+                  <a onClick={ () => Router.push(`/classrooms?pk=${this.props.url.query.classroomPk}`) } className="btn ">Save</a>
                 </div>
               </div>
             </div>

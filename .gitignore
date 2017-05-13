@@ -9,6 +9,3 @@ frontend/config.js
 *.swp
 
 *local.py
-
-
-.next

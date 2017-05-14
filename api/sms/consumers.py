@@ -7,7 +7,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework.authentication import TokenAuthentication
 
-from sms.models import Classroom, Question
+from sms.models import Classroom, Question, ActiveItem
 
 
 def user_from_channel_message(message):
@@ -47,8 +47,10 @@ def send_teachers_obj_as_message(obj, serializer):
 def ws_student_connect(message, classroom_pk):
     teacher = user_from_channel_message(message)
     classroom = get_object_or_404(Classroom, pk=classroom_pk, teacher=teacher)
-    classroom.activate()
 
+    active_item, _ = ActiveItem.objects.get_or_create(teacher=teacher)
+    active_item.reset()
+    active_item.activate_classroom(classroom)
 
     Group(channel_name(teacher)).add(message.reply_channel)
     Group(channel_name(teacher)).send({"accept": True})
@@ -61,9 +63,6 @@ def ws_student_connect(message, classroom_pk):
 
 @channel_session_user_from_http
 def ws_student_disconnect(message, classroom_pk):
-    classroom = get_object_or_404(Classroom, pk=classroom_pk)
-    classroom.deactivate()
-
     Group(channel_name(message.user)).send({
         'text': json.dumps({
             'is_logged_in': False
@@ -79,8 +78,12 @@ def ws_question_answer_connect(message, question_pk, classroom_pk):
     question = get_object_or_404(Question, pk=question_pk)
     if question.teacher != teacher:
         raise Http404
-    classroom.activate()
-    question.activate()
+
+    active_item, _ = ActiveItem.objects.get_or_create(teacher=teacher)
+    active_item.reset()
+    active_item.activate_classroom(classroom)
+    active_item.activate_question(question)
+
 
     Group(channel_name(teacher)).add(message.reply_channel)
     message.reply_channel.send({"accept": True})

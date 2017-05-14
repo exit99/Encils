@@ -40,6 +40,10 @@ var _index = require('next/dist/lib/router/index.js');
 
 var _index2 = _interopRequireDefault(_index);
 
+var _nodePhoneFormatter = require('node-phone-formatter');
+
+var _nodePhoneFormatter2 = _interopRequireDefault(_nodePhoneFormatter);
+
 var _display = require('../../layouts/display');
 
 var _display2 = _interopRequireDefault(_display);
@@ -73,7 +77,7 @@ var _class = function (_React$Component) {
       };
 
       (0, _rest.request)("GET", "/auth/me/", null, function (data) {
-        return _this2.setState({ "sms": data.sms });
+        return _this2.setState({ "sms": _nodePhoneFormatter2.default.format(data.sms, "(NNN) NNN-NNNN") });
       }, null);
     }
   }, {
@@ -88,7 +92,6 @@ var _class = function (_React$Component) {
     value: function addStudent(student) {
       var students = this.state.students;
 
-      console.log(student, students);
       var newStudentArray = (0, _filter2.default)(students, function (s) {
         return s.pk != student.pk;
       });

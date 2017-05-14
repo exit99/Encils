@@ -20,6 +20,7 @@
     "material-ui": "^0.17.1",
     "moment": "^2.18.1",
     "next": "^2.0.1",
+    "node-phone-formatter": "0.0.4",
     "react": "^15.4.2",
     "react-cookie": "^1.0.5",
     "react-dom": "^15.4.2",

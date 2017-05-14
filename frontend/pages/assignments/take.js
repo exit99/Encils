@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import Router from 'next/router'
 import ReactInterval from 'react-interval';
+import phoneFormatter from 'node-phone-formatter';
 import DisplayLayout from '../../layouts/display';
 import { request, websocket } from '../../rest';
 
@@ -23,7 +24,7 @@ export default class extends React.Component {
     };
 
     request("GET", `/students?classroom=${classroomPk}`, null, (data) => this.setState({ "students": data }), null);
-    request("GET", "/auth/me/", null, (data) => this.setState({ "sms": data.sms }), null);
+    request("GET", "/auth/me/", null, (data) => this.setState({ "sms": phoneFormatter.format(data.sms, "(NNN) NNN-NNNN") }), null);
   }
 
   componentDidMount() {

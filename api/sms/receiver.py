@@ -46,8 +46,8 @@ class SMSMessage(object):
     def _default():
         data = {
             "keyword": "THIS",
-            "msisdn": "18137660689",
-            "text": "Hey heard there was a secret cord, that david played.",
+            "msisdn": "18137684282",
+            "text": "I heard there was a secret cord, that david played.",
             "to": "13232022665",
             "message-timestamp": "2017-03-12 00:43:33",
             "messageId": "0B0000003B7C8DE8",

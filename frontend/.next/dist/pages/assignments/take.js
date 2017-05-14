@@ -52,6 +52,10 @@ var _reactInterval = require('react-interval');
 
 var _reactInterval2 = _interopRequireDefault(_reactInterval);
 
+var _nodePhoneFormatter = require('node-phone-formatter');
+
+var _nodePhoneFormatter2 = _interopRequireDefault(_nodePhoneFormatter);
+
 var _display = require('../../layouts/display');
 
 var _display2 = _interopRequireDefault(_display);
@@ -92,7 +96,7 @@ var _class = function (_React$Component) {
         return _this2.setState({ "students": data });
       }, null);
       (0, _rest.request)("GET", "/auth/me/", null, function (data) {
-        return _this2.setState({ "sms": data.sms });
+        return _this2.setState({ "sms": _nodePhoneFormatter2.default.format(data.sms, "(NNN) NNN-NNNN") });
       }, null);
     }
   }, {
@@ -168,19 +172,19 @@ var _class = function (_React$Component) {
 
       return _react2.default.createElement('div', { className: 'col s12 m3', __source: {
           fileName: _jsxFileName,
-          lineNumber: 86
+          lineNumber: 87
         }
       }, _react2.default.createElement('div', { className: 'card grey lighten-4', style: cardStyle, __source: {
           fileName: _jsxFileName,
-          lineNumber: 87
+          lineNumber: 88
         }
       }, _react2.default.createElement('div', { className: 'card-content', style: contentStyle, __source: {
           fileName: _jsxFileName,
-          lineNumber: 88
+          lineNumber: 89
         }
       }, _react2.default.createElement('span', { className: 'card-title student-name', style: titleStyle, __source: {
           fileName: _jsxFileName,
-          lineNumber: 89
+          lineNumber: 90
         }
       }, answer.student.name), answer.text)));
     }
@@ -227,64 +231,64 @@ var _class = function (_React$Component) {
 
       return _react2.default.createElement(_display2.default, { text: currentQuestion.text, showSpinner: sms.length === 0, __source: {
           fileName: _jsxFileName,
-          lineNumber: 124
+          lineNumber: 125
         }
       }, _react2.default.createElement('div', { className: 'row', __source: {
           fileName: _jsxFileName,
-          lineNumber: 125
+          lineNumber: 126
         }
       }, answers.map(this.renderAnswer.bind(this))), _react2.default.createElement('div', { style: waitingStyle, __source: {
           fileName: _jsxFileName,
-          lineNumber: 129
+          lineNumber: 130
         }
       }, _react2.default.createElement('div', { className: 'card grey lighten-2', __source: {
           fileName: _jsxFileName,
-          lineNumber: 130
+          lineNumber: 131
         }
       }, _react2.default.createElement('div', { className: 'card-content', __source: {
           fileName: _jsxFileName,
-          lineNumber: 131
+          lineNumber: 132
         }
       }, _react2.default.createElement('p', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 132
+          lineNumber: 133
         }
       }, _react2.default.createElement('b', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 132
+          lineNumber: 133
         }
       }, '#: ', sms)), _react2.default.createElement('p', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 133
+          lineNumber: 134
         }
       }, _react2.default.createElement('b', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 133
+          lineNumber: 134
         }
       }, 'Waiting on...')), _react2.default.createElement('h5', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 134
+          lineNumber: 135
         }
       }, this.renderWaitingOnName()), _react2.default.createElement(_reactInterval2.default, { timeout: 1000, enabled: true, callback: this.updateWaitingOnIndex.bind(this), __source: {
           fileName: _jsxFileName,
-          lineNumber: 135
+          lineNumber: 136
         }
       })))), _react2.default.createElement('div', { className: 'fixed-action-btn', onClick: this.getNextQuestionOrFinish.bind(this), __source: {
           fileName: _jsxFileName,
-          lineNumber: 140
+          lineNumber: 141
         }
       }, _react2.default.createElement('a', { className: 'btn-floating btn-large ', __source: {
           fileName: _jsxFileName,
-          lineNumber: 141
+          lineNumber: 142
         }
       }, _react2.default.createElement('i', { className: 'large material-icons', __source: {
           fileName: _jsxFileName,
-          lineNumber: 142
+          lineNumber: 143
         }
       }, this.onLastQuestion() ? 'done' : 'play_arrow'))));
     }

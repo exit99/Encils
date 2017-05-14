@@ -2,6 +2,7 @@ import React from 'react';
 import cookie from 'react-cookie';
 import filter from 'lodash/filter';
 import Router from 'next/router'
+import phoneFormatter from 'node-phone-formatter';
 import DisplayLayout from '../../layouts/display';
 import { request, websocket } from '../../rest';
 
@@ -15,7 +16,7 @@ export default class extends React.Component {
       "sms": ""
     }
 
-    request("GET", "/auth/me/", null, (data) => this.setState({ "sms": data.sms }), null);
+    request("GET", "/auth/me/", null, (data) => this.setState({ "sms": phoneFormatter.format(data.sms, "(NNN) NNN-NNNN") }), null);
   }
 
   componentDidMount() {
@@ -26,7 +27,6 @@ export default class extends React.Component {
   addStudent(student) {
     const { students } = this.state;
 
-    console.log(student, students)
     let newStudentArray = filter(students, (s) => { return s.pk != student.pk });
     newStudentArray.push(student);
   

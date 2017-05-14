@@ -64,17 +64,6 @@ class Classroom(models.Model):
     school = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now_add=True)
 
-    def activate(self):
-        active_item, _ = ActiveItem.objects.get_or_create(teacher=self.teacher)
-        active_item.classroom = self
-        active_item.save()
-
-    def deactivate(self):
-        active_item, _ = ActiveItem.objects.get_or_create(teacher=self.teacher)
-        if active_item.classroom == self:
-            active_item.classroom = None
-            active_item.save()
-
 
 class Student(models.Model):
     classroom = models.ForeignKey(Classroom)
@@ -130,17 +119,6 @@ class Question(models.Model):
     def teacher(self):
         return self.assignment.teacher
 
-    def activate(self):
-        active_item, _ = ActiveItem.objects.get_or_create(teacher=self.teacher)
-        active_item.question = self
-        active_item.save()
-
-    def deactivate(self):
-        active_item, _ = ActiveItem.objects.get_or_create(teacher=self.teacher)
-        if active_item.question == self:
-            active_item.question = None
-            active_item.save()
-
 
 class Answer(models.Model):
     student = models.ForeignKey(Student)
@@ -163,6 +141,15 @@ class ActiveItem(models.Model):
     teacher = models.OneToOneField(Teacher)
     classroom = models.ForeignKey(Classroom, null=True, default=None)
     question = models.ForeignKey(Question, null=True, default=None)
+
+    def activate_classroom(self, classroom):
+        self.classroom = classroom
+        self.question = None
+        self.save()
+
+    def activate_question(self, question):
+        self.question = question
+        self.save()
 
     def add_students(self, classroom):
         self.classroom = classroom

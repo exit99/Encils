@@ -10,6 +10,7 @@ from sms.models import (
     Classroom,
     Question,
     Student,
+    ActiveItem,
 )
 from sms.permissions import is_owner, IsOwner, FromSMSGateway
 from sms.receiver import SMSMessage
@@ -160,3 +161,11 @@ def receive_sms(request):
         res = msg.execute()
         return response.Response(res)
     return response.Response(400)
+
+
+@decorators.api_view(['POST'])
+@decorators.permission_classes([])
+def reset(request):
+    active_item, _ = ActiveItem.objects.get_or_create(teacher=request.user)
+    active_item.reset()
+    return response.Response(True)

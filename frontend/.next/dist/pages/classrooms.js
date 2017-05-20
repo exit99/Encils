@@ -89,6 +89,8 @@ var _class = function (_React$Component) {
           _this2.changeClassroom(classroom)();
         }
       });
+
+      (0, _rest.request)("POST", "/reset/", null, null);
     }
   }, {
     key: 'changeClassroom',
@@ -107,7 +109,7 @@ var _class = function (_React$Component) {
       var active = classroom.pk == this.state.selectedClassroom.pk;
       return _react2.default.createElement(_SidebarButton2.default, { text: classroom.name, active: active, handleClick: this.changeClassroom(classroom).bind(this), __source: {
           fileName: _jsxFileName,
-          lineNumber: 38
+          lineNumber: 41
         }
       });
     }
@@ -149,143 +151,143 @@ var _class = function (_React$Component) {
 
       return _react2.default.createElement('div', { className: 'col s12 m9', __source: {
           fileName: _jsxFileName,
-          lineNumber: 66
+          lineNumber: 69
         }
       }, _react2.default.createElement('div', { className: 'card grey lighten-4', __source: {
           fileName: _jsxFileName,
-          lineNumber: 67
+          lineNumber: 70
         }
       }, _react2.default.createElement('div', { className: 'card-content', __source: {
           fileName: _jsxFileName,
-          lineNumber: 68
+          lineNumber: 71
         }
       }, _react2.default.createElement('div', { className: 'row', __source: {
           fileName: _jsxFileName,
-          lineNumber: 70
+          lineNumber: 73
         }
       }, _react2.default.createElement('div', { className: 'col s12 m6', __source: {
           fileName: _jsxFileName,
-          lineNumber: 71
+          lineNumber: 74
         }
       }, _react2.default.createElement('span', { className: 'card-title', __source: {
           fileName: _jsxFileName,
-          lineNumber: 72
+          lineNumber: 75
         }
       }, selectedClassroom.name)), _react2.default.createElement('div', { className: 'col s12 m6', __source: {
           fileName: _jsxFileName,
-          lineNumber: 74
+          lineNumber: 77
         }
       }, _react2.default.createElement('div', { className: 'row', __source: {
           fileName: _jsxFileName,
-          lineNumber: 75
+          lineNumber: 78
         }
       }, students.length > 0 ? _react2.default.createElement('div', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 78
+          lineNumber: 81
         }
       }, _react2.default.createElement('div', { className: 'col s2 offset-m4', __source: {
           fileName: _jsxFileName,
-          lineNumber: 79
+          lineNumber: 82
         }
       }, _react2.default.createElement('center', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 79
+          lineNumber: 82
         }
       }, _react2.default.createElement('a', { onClick: function onClick() {
           return _index2.default.push('/attendance?classroomPk=' + selectedClassroom.pk);
         }, className: 'btn-floating waves-effect waves-light grey', 'data-tip': 'Take Attendance', __source: {
           fileName: _jsxFileName,
-          lineNumber: 79
+          lineNumber: 82
         }
       }, _react2.default.createElement('i', { className: 'material-icons', __source: {
           fileName: _jsxFileName,
-          lineNumber: 79
+          lineNumber: 82
         }
       }, 'person_pin')))), _react2.default.createElement('div', { className: 'col s2', __source: {
           fileName: _jsxFileName,
-          lineNumber: 80
+          lineNumber: 83
         }
       }, _react2.default.createElement('center', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 80
+          lineNumber: 83
         }
       }, _react2.default.createElement('a', { onClick: function onClick() {
           return _index2.default.push('/students/add?classroomPk=' + selectedClassroom.pk);
         }, className: 'btn-floating waves-effect waves-light grey', 'data-tip': 'Add Students', __source: {
           fileName: _jsxFileName,
-          lineNumber: 80
+          lineNumber: 83
         }
       }, _react2.default.createElement('i', { className: 'material-icons', __source: {
           fileName: _jsxFileName,
-          lineNumber: 80
+          lineNumber: 83
         }
       }, 'add'))))) : _react2.default.createElement('div', { className: 'col s2 offset-m6', __source: {
           fileName: _jsxFileName,
-          lineNumber: 83
+          lineNumber: 86
         }
       }, _react2.default.createElement('center', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 83
+          lineNumber: 86
         }
       }, _react2.default.createElement('a', { onClick: function onClick() {
           return _index2.default.push('/students/add?classroomPk=' + selectedClassroom.pk);
         }, className: 'btn-floating waves-effect waves-light grey', 'data-tip': 'Add Students', __source: {
           fileName: _jsxFileName,
-          lineNumber: 83
+          lineNumber: 86
         }
       }, _react2.default.createElement('i', { className: 'material-icons', __source: {
           fileName: _jsxFileName,
-          lineNumber: 83
+          lineNumber: 86
         }
       }, 'add')))), _react2.default.createElement('div', { className: 'col s2', __source: {
           fileName: _jsxFileName,
-          lineNumber: 85
+          lineNumber: 88
         }
       }, _react2.default.createElement('center', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 85
+          lineNumber: 88
         }
       }, _react2.default.createElement('a', { onClick: function onClick() {
           return _index2.default.push('/classrooms/create?pk=' + selectedClassroom.pk);
         }, className: 'btn-floating waves-effect waves-light grey', 'data-tip': 'Edit Classroom', __source: {
           fileName: _jsxFileName,
-          lineNumber: 85
+          lineNumber: 88
         }
       }, _react2.default.createElement('i', { className: 'material-icons', __source: {
           fileName: _jsxFileName,
-          lineNumber: 85
+          lineNumber: 88
         }
       }, 'edit')))), _react2.default.createElement('div', { className: 'col s2', __source: {
           fileName: _jsxFileName,
-          lineNumber: 86
+          lineNumber: 89
         }
       }, _react2.default.createElement('center', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 86
+          lineNumber: 89
         }
       }, _react2.default.createElement('a', { onClick: function onClick() {
           return _this6.deleteClassroom(selectedClassroom);
         }, className: 'btn-floating waves-effect waves-light grey', 'data-tip': 'Delete Classroom', __source: {
           fileName: _jsxFileName,
-          lineNumber: 86
+          lineNumber: 89
         }
       }, _react2.default.createElement('i', { className: 'material-icons', __source: {
           fileName: _jsxFileName,
-          lineNumber: 86
+          lineNumber: 89
         }
       }, 'delete')))), _react2.default.createElement(_reactTooltip2.default, { place: 'bottom', type: 'dark', effect: 'solid', __source: {
           fileName: _jsxFileName,
-          lineNumber: 87
+          lineNumber: 90
         }
       })))), _react2.default.createElement(_Students2.default, { students: students, onDelete: this.deleteStudent.bind(this), __source: {
           fileName: _jsxFileName,
-          lineNumber: 92
+          lineNumber: 95
         }
       }))));
     }
@@ -300,47 +302,47 @@ var _class = function (_React$Component) {
       return _react2.default.createElement(_dashboard2.default, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 108
+          lineNumber: 111
         }
       }, _react2.default.createElement('div', { className: 'row', __source: {
           fileName: _jsxFileName,
-          lineNumber: 109
+          lineNumber: 112
         }
       }, _react2.default.createElement('div', { className: 'col s12 m3', __source: {
           fileName: _jsxFileName,
-          lineNumber: 110
+          lineNumber: 113
         }
       }, _react2.default.createElement('div', { className: 'card grey lighten-4', __source: {
           fileName: _jsxFileName,
-          lineNumber: 111
+          lineNumber: 114
         }
       }, _react2.default.createElement('div', { className: 'card-content', __source: {
           fileName: _jsxFileName,
-          lineNumber: 112
+          lineNumber: 115
         }
       }, _react2.default.createElement('span', { className: 'card-title', __source: {
           fileName: _jsxFileName,
-          lineNumber: 113
+          lineNumber: 116
         }
       }, 'Classrooms'), _react2.default.createElement('br', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 114
+          lineNumber: 117
         }
       }), _react2.default.createElement('center', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 115
+          lineNumber: 118
         }
       }, _react2.default.createElement('a', { onClick: function onClick() {
           return _index2.default.push('/classrooms/create');
         }, className: 'btn waves-effect waves-light ', style: { "width": "100%", "font-size": "12px" }, __source: {
           fileName: _jsxFileName,
-          lineNumber: 115
+          lineNumber: 118
         }
       }, 'New Classroom'))), _react2.default.createElement('div', { className: 'card-action', __source: {
           fileName: _jsxFileName,
-          lineNumber: 117
+          lineNumber: 120
         }
       }, classrooms.map(this.renderClassroomButton.bind(this))))), classrooms.length > 0 ? this.renderClassrooms() : null));
     }

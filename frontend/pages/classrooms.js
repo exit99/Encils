@@ -23,6 +23,9 @@ export default class extends React.Component {
         this.changeClassroom(classroom)();
       }
     });
+
+    request("POST", "/reset/", null, null);
+
   }
 
   changeClassroom(classroom) {

@@ -1,6 +1,9 @@
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch';
 import cookie from 'react-cookie';
 import config from './config';
+import promise from 'es6-promise';
+
+import 'whatwg-fetch'
 
 const makeUrl = (endpoint) => { 
   return `http://${config.host}${endpoint}`
@@ -32,7 +35,6 @@ const request = (method, endpoint, data, success, err) => {
         console.error(`Cannot handle HTTP code ${statusCode}!`);
       }
     });
-
 }
 
 const websocket = (endpoint, onMessage, onLogin) => {

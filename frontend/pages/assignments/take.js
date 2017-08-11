@@ -9,8 +9,8 @@ import phoneFormatter from 'node-phone-formatter';
 import DisplayLayout from '../../layouts/display';
 import { request, websocket } from '../../rest';
 
-export default class extends React.Component {
 
+export default class extends React.Component {
   componentWillMount() {
     const classroomPk = this.props.url.query.classroomPk;
 
@@ -23,8 +23,12 @@ export default class extends React.Component {
       "sms": ""
     };
 
-    request("GET", `/students?classroom=${classroomPk}`, null, (data) => this.setState({ "students": data }), null);
-    request("GET", "/auth/me/", null, (data) => this.setState({ "sms": phoneFormatter.format(data.sms, "(NNN) NNN-NNNN") }), null);
+    request("GET", `/students/?classroom=${classroomPk}`, null, (data) => {
+      this.setState({ "students": data });
+    });
+    request("GET", "/auth/me/", null, (data) => {
+      this.setState({ "sms": phoneFormatter.format(data.sms, "(NNN) NNN-NNNN") });
+    });
   }
 
   componentDidMount() {
@@ -37,7 +41,7 @@ export default class extends React.Component {
     const assignmentPk = this.props.url.query.assignmentPk;
 
     Router.push(`/assignments/take?classroomPk=${classroomPk}&assignmentPk=${assignmentPk}&questionIndex=${questionIndex}`)
-    request("GET", `/questions?assignment=${assignmentPk}`, null, (data) => {
+    request("GET", `/questions/?assignment=${assignmentPk}`, null, (data) => {
         this.setState({ "questions": data, "currentQuestion": data[questionIndex], answers: [] })
         this.connection = websocket(`/question/answer/${data[questionIndex].pk}/${classroomPk}`, this.addAnswer.bind(this), null)
     }, null);
@@ -98,7 +102,6 @@ export default class extends React.Component {
   unAnsweredStudents() {
       const { answers, students } = this.state;
       const answeredPks = answers.map((ans) => ans.student.pk);
-      console.log(answeredPks, students);
       return filter(students, (s) => answeredPks.indexOf(s.pk) === -1);
   }
 

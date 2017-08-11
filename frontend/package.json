@@ -13,10 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "bufferutil": "^3.0.0",
+    "es6-promise": "^4.1.1",
     "formsy-material-ui": "^0.5.5",
     "formsy-react": "^0.19.2",
     "formsy-react-components": "^0.10.1",
     "fs": "0.0.1-security",
+    "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.17.1",
     "moment": "^2.18.1",
     "next": "^2.0.1",
@@ -28,6 +30,7 @@
     "react-tap-event-plugin": "^2.0.1",
     "react-tooltip": "^3.3.0",
     "react-websocket": "^1.1.6",
+    "whatwg-fetch": "^2.0.3",
     "ws": "^2.2.3"
   },
   "devDependencies": {

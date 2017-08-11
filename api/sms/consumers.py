@@ -96,6 +96,7 @@ def ws_question_answer_connect(message, question_pk, classroom_pk):
 
 @channel_session_user_from_http
 def ws_question_answer_disconnect(message, question_pk, classroom_pk):
+    question = get_object_or_404(Question, pk=question_pk)
     Group(channel_name(question)).send({
         'text': json.dumps({
             'is_logged_in': False

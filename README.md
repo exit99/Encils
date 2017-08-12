@@ -22,4 +22,11 @@ The webhooks needs to link to the ngrok url `NGROKHASH.ngrok.io/receive`.
 
 ## For Production
 
-iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+### Deployment
+
+Make sure that `config.js` is using the correct IP/domain. (not localhost or 127.0.0.1).
+run `npm run build` from the `frontend` folder.
+
+`pm2 restart next`
+`/usr/bin/python3 /usr/local/bin/daphne -b 0.0.0.0 -p 8000 schooltext_api.asgi:channel_layer`. I think this restarts the daphne server.  
+`iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000`

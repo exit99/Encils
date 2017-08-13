@@ -1,0 +1,33 @@
+{
+  "name": "create-react-app-intro",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "aphrodite": "^1.2.3",
+    "es6-promise": "^4.1.1",
+    "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.4",
+    "material-ui": "next",
+    "material-ui-icons": "^1.0.0-alpha.19",
+    "react": "^15.6.1",
+    "react-cookie": "^2.0.8",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
+    "react-router-dom": "^4.1.2",
+    "react-router-redux": "next",
+    "redux": "^3.7.2",
+    "redux-form": "^7.0.3",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
+    "typeface-roboto": "^0.0.35"
+  },
+  "devDependencies": {
+    "react-scripts": "1.0.10"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

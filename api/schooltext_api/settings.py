@@ -155,3 +155,5 @@ DJOSER = {
         'user': 'sms.serializers.TeacherSerializer',
     },
 }
+
+APPEND_SLASH = False

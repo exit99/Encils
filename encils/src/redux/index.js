@@ -9,15 +9,14 @@ import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form'
 
 const initialState = {
-  token: '',
+  auth_token: '',
 }
 
 const apiReducer = (previousState = initialState, { key, form, data, type }) => {
   switch (type) {
     case 'API_SUCCESS':
+      debugger;
       return Object.assign({}, previousState, {key: data})
-    case 'API_ERROR':
-      return Object.assign({}, previousState, {formErrors: { form: data }})
     default:
       return previousState;
   }

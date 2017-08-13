@@ -4,13 +4,13 @@
   "private": true,
   "dependencies": {
     "aphrodite": "^1.2.3",
+    "cookie": "^0.3.1",
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "material-ui": "next",
     "material-ui-icons": "^1.0.0-alpha.19",
     "react": "^15.6.1",
-    "react-cookie": "^2.0.8",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.2",
@@ -19,7 +19,9 @@
     "redux-form": "^7.0.3",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "typeface-roboto": "^0.0.35"
+    "typeface-roboto": "^0.0.35",
+    "universal": "^0.1.1",
+    "universal-cookie": "^2.0.8"
   },
   "devDependencies": {
     "react-scripts": "1.0.10"

@@ -1,8 +1,9 @@
 import fetch from 'isomorphic-fetch';
-import cookie from 'react-cookie';
-import config from '../config/local';
-import promise from 'es6-promise';
+import Cookies from 'universal-cookie';
+import isUndefined from 'lodash/isUndefined';
 import { stopSubmit } from 'redux-form'
+
+import config from '../config/local';
 
 const makeUrl = (endpoint) => { 
   return `http://${config.host}${endpoint}`
@@ -19,20 +20,27 @@ const request = (method, endpoint, key, formName = null) => (data = null) => (di
 
     if (data !== null) { options.body = JSON.stringify(data); }
 
-//const token = cookie.load("token");
-//    if (token !== null) { options.headers.Authorization = token; }
+    const cookies = new Cookies();
+    const token = cookies.get("auth_token");
+    if (token !== null) { options.headers.Authorization = token; }
 
     return fetch(makeUrl(endpoint), options).then((response) => {
       const statusCode = response.status.toString();
       if (statusCode === '200' || statusCode === '201') { 
         response.json().then((resData) => { 
-          dispatch({ key, data: resData, type: 'API_SUCCESS'})
-        }); 
+          if (!isUndefined(resData[key])) { 
+            dispatch({ key, data: resData[key], type: 'API_SUCCESS'});
+          } else {
+            dispatch({ key, data: resData, type: 'API_SUCCESS'});
+          }
+          if (key === 'auth_token') {
+            cookies.set(key, resData[key]);
+          }
+        });
 //      } else if (statusCode == '204') {
 //        success({});
       } else if (statusCode.startsWith('4')) {
         response.json().then((resData) => {
-          console.log("DISPATHC ERROR", resData);
           dispatch(stopSubmit(formName, {_error: resData}));
         });
       } else {
@@ -42,7 +50,8 @@ const request = (method, endpoint, key, formName = null) => (data = null) => (di
 }
 
 const websocket = (endpoint, onMessage, onLogin) => {
-    const token = cookie.load("token");
+    const cookies = new Cookies();
+    const token = cookies.get("auth_token");
     const baseUrl = config.host;
     const ws = new WebSocket(`ws://${baseUrl}${endpoint}/?token=${token}`)
     ws.onmessage = ({ data }) => { 

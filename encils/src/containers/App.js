@@ -12,6 +12,7 @@ import { orange, blue } from 'material-ui/colors';
 
 import Home from './Home';
 import Login from './Login';
+import Register from './Register';
 import ScrollToTop from './router/ScrollToTop';
 
 const theme = createMuiTheme({
@@ -45,6 +46,7 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route exact path='/login' component={Login} />
+              <Route exact path='/register' component={Register} />
             </Switch>
           </ScrollToTop>
         </MuiThemeProvider>

@@ -3,7 +3,6 @@
 * Place where we create the store and combine it with the reducers (Redux stuff)
 * author: @
 */
-
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';

@@ -13,6 +13,7 @@ import { orange, blue } from 'material-ui/colors';
 import Home from './Home';
 import Login from './Login';
 import Register from './Register';
+import Classrooms from './Classrooms';
 import ScrollToTop from './router/ScrollToTop';
 
 const theme = createMuiTheme({
@@ -27,11 +28,11 @@ const theme = createMuiTheme({
         // Name of the rule
         color: 'white',
       },
-      root: {
+      raised: {
         border: 0,
         height: 48,
         padding: '0 30px',
-        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .30)',
+        boxShadow: '0 3px 5px 2px',
       }
     },
   },
@@ -47,6 +48,7 @@ class App extends Component {
               <Route exact path='/' component={Home} />
               <Route exact path='/login' component={Login} />
               <Route exact path='/register' component={Register} />
+              <Route exact path='/classrooms' component={Classrooms} />
             </Switch>
           </ScrollToTop>
         </MuiThemeProvider>

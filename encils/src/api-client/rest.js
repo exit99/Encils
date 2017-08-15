@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 import Cookies from 'universal-cookie';
 import isUndefined from 'lodash/isUndefined';
 import { stopSubmit } from 'redux-form'
+import {push} from 'react-router-redux';
 
 import config from '../config/local';
 
@@ -27,20 +28,22 @@ const request = (method, endpoint, key, formName = null) => (data = null) => (di
     return fetch(makeUrl(endpoint), options).then((response) => {
       const statusCode = response.status.toString();
       if (statusCode === '200' || statusCode === '201') { 
-        response.json().then((resData) => { 
+        return response.json().then((resData) => { 
           if (!isUndefined(resData[key])) { 
             dispatch({ key, data: resData[key], type: 'API_SUCCESS'});
           } else {
             dispatch({ key, data: resData, type: 'API_SUCCESS'});
           }
           if (key === 'auth_token') {
-            cookies.set(key, resData[key]);
+            const newToken = `Token ${resData[key]}`;
+            cookies.set(key, newToken);
           }
+          return resData
         });
-//      } else if (statusCode == '204') {
-//        success({});
+      } else if (statusCode === '401') {
+          dispatch(push('/login'));
       } else if (statusCode.startsWith('4')) {
-        response.json().then((resData) => {
+        return response.json().then((resData) => {
           dispatch(stopSubmit(formName, {_error: resData}));
         });
       } else {

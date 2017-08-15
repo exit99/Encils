@@ -19,7 +19,7 @@ import { login } from '../api-client/auth';
 class Login extends React.Component {
   onSubmit(values) {
     const { dispatch } = this.props
-    dispatch(login(values));
+    dispatch(login(values)).then(() => dispatch(push('/classrooms')))
   }
 
   render() {

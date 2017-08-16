@@ -75,7 +75,7 @@ class Classrooms extends React.Component {
       .then(this.setState({}));
   }
 
-  closeCreateClassroomDialog(save=false) {
+  closeUpdateClassroomDialog(save=false) {
     this.setState({classroomDialogOpen: false});
   }
 
@@ -150,6 +150,7 @@ class Classrooms extends React.Component {
                      <Typography type="title" color="inherit" style={{flex: 1}}>
                        {classroom.name}
                      </Typography>
+                     <Button color="contrast" onClick={this.goToAddStudents.bind(this)}>Start Assignment</Button>
                      <Button color="contrast" onClick={this.goToAddStudents.bind(this)}>Add Students</Button>
                      <Button color="contrast" onClick={() => this.setState({classroomDialogOpen: true, classroomEdit: true})}>Edit</Button>
                      <Button color="contrast" onClick={this.deleteClassroom.bind(this)}>Delete</Button>
@@ -188,7 +189,7 @@ class Classrooms extends React.Component {
             </Grid>
           </div>
 
-          <FullScreenDialog title="Create Classoom" open={classroomDialogOpen} onClose={this.closeCreateClassroomDialog.bind(this)}>
+          <FullScreenDialog title="Create Classoom" open={classroomDialogOpen} onClose={this.closeUpdateClassroomDialog.bind(this)}>
             <ClassroomForm dispatch={dispatch} onSubmit={this.submitClassroomForm.bind(this)} initialValues={classroomEdit ? classroom : {}} />
           </FullScreenDialog>
         </Dashboard>

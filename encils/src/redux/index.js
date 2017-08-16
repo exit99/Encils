@@ -12,6 +12,7 @@ const initialState = {
   auth_token: '',
   assignment: {},
   assignments: [],
+  assignmentQuestions: [],
   classroom: {},
   classrooms: [],
   classroomStudents: [],

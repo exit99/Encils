@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
 
 import AppBar from 'material-ui/AppBar';
@@ -28,12 +29,18 @@ import {
   getClassrooms,
   getClassroomStudents,
   createClassroom,
+  editClassroom,
   deleteClassroom,
 } from '../api-client/classrooms';
 
 import { 
   getAssignments,
 } from '../api-client/assignments';
+
+import {
+  getActiveItem,
+  editActiveItem,
+} from '../api-client/activeItems';
 
 
 class Classrooms extends React.Component {
@@ -72,9 +79,11 @@ class Classrooms extends React.Component {
     this.setState({classroomDialogOpen: false});
   }
 
-  createClassroom(values) {
-    const { dispatch } = this.props;
-    dispatch(createClassroom(values)).then((res) => {  
+  submitClassroomForm(values) {
+    const { dispatch, classroom } = this.props;
+    const { classroomEdit } = this.state;
+    const method = classroomEdit ? editClassroom(classroom.pk) : createClassroom;
+    dispatch(method(values)).then((res) => {  
       if (!isUndefined(res)) { 
         this.setState({classroomDialogOpen: false}) 
         dispatch(getClassrooms());
@@ -91,6 +100,12 @@ class Classrooms extends React.Component {
             if (data && data.length > 0) this.getClassroom(data[0]);
           });
       });
+  }
+
+  goToAddStudents() {
+    const { dispatch, classroom } = this.props;
+    dispatch(editActiveItem({classroom: classroom.pk, question: null}))
+      .then(() => dispatch(push('/students-add')));
   }
 
   render() {
@@ -135,7 +150,7 @@ class Classrooms extends React.Component {
                      <Typography type="title" color="inherit" style={{flex: 1}}>
                        {classroom.name}
                      </Typography>
-                     <Button color="contrast">Add Students</Button>
+                     <Button color="contrast" onClick={this.goToAddStudents.bind(this)}>Add Students</Button>
                      <Button color="contrast" onClick={() => this.setState({classroomDialogOpen: true, classroomEdit: true})}>Edit</Button>
                      <Button color="contrast" onClick={this.deleteClassroom.bind(this)}>Delete</Button>
                    </Toolbar>
@@ -144,15 +159,14 @@ class Classrooms extends React.Component {
 
                 <AppBar position="static">
                   <Tabs value={tabValue} onChange={this.handleTabChange.bind(this)}>
-                    <Tab label="Students" />
-                    <Tab label="Assignments" />
-                    <Tab label="Reports" />
+                    <Tab style={tabValue === 0 ? {opacity: 1} : {}} label="Students" />
+                    <Tab style={tabValue === 1 ? {opacity: 1} : {}} label="Completed Assignments" />
+                    <Tab style={tabValue === 2 ? {opacity: 1} : {}} label="Reports" />
                   </Tabs>
                 </AppBar>
                 {tabValue === 0 && 
                  <Card style={{background: grey[100]}}>
                   <CardContent>
-                    <Typography style={{padding: 5}} type="headline" component="h2">Students</Typography>
                     <StudentTable students={classroomStudents} />
                   </CardContent>
                 </Card>
@@ -160,8 +174,13 @@ class Classrooms extends React.Component {
                 {tabValue === 1 && 
                 <Card style={{background: grey[100]}}>
                   <CardContent>
-                    <Typography style={{padding: 5}} type="headline" component="h2">Completed Assignments</Typography>
                     <AssignmentTable assignments={assignments} />
+                  </CardContent>
+                </Card>
+                }
+                {tabValue === 2 && 
+                <Card style={{background: grey[100]}}>
+                  <CardContent>
                   </CardContent>
                 </Card>
                 }
@@ -170,7 +189,7 @@ class Classrooms extends React.Component {
           </div>
 
           <FullScreenDialog title="Create Classoom" open={classroomDialogOpen} onClose={this.closeCreateClassroomDialog.bind(this)}>
-            <ClassroomForm dispatch={dispatch} onSubmit={this.createClassroom.bind(this)} initialValues={classroomEdit ? classroom : {}} />
+            <ClassroomForm dispatch={dispatch} onSubmit={this.submitClassroomForm.bind(this)} initialValues={classroomEdit ? classroom : {}} />
           </FullScreenDialog>
         </Dashboard>
     );

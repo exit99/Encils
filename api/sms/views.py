@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import decorators, generics, permissions, response
 
@@ -169,3 +169,17 @@ def reset(request):
     active_item, _ = ActiveItem.objects.get_or_create(teacher=request.user)
     active_item.reset()
     return response.Response(True)
+
+
+@decorators.api_view(['GET', 'PUT'])
+@decorators.permission_classes([])
+def active_item(request):
+    active_item, _ = ActiveItem.objects.get_or_create(teacher=request.user)
+    if request.POST:
+        active_item.activate_classroom(request.POST.get('classroom'))
+        active_item.activate_question(request.POST.get('question'))
+    data = {
+        'classroom': active_item.classroom, 
+        'question': active_item.question
+    }
+    return JsonResponse(data)

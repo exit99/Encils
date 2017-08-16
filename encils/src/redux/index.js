@@ -8,6 +8,7 @@ import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form'
 
 const initialState = {
+  activeItem: {},
   auth_token: '',
   assignment: {},
   assignments: [],

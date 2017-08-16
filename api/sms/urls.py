@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^attendance/(?P<pk>[0-9]+)/today/$', views.attendance_today),
     url(r'^receive/$', views.receive_sms),
     url(r'^reset/$', views.reset),
+    url(r'^active-item/$', views.active_item),
 ]

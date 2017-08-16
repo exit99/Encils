@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
 
 import AppBar from 'material-ui/AppBar';
 import Button from 'material-ui/Button';
@@ -17,6 +18,7 @@ import {
   getProfile
 } from '../api-client/auth';
 import { getClassroomStudents } from '../api-client/classrooms';
+import { editActiveItem } from '../api-client/activeItems';
 
 const style = {
   backgroundImage: `url('${balloons}')`,
@@ -49,6 +51,12 @@ class StudentsAdd extends React.Component {
     }, 3000);
   }   
 
+  finish() { 
+    const { dispatch } = this.props
+    dispatch(editActiveItem({classroom: null, question: null}))
+      .then(() => dispatch(push('/classrooms')));
+  }
+
   renderStudent(student, index) {
     return (
       <Grid key={index} item xs={12} sm={6} md={3} lg={3} xl={2}>
@@ -68,7 +76,7 @@ class StudentsAdd extends React.Component {
         <AppBar position="static" style={gradientBackground}>
           <Toolbar>
             <Typography type='headline' style={{flex: 1}}>Hello Students! Text your name to (813) 842-2480</Typography>
-            <Button>Done</Button>
+            <Button onClick={this.finish.bind(this)}>Done</Button>
           </Toolbar>
         </AppBar>
         <div style={{padding: 25}}>

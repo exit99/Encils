@@ -9,11 +9,13 @@ import Button from 'material-ui/Button';
 import Card, { CardContent } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import IconButton from 'material-ui/IconButton';
+import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
 import { grey } from 'material-ui/colors';
 import DeleteIcon from 'material-ui-icons/Delete';
 import EditIcon from 'material-ui-icons/Edit';
 
+import AssignmentTable from '../components/AssignmentTable';
 import Dashboard from '../components/Dashboard';
 import FullScreenDialog from '../components/FullScreenDialog';
 import SelectList from '../components/SelectList';
@@ -29,11 +31,18 @@ import {
   deleteClassroom,
 } from '../api-client/classrooms';
 
+import { 
+  getAssignments,
+} from '../api-client/assignments';
+
+
 class Classrooms extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      createClassroomOpen: false
+      classroomDialogOpen: false,
+      classroomEdit: false,
+      tabValue: 0
     }
   }
 
@@ -41,9 +50,16 @@ class Classrooms extends React.Component {
     const { dispatch } = this.props;
     dispatch(getClassrooms())
       .then((data) => { 
-        if (data && data.length > 0) this.getClassroom(data[0]);
+        if (data && data.length > 0) {
+          this.getClassroom(data[0]);
+          dispatch(getAssignments());
+        }
       });
   }
+
+  handleTabChange(event, tabValue) {
+    this.setState({ tabValue });
+  };
 
   getClassroom({pk}) {
     const { dispatch } = this.props;
@@ -53,14 +69,14 @@ class Classrooms extends React.Component {
   }
 
   closeCreateClassroomDialog(save=false) {
-    this.setState({createClassroomOpen: false});
+    this.setState({classroomDialogOpen: false});
   }
 
   createClassroom(values) {
     const { dispatch } = this.props;
     dispatch(createClassroom(values)).then((res) => {  
       if (!isUndefined(res)) { 
-        this.setState({createClassroomOpen: false}) 
+        this.setState({classroomDialogOpen: false}) 
         dispatch(getClassrooms());
       };
     });
@@ -79,14 +95,17 @@ class Classrooms extends React.Component {
 
   render() {
     const {
+      assignments,
       classroom,
       classrooms,
       classroomStudents,
-      dispatch
+      dispatch,
     } = this.props;
     
     const { 
-      createClassroomOpen,
+      classroomDialogOpen,
+      classroomEdit,
+      tabValue,
     } = this.state;
 
     return (
@@ -104,7 +123,7 @@ class Classrooms extends React.Component {
                       secondaryField="school"
                       onClick={this.getClassroom.bind(this)} />
                     <Button style={{width: '100%'}} raised color="primary"
-                      onClick={() => this.setState({createClassroomOpen: true})}>
+                      onClick={() => this.setState({classroomDialogOpen: true, classroomEdit: false})}>
                       Create Classroom
                     </Button>
                   </CardContent>
@@ -117,24 +136,41 @@ class Classrooms extends React.Component {
                        {classroom.name}
                      </Typography>
                      <Button color="contrast">Add Students</Button>
-                     <Button color="contrast">Edit</Button>
+                     <Button color="contrast" onClick={() => this.setState({classroomDialogOpen: true, classroomEdit: true})}>Edit</Button>
                      <Button color="contrast" onClick={this.deleteClassroom.bind(this)}>Delete</Button>
                    </Toolbar>
                  </AppBar>
                 <br />
-                {classroom ? 
-                <Card style={{background: grey[100]}}>
+
+                <AppBar position="static">
+                  <Tabs value={tabValue} onChange={this.handleTabChange.bind(this)}>
+                    <Tab label="Students" />
+                    <Tab label="Assignments" />
+                    <Tab label="Reports" />
+                  </Tabs>
+                </AppBar>
+                {tabValue === 0 && 
+                 <Card style={{background: grey[100]}}>
                   <CardContent>
                     <Typography style={{padding: 5}} type="headline" component="h2">Students</Typography>
                     <StudentTable students={classroomStudents} />
                   </CardContent>
-                </Card> : null}
+                </Card>
+                }
+                {tabValue === 1 && 
+                <Card style={{background: grey[100]}}>
+                  <CardContent>
+                    <Typography style={{padding: 5}} type="headline" component="h2">Completed Assignments</Typography>
+                    <AssignmentTable assignments={assignments} />
+                  </CardContent>
+                </Card>
+                }
               </Grid>
             </Grid>
           </div>
 
-          <FullScreenDialog title="Create Classoom" open={createClassroomOpen} onClose={this.closeCreateClassroomDialog.bind(this)}>
-            <ClassroomForm dispatch={dispatch} onSubmit={this.createClassroom.bind(this)} />
+          <FullScreenDialog title="Create Classoom" open={classroomDialogOpen} onClose={this.closeCreateClassroomDialog.bind(this)}>
+            <ClassroomForm dispatch={dispatch} onSubmit={this.createClassroom.bind(this)} initialValues={classroomEdit ? classroom : {}} />
           </FullScreenDialog>
         </Dashboard>
     );
@@ -143,6 +179,8 @@ class Classrooms extends React.Component {
 
 const mapStateToProps = state => ({
   routing: state.routing,
+  assignment: state.apiReducer.assignment,
+  assignments: state.apiReducer.assignments,
   classroom: state.apiReducer.classroom,
   classrooms: state.apiReducer.classrooms,
   classroomStudents: state.apiReducer.classroomStudents,

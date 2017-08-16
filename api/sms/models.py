@@ -64,6 +64,11 @@ class Classroom(models.Model):
     school = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def assignments_given(self):
+        answers = Classroom.objects.answer_set.all()
+        return set([answer.question.assignment.pk for answer in answers])
+
 
 class Student(models.Model):
     classroom = models.ForeignKey(Classroom)

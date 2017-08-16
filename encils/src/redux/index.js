@@ -9,9 +9,12 @@ import { reducer as formReducer } from 'redux-form'
 
 const initialState = {
   auth_token: '',
+  assignment: {},
+  assignments: [],
   classroom: {},
   classrooms: [],
   classroomStudents: [],
+  profile: {},
 }
 
 const apiReducer = (previousState = initialState, { key, form, data, type }) => {

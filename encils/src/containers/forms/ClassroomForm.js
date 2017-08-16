@@ -35,7 +35,7 @@ let ClassroomForm = props => {
         {error && error.non_field_errors ? error.non_field_errors.map((message, index) => <Message key={index} type="error" message={message} />) : null}
       </form>
       <br />
-      <Button raised color="accent" onClick={() => dispatch(submit('classroomForm'))}>Save</Button>
+      <Button raised color="primary" onClick={() => dispatch(submit('classroomForm'))}>Save</Button>
     </div>
   );
 }

@@ -14,6 +14,7 @@ import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import Classrooms from './Classrooms';
+import StudentsAdd from './StudentsAdd';
 import ScrollToTop from './router/ScrollToTop';
 
 const theme = createMuiTheme({
@@ -49,6 +50,7 @@ class App extends Component {
               <Route exact path='/login' component={Login} />
               <Route exact path='/register' component={Register} />
               <Route exact path='/classrooms' component={Classrooms} />
+              <Route exact path='/students-add' component={StudentsAdd} />
             </Switch>
           </ScrollToTop>
         </MuiThemeProvider>

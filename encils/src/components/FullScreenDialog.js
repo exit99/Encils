@@ -12,6 +12,8 @@ import Typography from 'material-ui/Typography';
 import CloseIcon from 'material-ui-icons/Close';
 import Slide from 'material-ui/transitions/Slide';
 
+import { gradientBackground } from '../utils';
+
 class FullScreenDialog extends Component {
   render() {
     const { title, open, onClose, children } = this.props;
@@ -24,7 +26,7 @@ class FullScreenDialog extends Component {
           onRequestClose={onClose}
           transition={<Slide direction="up" />}
         >
-          <AppBar>
+          <AppBar style={gradientBackground}>
             <Toolbar>
               <Typography type="title" color="inherit" style={{flex: 1}}>
                 {title} 

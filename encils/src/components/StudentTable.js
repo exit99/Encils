@@ -25,7 +25,7 @@ class StudentTable extends React.Component {
   }
 
   render() {
-    const { students, fields } = this.props;
+    const { students } = this.props;
     return (
       <Paper>
         <Table>
@@ -40,9 +40,9 @@ class StudentTable extends React.Component {
             {students.map((student, index) => {
               return (
                 <TableRow key={index}>
-                    <TableCell>{student['name']}</TableCell>
-                    <TableCell>{student['phone']}</TableCell>
-                    <TableCell compact={true}>
+                    <TableCell>{student.name}</TableCell>
+                    <TableCell>{student.phone}</TableCell>
+                    <TableCell>
                        <IconButton
                          aria-label="More"
                          aria-owns={this.state.open ? 'long-menu' : null}

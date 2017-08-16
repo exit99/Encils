@@ -1,11 +1,11 @@
 import React from 'react';
 
 import AppBar from 'material-ui/AppBar';
+import Button from 'material-ui/Button';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import SettingsIcon from 'material-ui-icons/Settings';
-import Menu, { MenuItem } from 'material-ui/Menu';
 import Subheader from 'material-ui/Subheader';
 import Toggle from 'material-ui/Toggle';
 import {List, ListItem} from 'material-ui/List';
@@ -22,18 +22,8 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      anchorEl: undefined,
-      openMenu: false,
       docked: onDesktop(),
     };
-  }
-
-  handleClick(event) {
-    this.setState({ openMenu: true, anchorEl: event.currentTarget });
-  }
-
-  handleRequestClose() {
-    this.setState({ openMenu: false });
   }
 
   toggleSidebar() {
@@ -53,25 +43,9 @@ class Dashboard extends React.Component {
                 <MenuIcon />
               </IconButton>
             </div>
-            <IconButton 
-              color="contrast"
-              aria-owns={this.state.openMenu ? 'simple-menu' : null}
-              aria-haspopup="true"
-              onClick={this.handleClick.bind(this)}
-            >
-              <SettingsIcon />
-            </IconButton>
+            <Button color="contrast">Logout</Button>
           </Toolbar>
         </AppBar>
-        <Menu
-          id="simple-menu"
-          anchorEl={this.state.anchorEl}
-          open={this.state.openMenu}
-          onRequestClose={this.handleRequestClose.bind(this)}
-        >
-          <MenuItem onClick={this.handleRequestClose.bind(this)}>My account</MenuItem>
-          <MenuItem onClick={this.handleRequestClose.bind(this)}>Logout</MenuItem>
-        </Menu>
         {children}
       </ReactSidebar>
     );

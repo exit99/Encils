@@ -18,13 +18,10 @@ class Sidebar extends React.Component {
           <ListItemText primary="Classrooms" />
         </ListItem>
         <ListItem button component="a" href="#simple-list" divider={true}>
-          <ListItemText primary="Students" />
-        </ListItem>
-        <ListItem button component="a" href="#simple-list" divider={true}>
           <ListItemText primary="Assignments" />
         </ListItem>
         <ListItem button component="a" href="#simple-list" divider={true}>
-          <ListItemText primary="Reports" />
+          <ListItemText primary="Settings" />
         </ListItem>
       </List>
       </div>

@@ -5180,6 +5180,12 @@ react-event-listener@^0.4.5:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
+react-interval@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-interval/-/react-interval-2.0.1.tgz#d380477b56e3074688622394fd55113b0702fc5e"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-jss@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/react-jss/-/react-jss-7.0.2.tgz#1939c8c41980dadadf25204953136fbdb6bd1ade"

@@ -26,6 +26,7 @@ import {
   getClassrooms,
   getClassroomStudents,
   createClassroom,
+  deleteClassroom,
 } from '../api-client/classrooms';
 
 class Classrooms extends React.Component {
@@ -65,6 +66,17 @@ class Classrooms extends React.Component {
     });
   }
 
+  deleteClassroom() {
+    const { dispatch, classroom } = this.props;
+    dispatch(deleteClassroom(classroom.pk))
+      .then(() => {
+        dispatch(getClassrooms())
+          .then((data) => { 
+            if (data && data.length > 0) this.getClassroom(data[0]);
+          });
+      });
+  }
+
   render() {
     const {
       classroom,
@@ -87,6 +99,7 @@ class Classrooms extends React.Component {
                     <SelectList 
                       title="Classrooms"
                       items={classrooms}
+                      selected={classroom}
                       primaryField="name"
                       secondaryField="school"
                       onClick={this.getClassroom.bind(this)} />
@@ -105,7 +118,7 @@ class Classrooms extends React.Component {
                      </Typography>
                      <Button color="contrast">Add Students</Button>
                      <Button color="contrast">Edit</Button>
-                     <Button color="contrast">Delete</Button>
+                     <Button color="contrast" onClick={this.deleteClassroom.bind(this)}>Delete</Button>
                    </Toolbar>
                  </AppBar>
                 <br />

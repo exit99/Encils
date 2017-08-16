@@ -1,4 +1,5 @@
 import React from 'react';
+import { grey } from 'material-ui/colors';
 
 import Typography from 'material-ui/Typography';
 import List, {
@@ -7,7 +8,7 @@ import List, {
 } from 'material-ui/List';
 
 const SelectList = (props) => {
-  const { title, items, primaryField, secondaryField, onClick } = props;
+  const { title, items, selected, primaryField, secondaryField, onClick } = props;
   return (
     <div>
       <Typography type="headline" component="h2">
@@ -15,7 +16,7 @@ const SelectList = (props) => {
       </Typography>
       <List dense={true}>
         {items ? items.map((item) => (
-          <ListItem button onClick={() => onClick(item)}>
+          <ListItem button onClick={() => onClick(item)} style={selected.pk === item.pk ? {background: grey[300]} : {}}>
             <ListItemText
               primary={item[primaryField]}
               secondary={item[secondaryField]}

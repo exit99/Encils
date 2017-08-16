@@ -10,7 +10,7 @@ const makeUrl = (endpoint) => {
   return `http://${config.host}${endpoint}`
 }
 
-const request = (method, endpoint, key, formName = null) => (data = null) => (dispatch) => {
+const request = (method, endpoint, key = null, formName = null) => (data = null) => (dispatch) => {
     let options = {
       'method': method,
       'headers': {
@@ -40,6 +40,8 @@ const request = (method, endpoint, key, formName = null) => (data = null) => (di
           }
           return resData
         });
+      } else if (statusCode === '204') {
+        return response;
       } else if (statusCode === '401') {
           dispatch(push('/login'));
       } else if (statusCode.startsWith('4')) {

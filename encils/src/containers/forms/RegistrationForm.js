@@ -7,7 +7,6 @@ import RenderedInput from '../../components/RenderedInput';
 let RegistrationForm = props => {
   const { onSubmit, error } = props;
 
-  console.log(error);
   return (
     <form onSubmit={ onSubmit }>
       <Field

@@ -18,7 +18,7 @@ import ReactSidebar from 'react-sidebar';
 import { gradientBackground, onDesktop } from '../utils';
 
 
-class Header extends React.Component {
+class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -78,4 +78,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header
+export default Dashboard

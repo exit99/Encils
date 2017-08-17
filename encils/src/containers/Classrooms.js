@@ -17,20 +17,21 @@ import DeleteIcon from 'material-ui-icons/Delete';
 import EditIcon from 'material-ui-icons/Edit';
 
 import AssignmentTable from '../components/AssignmentTable';
-import Dashboard from '../components/Dashboard';
 import FullScreenDialog from '../components/FullScreenDialog';
 import SelectList from '../components/SelectList';
 import StudentTable from '../components/StudentTable';
 
+import Dashboard from './Dashboard';
 import ClassroomForm from './forms/ClassroomForm';
 
 import { 
   getClassroom,
   getClassrooms,
-  getClassroomStudents,
   createClassroom,
   editClassroom,
   deleteClassroom,
+  getClassroomStudents,
+  deleteStudent,
 } from '../api-client/classrooms';
 
 import { 
@@ -103,6 +104,12 @@ class Classrooms extends React.Component {
       });
   }
 
+  onStudentDelete(pk) {
+    const { dispatch, classroom } = this.props;
+    dispatch(deleteStudent(pk))
+      .then(() => { dispatch(getClassroomStudents(classroom.pk)) });
+  }
+
   goToAddStudents() {
     const { dispatch, classroom } = this.props;
     dispatch(editActiveItem({classroom: classroom.pk, question: null}))
@@ -169,7 +176,7 @@ class Classrooms extends React.Component {
                 {tabValue === 0 && 
                  <Card style={{background: grey[100]}}>
                   <CardContent>
-                    <StudentTable students={classroomStudents} />
+                    <StudentTable students={classroomStudents} onDelete={this.onStudentDelete.bind(this)} />
                   </CardContent>
                 </Card>
                 }

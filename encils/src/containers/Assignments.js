@@ -17,11 +17,11 @@ import DeleteIcon from 'material-ui-icons/Delete';
 import EditIcon from 'material-ui-icons/Edit';
 
 import AssignmentTable from '../components/AssignmentTable';
-import Dashboard from '../components/Dashboard';
 import FullScreenDialog from '../components/FullScreenDialog';
 import SelectList from '../components/SelectList';
 import QuestionTable from '../components/QuestionTable';
 
+import Dashboard from './Dashboard';
 import AssignmentForm from './forms/AssignmentForm';
 import QuestionForm from './forms/QuestionForm';
 

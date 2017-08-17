@@ -23,6 +23,7 @@ import SelectList from '../components/SelectList';
 import QuestionTable from '../components/QuestionTable';
 
 import AssignmentForm from './forms/AssignmentForm';
+import QuestionForm from './forms/QuestionForm';
 
 import { 
   getAssignment,
@@ -31,6 +32,8 @@ import {
   createAssignment,
   editAssignment,
   deleteAssignment,
+  createQuestion,
+  deleteQuestion,
 } from '../api-client/assignments';
 
 import {
@@ -45,6 +48,7 @@ class Assignments extends React.Component {
     this.state = {
       assignmentDialogOpen: false,
       assignmentEdit: false,
+      questionDialogOpen: false,
     }
   }
 
@@ -61,21 +65,25 @@ class Assignments extends React.Component {
 
   getAssignment({pk}) {
     const { dispatch } = this.props;
-    dispatch(getAssignment(pk)).then(this.setState({}));
+    dispatch(getAssignment(pk))
+      .then(({ pk }) =>{
+        dispatch(getAssignmentQuestions(pk));
+      }).then(this.setState({}))
   }
 
-  closeUpdateAssignmentDialog(save=false) {
-    this.setState({classroomDialogOpen: false});
+  closeUpdateAssignmentDialog() {
+    this.setState({assignmentDialogOpen: false});
   }
 
   submitAssignmentForm(values) {
     const { dispatch, assignment } = this.props;
     const { assignmentEdit } = this.state;
     const method = assignmentEdit ? editAssignment(assignment.pk) : createAssignment;
-    dispatch(method(values)).then((res) => {  
-      if (!isUndefined(res)) { 
-        this.setState({assignmentDialogOpen: false}) 
+    dispatch(method(values)).then((res) => {
+      if (!isUndefined(res)) {
+        this.closeUpdateAssignmentDialog();
         dispatch(getAssignments());
+        this.getAssignment(res);
       };
     });
   }
@@ -91,6 +99,27 @@ class Assignments extends React.Component {
       });
   }
 
+  closeQuestionDialog() {
+    this.setState({questionDialogOpen: false});
+  }
+
+  submitQuestionForm(values) {
+    const { dispatch, assignment } = this.props;
+    values['assignment'] = assignment.pk;
+    dispatch(createQuestion(values)).then((res) => {
+      if (!isUndefined(res)) {
+        this.closeQuestionDialog();
+        dispatch(getAssignmentQuestions(assignment.pk));
+      };
+    });
+  }
+
+  onQuestionDelete(pk) {
+    const { dispatch, assignment } = this.props;
+    dispatch(deleteQuestion(pk))
+      .then(() => { dispatch(getAssignmentQuestions(assignment.pk)) });
+  }
+
   render() {
     const {
       assignment,
@@ -102,6 +131,7 @@ class Assignments extends React.Component {
     const { 
       assignmentDialogOpen,
       assignmentEdit,
+      questionDialogOpen,
     } = this.state;
 
     return (
@@ -113,10 +143,9 @@ class Assignments extends React.Component {
                   <CardContent>
                     <SelectList 
                       title="Assignments"
-                      items={assignments.reverse()}
+                      items={assignments}
                       selected={assignment}
                       primaryField="name"
-                      secondaryField="created"
                       onClick={this.getAssignment.bind(this)} />
                     <Button style={{width: '100%'}} raised color="primary"
                       onClick={() => this.setState({assignmentDialogOpen: true, assignmentEdit: false})}>
@@ -131,6 +160,7 @@ class Assignments extends React.Component {
                      <Typography type="title" color="inherit" style={{flex: 1}}>
                        {assignment.name}
                      </Typography>
+                     <Button color="contrast" onClick={() => this.setState({questionDialogOpen: true})}>Add Question</Button>
                      <Button color="contrast" onClick={() => this.setState({assignmentDialogOpen: true, assignmentEdit: true})}>Edit</Button>
                      <Button color="contrast" onClick={this.deleteAssignment.bind(this)}>Delete</Button>
                    </Toolbar>
@@ -143,7 +173,7 @@ class Assignments extends React.Component {
                 </AppBar>
                  <Card style={{background: grey[100]}}>
                   <CardContent>
-                    <QuestionTable questions={assignmentQuestions} />
+                    <QuestionTable questions={assignmentQuestions} onDelete={this.onQuestionDelete.bind(this)} />
                   </CardContent>
                 </Card>
               </Grid>
@@ -152,6 +182,10 @@ class Assignments extends React.Component {
 
           <FullScreenDialog title="Create Classoom" open={assignmentDialogOpen} onClose={this.closeUpdateAssignmentDialog.bind(this)}>
             <AssignmentForm dispatch={dispatch} onSubmit={this.submitAssignmentForm.bind(this)} initialValues={assignmentEdit ? assignment : {}} />
+          </FullScreenDialog>
+
+          <FullScreenDialog title="Add Question" open={questionDialogOpen} onClose={this.closeQuestionDialog.bind(this)}>
+            <QuestionForm dispatch={dispatch} onSubmit={this.submitQuestionForm.bind(this)} />
           </FullScreenDialog>
         </Dashboard>
     );

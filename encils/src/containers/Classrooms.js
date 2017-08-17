@@ -75,7 +75,7 @@ class Classrooms extends React.Component {
       .then(this.setState({}));
   }
 
-  closeUpdateClassroomDialog(save=false) {
+  closeUpdateClassroomDialog() {
     this.setState({classroomDialogOpen: false});
   }
 
@@ -83,10 +83,11 @@ class Classrooms extends React.Component {
     const { dispatch, classroom } = this.props;
     const { classroomEdit } = this.state;
     const method = classroomEdit ? editClassroom(classroom.pk) : createClassroom;
-    dispatch(method(values)).then((res) => {  
-      if (!isUndefined(res)) { 
-        this.setState({classroomDialogOpen: false}) 
+    dispatch(method(values)).then((res) => {
+      if (!isUndefined(res)) {
+        this.closeUpdateClassroomDialog();
         dispatch(getClassrooms());
+        this.getClassroom(res);
       };
     });
   }

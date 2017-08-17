@@ -7,7 +7,9 @@ import Paper from 'material-ui/Paper';
 
 class QuestionTable extends React.Component {
   render() {
-    const { questions } = this.props;
+    const { questions, onDelete } = this.props;
+
+    console.log('questions', questions);
     return (
       <Paper>
         <Table>
@@ -22,7 +24,7 @@ class QuestionTable extends React.Component {
               return (
                 <TableRow key={index}>
                     <TableCell>{question.text}</TableCell>
-                    <TableCell><Button style={{float:'right'}}>Delete</Button></TableCell>
+                    <TableCell><Button onClick={() => onDelete(question.pk)} style={{float:'right'}}>Delete</Button></TableCell>
                 </TableRow>
               );
             })}

@@ -140,7 +140,7 @@ class AssignmentActive extends React.Component {
         <AppBar position="static" style={gradientBackground}>
           <Toolbar>
             <Typography type='headline' style={{flex: 1}}>
-              { question ? question.text + question.pk : 'Loading...' }
+              { question ? question.text : 'Loading...' }
             </Typography>
             {questionIndex === 0 ? null :
               <Button onClick={() => dispatch(push(`/assignment-active/${classroom.pk}/${assignment.pk}/${questionIndex-1}`))}><LeftIcon />Previous</Button>

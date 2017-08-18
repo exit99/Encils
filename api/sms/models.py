@@ -66,7 +66,7 @@ class Classroom(models.Model):
 
     @property
     def assignments_given(self):
-        answers = Classroom.objects.answer_set.all()
+        answers = Answer.objects.filter(classroom=self).all()
         return set([answer.question.assignment.pk for answer in answers])
 
 
@@ -113,6 +113,10 @@ class Assignment(models.Model):
     teacher = models.ForeignKey(Teacher)
     name = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def question_count(self):
+        return Question.objects.filter(assignment=self).count()
 
 
 class Question(models.Model):

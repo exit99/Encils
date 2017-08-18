@@ -18,10 +18,12 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 
 class ClassroomSerializer(serializers.ModelSerializer):
+    assignments_given = serializers.ReadOnlyField()
+
     class Meta:
         model = Classroom
         fields = ('pk', 'name', 'school', 'created', 'assignments_given')
-        read_only_fields = ('pk', 'created', 'assignments_given')
+        read_only_fields = ('pk', 'created')
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -40,9 +42,11 @@ class StudentSerializer(serializers.ModelSerializer):
 
 
 class AssignmentSerializer(serializers.ModelSerializer):
+    question_count = serializers.ReadOnlyField()
+    
     class Meta:
         model = Assignment
-        fields = ('pk', 'name', 'created')
+        fields = ('pk', 'name', 'created', 'question_count')
         read_only_fields = ('pk', 'created')
 
 

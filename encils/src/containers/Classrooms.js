@@ -15,6 +15,12 @@ import Typography from 'material-ui/Typography';
 import { grey } from 'material-ui/colors';
 import DeleteIcon from 'material-ui-icons/Delete';
 import EditIcon from 'material-ui-icons/Edit';
+import CheckIcon from 'material-ui-icons/CheckCircle';
+import List, {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from 'material-ui/List';
 
 import AssignmentTable from '../components/AssignmentTable';
 import FullScreenDialog from '../components/FullScreenDialog';
@@ -36,6 +42,7 @@ import {
 
 import { 
   getAssignments,
+  getAssignmentQuestions,
 } from '../api-client/assignments';
 
 import {
@@ -50,6 +57,7 @@ class Classrooms extends React.Component {
     this.state = {
       classroomDialogOpen: false,
       classroomEdit: false,
+      startAssignmentDialogOpen: false,
       tabValue: 0
     }
   }
@@ -116,6 +124,29 @@ class Classrooms extends React.Component {
       .then(() => dispatch(push('/students-add')));
   }
 
+  goToAssignmentStart(assignment_pk) {
+    const { dispatch, classroom } = this.props;
+    dispatch(getAssignmentQuestions(assignment_pk))
+      .then((questions) => {
+        dispatch(editActiveItem({classroom: classroom.pk, question: questions[0]}))
+          .then(() => dispatch(push('/assignment-active')));
+      });
+  }
+
+  renderAssignment(assignment, index) {
+    if (!assignment.question_count) { return null };
+    const { classroom } = this.props;
+    return (
+      <ListItem button onClick={() => this.goToAssignmentStart(assignment.pk)}>
+        { classroom && classroom.assignments_given.indexOf(assignment.pk) > -1 ?
+        <ListItemIcon>
+          <CheckIcon />
+        </ListItemIcon> : null }
+        <ListItemText primary={assignment.name} />
+      </ListItem>
+    )
+  }
+
   render() {
     const {
       assignments,
@@ -128,6 +159,7 @@ class Classrooms extends React.Component {
     const { 
       classroomDialogOpen,
       classroomEdit,
+      startAssignmentDialogOpen,
       tabValue,
     } = this.state;
 
@@ -158,7 +190,7 @@ class Classrooms extends React.Component {
                      <Typography type="title" color="inherit" style={{flex: 1}}>
                        {classroom.name}
                      </Typography>
-                     <Button color="contrast" onClick={this.goToAddStudents.bind(this)}>Start Assignment</Button>
+                     <Button color="contrast" onClick={() => this.setState({startAssignmentDialogOpen: true})}>Start Assignment</Button>
                      <Button color="contrast" onClick={this.goToAddStudents.bind(this)}>Add Students</Button>
                      <Button color="contrast" onClick={() => this.setState({classroomDialogOpen: true, classroomEdit: true})}>Edit</Button>
                      <Button color="contrast" onClick={this.deleteClassroom.bind(this)}>Delete</Button>
@@ -169,8 +201,7 @@ class Classrooms extends React.Component {
                 <AppBar position="static">
                   <Tabs value={tabValue} onChange={this.handleTabChange.bind(this)}>
                     <Tab style={tabValue === 0 ? {opacity: 1} : {}} label="Students" />
-                    <Tab style={tabValue === 1 ? {opacity: 1} : {}} label="Completed Assignments" />
-                    <Tab style={tabValue === 2 ? {opacity: 1} : {}} label="Reports" />
+                    <Tab style={tabValue === 1 ? {opacity: 1} : {}} label="Reports" />
                   </Tabs>
                 </AppBar>
                 {tabValue === 0 && 
@@ -183,13 +214,6 @@ class Classrooms extends React.Component {
                 {tabValue === 1 && 
                 <Card style={{background: grey[100]}}>
                   <CardContent>
-                    <AssignmentTable assignments={assignments} />
-                  </CardContent>
-                </Card>
-                }
-                {tabValue === 2 && 
-                <Card style={{background: grey[100]}}>
-                  <CardContent>
                   </CardContent>
                 </Card>
                 }
@@ -199,6 +223,12 @@ class Classrooms extends React.Component {
 
           <FullScreenDialog title="Create Classoom" open={classroomDialogOpen} onClose={this.closeUpdateClassroomDialog.bind(this)}>
             <ClassroomForm dispatch={dispatch} onSubmit={this.submitClassroomForm.bind(this)} initialValues={classroomEdit ? classroom : {}} />
+          </FullScreenDialog>
+
+          <FullScreenDialog title="Select Assignment" open={startAssignmentDialogOpen} onClose={() => this.setState({startAssignmentDialogOpen: false})}>
+            <List style={{ padding: 25, marginTop: 25 }}>
+              {assignments.map(this.renderAssignment.bind(this))}
+            </List>
           </FullScreenDialog>
         </Dashboard>
     );

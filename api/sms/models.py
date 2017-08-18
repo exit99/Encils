@@ -152,24 +152,14 @@ class ActiveItem(models.Model):
     question = models.ForeignKey(Question, null=True, default=None)
 
     def activate_classroom(self, classroom):
+        if isinstance(classroom, int):
+            classroom = Classroom.objects.filter(pk=classroom).first()
         self.classroom = classroom
         self.question = None
         self.save()
 
     def activate_question(self, question):
+        if isinstance(question, int):
+            question = Question.objects.filter(pk=question).first()
         self.question = question
-        self.save()
-
-    def add_students(self, classroom):
-        self.classroom = classroom
-        self.save()
-
-    def add_answers(self, question):
-        self.classroom = question.assignment.classroom
-        self.question = question
-        self.save()
-
-    def reset(self):
-        self.classroom = None
-        self.question = None
         self.save()

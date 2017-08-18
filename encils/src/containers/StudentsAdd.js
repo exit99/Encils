@@ -10,6 +10,8 @@ import Grid from 'material-ui/Grid';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 
+import ReactInterval from 'react-interval';
+
 import balloons from '../images/hot-air-balloon.jpeg'
 
 import { gradientBackground, onDesktop } from '../utils';
@@ -37,13 +39,8 @@ class StudentsAdd extends React.Component {
 
   componentWillMount() {
     const { dispatch } = this.props;
-    dispatch(getProfile())
-    dispatch(getClassroom(this.props.match.params.classroomPk))
-      .then((classroom) => {
-        setInterval(() => {
-          dispatch(getClassroomStudents(classroom.pk))
-        }, 3000);
-      });
+    dispatch(getProfile());
+    dispatch(getClassroom(this.props.match.params.classroomPk));
   }
 
   finish() { 
@@ -65,7 +62,7 @@ class StudentsAdd extends React.Component {
   }
 
   render() {
-    const { classroomStudents, profile } = this.props;
+    const { dispatch, classroom, classroomStudents, profile } = this.props;
     return (
       <div style={style}>
         <AppBar position="static" style={gradientBackground}>
@@ -79,6 +76,7 @@ class StudentsAdd extends React.Component {
             {classroomStudents.map(this.renderStudent)} 
           </Grid>
         </div>
+        <ReactInterval timeout={3000} enabled={true} callback={() => dispatch(getClassroomStudents(classroom.pk))} />
       </div>
     );
   }

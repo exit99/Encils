@@ -163,21 +163,13 @@ def receive_sms(request):
     return response.Response(400)
 
 
-@decorators.api_view(['POST'])
-@decorators.permission_classes([])
-def reset(request):
-    active_item, _ = ActiveItem.objects.get_or_create(teacher=request.user)
-    active_item.reset()
-    return response.Response(True)
-
-
 @decorators.api_view(['GET', 'PUT'])
 @decorators.permission_classes([])
 def active_item(request):
     active_item, _ = ActiveItem.objects.get_or_create(teacher=request.user)
-    if request.POST:
-        active_item.activate_classroom(request.POST.get('classroom'))
-        active_item.activate_question(request.POST.get('question'))
+    if request.data:
+        active_item.activate_classroom(request.data.get('classroom'))
+        active_item.activate_question(request.data.get('question'))
     data = {
         'classroom': active_item.classroom, 
         'question': active_item.question

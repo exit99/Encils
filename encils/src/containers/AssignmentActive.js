@@ -62,12 +62,6 @@ class AssignmentActive extends React.Component {
     dispatch(getProfile());
     dispatch(getAssignment(this.props.match.params.assignmentPk));
     dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
-      .then((questions) => {
-        setInterval(() => { 
-          const question = questions[this.props.match.params.questionIndex];
-          dispatch(getQuestionAnswers(question))
-        }, 3000);
-      });
     dispatch(getClassroom(this.props.match.params.classroomPk));
     dispatch(getClassroomStudents(this.props.match.params.classroomPk));
   }
@@ -155,6 +149,7 @@ class AssignmentActive extends React.Component {
               <Typography>Waiting on...</Typography>
               <Typography type="headline">{this.renderWaitingOnName()}</Typography>
               <ReactInterval timeout={1000} enabled={true} callback={this.updateWaitingOnIndex.bind(this)} />
+              <ReactInterval timeout={1000} enabled={true} callback={() => dispatch(getQuestionAnswers(assignmentQuestions[this.props.match.params.questionIndex].pk))} />
             </CardContent>
           </Card>
         </div>

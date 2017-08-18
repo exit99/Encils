@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'sms',
     'rest_framework',
     'rest_framework.authtoken',
-    'channels',
     'djoser',
     'rest_framework_swagger',
     'corsheaders',
@@ -140,14 +139,6 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
-}
-
-CHANNEL_LAYERS = {
-    "default": {
-        # Change for production.
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
-        "ROUTING": "sms.routing.channel_routing",
-    },
 }
 
 DJOSER = {

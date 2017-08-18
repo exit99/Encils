@@ -1,5 +1,4 @@
 from django.conf import settings
-from profanity import profanity
 
 from sms.models import Student, Teacher, Answer
 
@@ -16,13 +15,12 @@ class SMSMessage(object):
         self.question = activeitem.question if activeitem else None
         self.student = Student.objects.filter(
             classroom=self.classroom, phone=self.phone).first()
+        print('*' * 10, self.classroom, self.question, self.student)
 
     def execute(self):
         if self.question and self.classroom and self.student:
-            print("CREATE ANSWEE")
             return self.create_or_update_answer()
         elif self.classroom:
-            print("UPDATE STUDENTS")
             return self.create_or_update_student()
 
     def create_or_update_answer(self):

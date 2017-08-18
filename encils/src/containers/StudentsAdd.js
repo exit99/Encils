@@ -14,10 +14,8 @@ import balloons from '../images/hot-air-balloon.jpeg'
 
 import { gradientBackground, onDesktop } from '../utils';
 
-import {
-  getProfile
-} from '../api-client/auth';
-import { getClassroomStudents } from '../api-client/classrooms';
+import { getProfile } from '../api-client/auth';
+import { getClassroom, getClassroomStudents } from '../api-client/classrooms';
 import { editActiveItem } from '../api-client/activeItems';
 
 const style = {
@@ -40,16 +38,13 @@ class StudentsAdd extends React.Component {
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(getProfile())
+    dispatch(getClassroom(this.props.match.params.classroomPk))
+      .then((classroom) => {
+        setInterval(() => {
+          dispatch(getClassroomStudents(classroom.pk))
+        }, 3000);
+      });
   }
-
-  componentDidMount() {
-    const { dispatch } = this.props;
-// TODO: CHANGE THIS!!!!
-    const pk = 1;
-    setInterval(() => {
-      dispatch(getClassroomStudents(pk))
-    }, 3000);
-  }   
 
   finish() { 
     const { dispatch } = this.props
@@ -70,12 +65,12 @@ class StudentsAdd extends React.Component {
   }
 
   render() {
-    const { classroomStudents } = this.props;
+    const { classroomStudents, profile } = this.props;
     return (
       <div style={style}>
         <AppBar position="static" style={gradientBackground}>
           <Toolbar>
-            <Typography type='headline' style={{flex: 1}}>Hello Students! Text your name to (813) 842-2480</Typography>
+            <Typography type='headline' style={{flex: 1}}>Hello Students! Text your name to {profile.sms}</Typography>
             <Button onClick={this.finish.bind(this)}>Done</Button>
           </Toolbar>
         </AppBar>
@@ -91,7 +86,9 @@ class StudentsAdd extends React.Component {
 
 const mapStateToProps = state => ({
   routing: state.routing,
+  classroom: state.apiReducer.classroom,
   classroomStudents: state.apiReducer.classroomStudents,
+  profile: state.apiReducer.profile,
 })
 
 const mapDispatchToProps = (dispatch) => ({

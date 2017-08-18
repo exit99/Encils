@@ -10,6 +10,8 @@ const getAssignmentQuestions = (pk) => request('GET', `/questions/?assignment=${
 const createQuestion = request('POST', '/questions/', 'question', 'questionForm');
 const deleteQuestion = (pk) => request('DELETE', `/questions/${pk}/`)();
 
+const getQuestionAnswers = (pk) => request('GET', `/answers/?question=${pk}`, 'questionAnswers')();
+
 export {
   getAssignment,
   getAssignments,
@@ -20,4 +22,6 @@ export {
   getAssignmentQuestions,
   createQuestion,
   deleteQuestion,
+
+  getQuestionAnswers,
 }

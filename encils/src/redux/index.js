@@ -17,6 +17,7 @@ const initialState = {
   classrooms: [],
   classroomStudents: [],
   profile: {},
+  questionAnswers: [],
 }
 
 const apiReducer = (previousState = initialState, { key, form, data, type }) => {

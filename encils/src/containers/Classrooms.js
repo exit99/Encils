@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
+import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 
 import AppBar from 'material-ui/AppBar';
@@ -41,6 +42,7 @@ import {
 } from '../api-client/classrooms';
 
 import { 
+  getAssignment,
   getAssignments,
   getAssignmentQuestions,
 } from '../api-client/assignments';
@@ -121,15 +123,18 @@ class Classrooms extends React.Component {
   goToAddStudents() {
     const { dispatch, classroom } = this.props;
     dispatch(editActiveItem({classroom: classroom.pk, question: null}))
-      .then(() => dispatch(push('/students-add')));
+      .then(() => dispatch(push(`/students-add/${classroom.pk}`)));
   }
 
   goToAssignmentStart(assignment_pk) {
     const { dispatch, classroom } = this.props;
-    dispatch(getAssignmentQuestions(assignment_pk))
-      .then((questions) => {
-        dispatch(editActiveItem({classroom: classroom.pk, question: questions[0]}))
-          .then(() => dispatch(push('/assignment-active')));
+    dispatch(getAssignment(assignment_pk))
+      .then(() => {
+        dispatch(getAssignmentQuestions(assignment_pk))
+          .then((questions) => {
+            dispatch(editActiveItem({classroom: classroom.pk, question: questions[0]}))
+              .then(() => dispatch(push(`/assignment-active/${classroom.pk}/${assignment_pk}/0`)));
+          });
       });
   }
 
@@ -138,7 +143,7 @@ class Classrooms extends React.Component {
     const { classroom } = this.props;
     return (
       <ListItem button onClick={() => this.goToAssignmentStart(assignment.pk)}>
-        { classroom && classroom.assignments_given.indexOf(assignment.pk) > -1 ?
+        { !isEmpty(classroom) && classroom.assignments_given.indexOf(assignment.pk) > -1 ?
         <ListItemIcon>
           <CheckIcon />
         </ListItemIcon> : null }

@@ -28,6 +28,7 @@ import {
   getAssignments,
   getAssignmentQuestions,
   getQuestionAnswers,
+  resetQuestionAnswers,
 } from '../api-client/assignments';
 
 const style = {
@@ -59,11 +60,18 @@ class AssignmentActive extends React.Component {
 
   componentWillMount() {
     const { dispatch } = this.props;
+    resetQuestionAnswers(dispatch);
     dispatch(getProfile());
     dispatch(getAssignment(this.props.match.params.assignmentPk));
-    dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
-    dispatch(getClassroom(this.props.match.params.classroomPk));
     dispatch(getClassroomStudents(this.props.match.params.classroomPk));
+    dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
+      .then((questions) => {
+        dispatch(getClassroom(this.props.match.params.classroomPk))
+          .then((classroom) => {
+              const questionPk = questions[this.props.match.params.questionIndex].pk;
+              dispatch(editActiveItem({classroom: classroom.pk, question: questionPk}));
+          });
+      });
   }
 
   updateWaitingOnIndex() {
@@ -78,6 +86,14 @@ class AssignmentActive extends React.Component {
       const answeredPks = questionAnswers.map((ans) => ans.student.pk);
       return filter(classroomStudents, (s) => answeredPks.indexOf(s.pk) === -1);
   }
+
+  getAnswers() {
+    const { dispatch, assignmentQuestions } = this.props;
+    if (assignmentQuestions.length) {
+      const questionPk = assignmentQuestions[this.props.match.params.questionIndex].pk;
+      dispatch(getQuestionAnswers(questionPk));
+    }
+}
 
   renderWaitingOnName() {
     const { waitingOnIndex } = this.state;
@@ -124,7 +140,7 @@ class AssignmentActive extends React.Component {
         <AppBar position="static" style={gradientBackground}>
           <Toolbar>
             <Typography type='headline' style={{flex: 1}}>
-              { question ? question.text : 'Loading...' }
+              { question ? question.text + question.pk : 'Loading...' }
             </Typography>
             {questionIndex === 0 ? null :
               <Button onClick={() => dispatch(push(`/assignment-active/${classroom.pk}/${assignment.pk}/${questionIndex-1}`))}><LeftIcon />Previous</Button>
@@ -149,7 +165,7 @@ class AssignmentActive extends React.Component {
               <Typography>Waiting on...</Typography>
               <Typography type="headline">{this.renderWaitingOnName()}</Typography>
               <ReactInterval timeout={1000} enabled={true} callback={this.updateWaitingOnIndex.bind(this)} />
-              <ReactInterval timeout={1000} enabled={true} callback={() => dispatch(getQuestionAnswers(assignmentQuestions[this.props.match.params.questionIndex].pk))} />
+              <ReactInterval timeout={1000} enabled={true} callback={this.getAnswers.bind(this)} />
             </CardContent>
           </Card>
         </div>

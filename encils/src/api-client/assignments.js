@@ -11,6 +11,7 @@ const createQuestion = request('POST', '/questions/', 'question', 'questionForm'
 const deleteQuestion = (pk) => request('DELETE', `/questions/${pk}/`)();
 
 const getQuestionAnswers = (pk) => request('GET', `/answers/?question=${pk}`, 'questionAnswers')();
+const resetQuestionAnswers = (dispatch) => dispatch({ key: 'questionAnswers', data: [], type: 'API_SUCCESS'}) 
 
 export {
   getAssignment,
@@ -24,4 +25,5 @@ export {
   deleteQuestion,
 
   getQuestionAnswers,
+  resetQuestionAnswers,
 }

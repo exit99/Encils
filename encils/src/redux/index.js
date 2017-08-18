@@ -25,7 +25,7 @@ const apiReducer = (previousState = initialState, { key, form, data, type }) => 
     case 'API_SUCCESS':
       let newData = {}
       newData[key] = data
-      console.log(newData);
+      console.log('disaptch', key, data);
       return Object.assign({}, previousState, newData)
     default:
       return previousState;

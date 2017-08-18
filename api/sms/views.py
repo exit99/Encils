@@ -101,8 +101,7 @@ class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
 class AnswerList(generics.ListAPIView):
     serializer_class = AnswerSerializer
     permission_classes = (permissions.IsAuthenticated,)
-    filter_fields = ('classroom', 'student')
-    ordering = ('username', 'student__name')
+    filter_fields = ('question',)
 
     def get_queryset(self):
         teacher = self.request.user
@@ -171,7 +170,7 @@ def active_item(request):
         active_item.activate_classroom(request.data.get('classroom'))
         active_item.activate_question(request.data.get('question'))
     data = {
-        'classroom': active_item.classroom, 
-        'question': active_item.question
+        'classroom': getattr(active_item.classroom, 'pk', None), 
+        'question': getattr(active_item.question, 'pk', None),
     }
     return JsonResponse(data)

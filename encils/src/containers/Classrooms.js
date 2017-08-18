@@ -132,8 +132,7 @@ class Classrooms extends React.Component {
       .then(() => {
         dispatch(getAssignmentQuestions(assignment_pk))
           .then((questions) => {
-            dispatch(editActiveItem({classroom: classroom.pk, question: questions[0]}))
-              .then(() => dispatch(push(`/assignment-active/${classroom.pk}/${assignment_pk}/0`)));
+            dispatch(push(`/assignment-active/${classroom.pk}/${assignment_pk}/0`));
           });
       });
   }

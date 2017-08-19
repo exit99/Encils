@@ -14,6 +14,7 @@ from sms.models import (
 )
 from sms.permissions import is_owner, IsOwner, FromSMSGateway
 from sms.receiver import SMSMessage
+from sms.reports import classroom_report
 from sms.serializers import (
     AnswerSerializer,
     AssignmentSerializer,
@@ -174,3 +175,14 @@ def active_item(request):
         'question': getattr(active_item.question, 'pk', None),
     }
     return JsonResponse(data)
+
+
+@decorators.api_view(['GET'])
+@decorators.permission_classes([])
+def get_classroom_report(request, pk):
+    classroom = get_object_or_404(Classroom, pk=pk)
+    if not is_owner(request.user, classroom):
+        raise Http404
+    report = classroom_report(classroom)
+    return JsonResponse(report)
+

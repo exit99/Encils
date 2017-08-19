@@ -168,7 +168,7 @@ class Assignments extends React.Component {
                 <br />
                 <AppBar position="static">
                   <Tabs value={0}>
-                    <Tab style={{opacity: 1}} label="Questions" />
+                    <Tab disabled={true} style={{opacity: 1}} label="Questions" />
                   </Tabs>
                 </AppBar>
                  <Card style={{background: grey[100]}}>

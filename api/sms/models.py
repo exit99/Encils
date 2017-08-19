@@ -1,4 +1,5 @@
 from datetime import datetime
+from statistics import mean
 
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import (
@@ -66,8 +67,24 @@ class Classroom(models.Model):
 
     @property
     def assignments_given(self):
-        answers = Answer.objects.filter(classroom=self).all()
-        return set([answer.question.assignment.pk for answer in answers])
+        return set([a.pk for a in self.assignments])
+
+    @property
+    def assignments(self):
+        return set([a.question.assignment for a in self.answer_set.all()])
+
+    @property
+    def questions(self):
+        return set([a.question for a in self.answer_set.all()])
+
+    @property
+    def gpa(self):
+        return mean([a.grade for a in self.answer_set.all()])
+
+    @property
+    def answer_rate(self):
+        max_answers = self.student_set.count() * len(self.questions)
+        return self.answer_set.count() / max_answers
 
 
 class Student(models.Model):
@@ -134,7 +151,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question)
     classroom = models.ForeignKey(Classroom)
     text = models.CharField(max_length=160)
-    grade = models.IntegerField(null=True, blank=True, validators=[MaxValueValidator(3), MinValueValidator(0)])
+    grade = models.IntegerField(null=True, blank=True, validators=[MaxValueValidator(5), MinValueValidator(0)])
     created = models.DateTimeField(auto_now_add=True)
 
     @property

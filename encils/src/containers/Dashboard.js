@@ -51,13 +51,19 @@ class Dashboard extends React.Component {
           <center><Logo style={{padding: 10, height: '2.5em'}} /></center>
         </Card>
         <List>
-          <ListItem style={routing.location.pathname === '/classrooms' ? {background: grey[300]} : {}} button component="a" href="#simple-list" divider={true}>
+          <ListItem style={routing.location.pathname === '/classrooms' ? {background: grey[300]} : {}} button component="a" divider={true}>
             <ListItemText primary="Classrooms" onClick={() => this.navigate('/classrooms')} />
           </ListItem>
-          <ListItem style={routing.location.pathname === '/assignments' ? {background: grey[300]} : {}} button component="a" href="#simple-list" divider={true}>
+          <ListItem style={routing.location.pathname === '/assignments' ? {background: grey[300]} : {}} button component="a" divider={true}>
             <ListItemText primary="Assignments" onClick={() => this.navigate('/assignments')} />
           </ListItem>
-          <ListItem style={routing.location.pathname === '/settings' ? {background: grey[300]} : {}} button component="a" href="#simple-list" divider={true}>
+          <ListItem style={routing.location.pathname === '/answers' ? {background: grey[300]} : {}} button component="a" divider={true}>
+            <ListItemText primary="Answers" onClick={() => this.navigate('/answers')} />
+          </ListItem>
+          <ListItem style={routing.location.pathname === '/reports' ? {background: grey[300]} : {}} button component="a" divider={true}>
+            <ListItemText primary="Reports" onClick={() => this.navigate('/reports')} />
+          </ListItem>
+          <ListItem style={routing.location.pathname === '/settings' ? {background: grey[300]} : {}} button component="a" divider={true}>
             <ListItemText primary="Settings" onClick={() => this.navigate('/settings')} />
           </ListItem>
         </List>

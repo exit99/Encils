@@ -17,6 +17,8 @@ import Classrooms from './Classrooms';
 import Assignments from './Assignments';
 import StudentsAdd from './StudentsAdd';
 import AssignmentActive from './AssignmentActive';
+import Answers from './Answers';
+import Reports from './Reports';
 import ScrollToTop from './router/ScrollToTop';
 
 const theme = createMuiTheme({
@@ -55,6 +57,8 @@ class App extends Component {
               <Route exact path='/assignments' component={Assignments} />
               <Route exact path='/students-add/:classroomPk' component={StudentsAdd} />
               <Route exact path='/assignment-active/:classroomPk/:assignmentPk/:questionIndex' component={AssignmentActive} />
+              <Route exact path='/answers' component={Answers} />
+              <Route exact path='/reports' component={Reports} />
             </Switch>
           </ScrollToTop>
         </MuiThemeProvider>

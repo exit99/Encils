@@ -9,6 +9,7 @@ import { reducer as formReducer } from 'redux-form'
 
 const initialState = {
   activeItem: {},
+  answer: {},
   auth_token: '',
   assignment: {},
   assignments: [],
@@ -17,6 +18,7 @@ const initialState = {
   classrooms: [],
   classroomStudents: [],
   profile: {},
+  report: {},
   questionAnswers: [],
 }
 

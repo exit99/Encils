@@ -204,20 +204,13 @@ class Classrooms extends React.Component {
 
                 <AppBar position="static">
                   <Tabs value={tabValue} onChange={this.handleTabChange.bind(this)}>
-                    <Tab style={tabValue === 0 ? {opacity: 1} : {}} label="Students" />
-                    <Tab style={tabValue === 1 ? {opacity: 1} : {}} label="Reports" />
+                    <Tab disabled={true} style={tabValue === 0 ? {opacity: 1} : {}} label="Students" />
                   </Tabs>
                 </AppBar>
                 {tabValue === 0 && 
                  <Card style={{background: grey[100]}}>
                   <CardContent>
                     <StudentTable students={classroomStudents} onDelete={this.onStudentDelete.bind(this)} />
-                  </CardContent>
-                </Card>
-                }
-                {tabValue === 1 && 
-                <Card style={{background: grey[100]}}>
-                  <CardContent>
                   </CardContent>
                 </Card>
                 }

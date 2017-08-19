@@ -9,6 +9,8 @@ const deleteClassroom = (pk) => request('DELETE', `/classrooms/${pk}/`)();
 const getClassroomStudents = (pk) => request('GET', `/students/?classroom=${pk}`, 'classroomStudents')();
 const deleteStudent = (pk) => request('DELETE', `/students/${pk}/`)();
 
+const getClassroomReport = (pk) => request('GET', `/reports/${pk}/`, 'classroomReport')();
+
 export {
   getClassroom,
   getClassrooms,
@@ -18,4 +20,6 @@ export {
 
   getClassroomStudents,
   deleteStudent,
+
+  getClassroomReport,
 }

@@ -12,6 +12,8 @@ import Card, { CardContent } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
+import LeftIcon from 'material-ui-icons/KeyboardArrowLeft';
+import RightIcon from 'material-ui-icons/KeyboardArrowRight';
 import { grey } from 'material-ui/colors';
 
 import AnswerTable from '../components/AnswerTable';
@@ -88,6 +90,12 @@ class Answers extends React.Component {
     dispatch(editQuestionAnswer(answer_pk)({ grade: value })); 
   }
 
+  newQuestion(index) {
+    const { assignmentQuestions } = this.props;
+    const questionIndex = this.setState({ questionIndex: index });
+    this.getQuestionAnswers(assignmentQuestions[index]);
+  }
+
   render() {
     const {
       assignment,
@@ -98,8 +106,8 @@ class Answers extends React.Component {
       questionAnswers, 
       dispatch,
     } = this.props;
-    
-    const { questionIndex } = this.state;
+
+    const questionIndex = parseInt(this.state.questionIndex);
 
     return (
         <Dashboard>
@@ -134,9 +142,11 @@ class Answers extends React.Component {
                  </AppBar>
                 <br />
                 <AppBar position="static">
-                  <Tabs value={0}>
-                    <Tab disabled={true} style={{opacity: 1}} label={isUndefined(assignmentQuestions[questionIndex]) ? 'Loading...' : assignmentQuestions[questionIndex].text} />
-                  </Tabs>
+                  <Toolbar>
+                    <Typography style={{color: 'white', flex: 1}}>{isUndefined(assignmentQuestions[questionIndex]) ? 'Loading...' : assignmentQuestions[questionIndex].text}</Typography>
+                    {questionIndex === 0 ? null : <Button onClick={() => this.newQuestion(questionIndex - 1)} style={{color: 'white'}}><LeftIcon />Previous</Button>}
+                    {questionIndex === assignmentQuestions.length - 1 ? null : <Button onClick={() => this.newQuestion(questionIndex + 1)} style={{color: 'white'}}>Next<RightIcon /></Button>}
+                  </Toolbar>
                 </AppBar>
                  <Card style={{background: grey[100]}}>
                   <CardContent>

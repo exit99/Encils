@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
+import Cookies from 'universal-cookie';
 
 import AppBar from 'material-ui/AppBar';
 import Card from 'material-ui/Card';
@@ -29,6 +30,13 @@ class Dashboard extends React.Component {
       onDesktop: onDesktop(),
       open: onDesktop(),
     };
+  }
+
+  logout() {
+    const { dispatch } = this.props
+    const cookies = new Cookies();
+    cookies.remove("auth_token");
+    dispatch(push('/login'));
   }
 
   toggleSidebar() {
@@ -78,7 +86,7 @@ class Dashboard extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography style={{flex:1, color: 'white'}} type='headline'>Dashboard</Typography>
-            <Button color="contrast">Logout</Button>
+            <Button color="contrast" onClick={this.logout.bind(this)}>Logout</Button>
           </Toolbar>
         </AppBar>
         {children}

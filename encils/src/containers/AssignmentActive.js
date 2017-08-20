@@ -110,12 +110,21 @@ class AssignmentActive extends React.Component {
       .then(() => dispatch(push('/classrooms')));
   }
 
+  newQuestion(index) {
+    const { dispatch, classroom, assignment, assignmentQuestions } = this.props;
+    dispatch(editActiveItem({classroom: classroom.pk, question: assignmentQuestions[index].pk}))
+      .then(() => {
+        dispatch(push(`/assignment-active/${classroom.pk}/${assignment.pk}/${index}`));
+      });
+  }
+
   renderAnswer(answer, index) {
     return (
       <Grid key={index} item xs={12} sm={6} md={3} lg={3} xl={2}>
         <Card>
           <CardContent>
-            <Typography type="headline">{answer.text}</Typography>
+            <Typography type="headline">{answer.student.name}</Typography>
+            <Typography type="subheading" style={{paddingTop: 5}}>{answer.text}</Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -132,6 +141,7 @@ class AssignmentActive extends React.Component {
       questionAnswers,
       dispatch,
     } = this.props;
+
     const questionIndex = parseInt(this.props.match.params.questionIndex)
     const question = assignmentQuestions && assignmentQuestions[questionIndex];
 
@@ -143,11 +153,11 @@ class AssignmentActive extends React.Component {
               { question ? question.text : 'Loading...' }
             </Typography>
             {questionIndex === 0 ? null :
-              <Button onClick={() => dispatch(push(`/assignment-active/${classroom.pk}/${assignment.pk}/${questionIndex-1}`))}><LeftIcon />Previous</Button>
+              <Button onClick={() => this.newQuestion(questionIndex - 1)}><LeftIcon />Previous</Button>
             }
             {questionIndex === assignmentQuestions.length - 1 ?
               <Button onClick={this.finish.bind(this)}>Done</Button> :
-              <Button onClick={() => dispatch(push(`/assignment-active/${classroom.pk}/${assignment.pk}/${questionIndex+1}`))}>Next<RightIcon /></Button>
+              <Button onClick={() => this.newQuestion(questionIndex + 1)}>Next<RightIcon /></Button>
             }
           </Toolbar>
         </AppBar>

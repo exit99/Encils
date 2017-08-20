@@ -20,6 +20,7 @@ const initialState = {
   profile: {},
   report: {},
   questionAnswers: [],
+  passwordResponse: null,
 }
 
 const apiReducer = (previousState = initialState, { key, form, data, type }) => {

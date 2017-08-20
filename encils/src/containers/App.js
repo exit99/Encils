@@ -20,6 +20,7 @@ import AssignmentActive from './AssignmentActive';
 import Answers from './Answers';
 import Reports from './Reports';
 import Settings from './Settings';
+import NotFound from './NotFound';
 import ScrollToTop from './router/ScrollToTop';
 
 const theme = createMuiTheme({
@@ -61,6 +62,7 @@ class App extends Component {
               <Route exact path='/answers' component={Answers} />
               <Route exact path='/reports' component={Reports} />
               <Route exact path='/settings' component={Settings} />
+              <Route exact path='*' component={NotFound} status={404} />
             </Switch>
           </ScrollToTop>
         </MuiThemeProvider>

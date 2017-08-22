@@ -23,10 +23,10 @@ def student_report(classroom, student):
 
     return {
         'name': student.name,
-        'mean_score': mean([answer.grade for answer in answers]),
+        'mean_score': mean([answer.grade for answer in answers if answer.grade]),
         'assignments': {
             assignment.name: {
-                'mean_score': mean([answer.grade for answer in answers])
+                'mean_score': mean([answer.grade for answer in answers if answer.grade])
                 for assignment, answers in by_assignments.items() 
             }
         },

@@ -79,7 +79,7 @@ class Classroom(models.Model):
 
     @property
     def gpa(self):
-        grades = [a.grade for a in self.answer_set.all()]
+        grades = [a.grade for a in self.answer_set.all() if a.grade]
         return mean(grades) if grades else 0
 
     @property

@@ -1,0 +1,10 @@
+version: '2'
+services:
+  encils_api:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    network_mode: "host"
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1

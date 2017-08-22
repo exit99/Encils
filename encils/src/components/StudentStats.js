@@ -16,6 +16,7 @@ class StudentStats extends React.Component {
             <Typography type="headline">{student.name}</Typography>
             <Typography>AVG. Score all assignments: {student.mean_score.toFixed(1)}/5</Typography>
             <br />
+            <Typography><b>Assignments</b></Typography>
             {names.map((name) => {
               return <Typography>{name}: {student.assignments[name].mean_score.toFixed(1)}/5</Typography>
             })}

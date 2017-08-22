@@ -34,7 +34,7 @@ import {
   editQuestionAnswer,
 } from '../api-client/assignments';
 
-class Answers extends React.Component {
+class Grades extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -175,4 +175,4 @@ const mapDispatchToProps = (dispatch) => ({
   dispatch: dispatch
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Answers)
+export default connect(mapStateToProps, mapDispatchToProps)(Grades)

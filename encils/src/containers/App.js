@@ -17,7 +17,7 @@ import Classrooms from './Classrooms';
 import Assignments from './Assignments';
 import StudentsAdd from './StudentsAdd';
 import AssignmentActive from './AssignmentActive';
-import Answers from './Answers';
+import Grades from './Grades';
 import Reports from './Reports';
 import Settings from './Settings';
 import NotFound from './NotFound';
@@ -59,7 +59,7 @@ class App extends Component {
               <Route exact path='/assignments' component={Assignments} />
               <Route exact path='/students-add/:classroomPk' component={StudentsAdd} />
               <Route exact path='/assignment-active/:classroomPk/:assignmentPk/:questionIndex' component={AssignmentActive} />
-              <Route exact path='/answers' component={Answers} />
+              <Route exact path='/grades' component={Grades} />
               <Route exact path='/reports' component={Reports} />
               <Route exact path='/settings' component={Settings} />
               <Route exact path='*' component={NotFound} status={404} />

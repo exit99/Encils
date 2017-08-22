@@ -65,8 +65,8 @@ class Dashboard extends React.Component {
           <ListItem style={routing.location.pathname === '/assignments' ? {background: grey[300]} : {}} button component="a" divider={true}>
             <ListItemText primary="Assignments" onClick={() => this.navigate('/assignments')} />
           </ListItem>
-          <ListItem style={routing.location.pathname === '/answers' ? {background: grey[300]} : {}} button component="a" divider={true}>
-            <ListItemText primary="Answers" onClick={() => this.navigate('/answers')} />
+          <ListItem style={routing.location.pathname === '/grades' ? {background: grey[300]} : {}} button component="a" divider={true}>
+            <ListItemText primary="Grades" onClick={() => this.navigate('/grades')} />
           </ListItem>
           <ListItem style={routing.location.pathname === '/reports' ? {background: grey[300]} : {}} button component="a" divider={true}>
             <ListItemText primary="Reports" onClick={() => this.navigate('/reports')} />

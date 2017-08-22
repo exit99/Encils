@@ -14,10 +14,10 @@ class StudentStats extends React.Component {
         <Card>
           <CardContent>
             <Typography type="headline">{student.name}</Typography>
-            <Typography>AVG. Score: {student.mean_score}/5</Typography>
+            <Typography>AVG. Score all assignments: {student.mean_score.toFixed(1)}/5</Typography>
             <br />
             {names.map((name) => {
-              return <Typography>{name}: {student.assignments[name].mean_score}/5</Typography>
+              return <Typography>{name}: {student.assignments[name].mean_score.toFixed(1)}/5</Typography>
             })}
           </CardContent>
         </Card>

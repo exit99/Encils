@@ -10,13 +10,15 @@ const ClassStats = (props) => {
       <Grid item sm={12} md={6}>
         <center>
           <Typography type="headline">AVG. Score</Typography>
-          <Typography type="display3">{stats.mean_score} / 5</Typography>
+          <Typography type="subheading">All students</Typography>
+          <Typography type="display3">{stats.mean_score.toFixed(1)} / 5</Typography>
         </center>
       </Grid>
       <Grid item sm={12} md={6}>
         <center>
           <Typography type="headline">Answer Rate</Typography>
-          <Typography type="display3">{stats.answer_rate * 100}%</Typography>
+          <Typography type="subheading">All students</Typography>
+          <Typography type="display3">{(stats.answer_rate * 100).toFixed(1)}%</Typography>
         </center>
       </Grid>
 

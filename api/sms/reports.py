@@ -21,9 +21,10 @@ def student_report(classroom, student):
         by_assignments.setdefault(assignment, [])
         by_assignments[assignment].append(answer)
 
+    grades = [answer.grade for answer in answers if answer.grade]
     return {
         'name': student.name,
-        'mean_score': mean([answer.grade for answer in answers if answer.grade]),
+        'mean_score': mean(grades) if grades else 0,
         'assignments': {
             assignment.name: {
                 'mean_score': mean([answer.grade for answer in answers if answer.grade])

@@ -14,6 +14,7 @@ import Typography from 'material-ui/Typography';
 import LeftIcon from 'material-ui-icons/KeyboardArrowLeft';
 import RightIcon from 'material-ui-icons/KeyboardArrowRight';
 
+import phoneFormatter from 'phone-formatter';
 import ReactInterval from 'react-interval';
 
 import balloons from '../images/hot-air-balloon.jpeg'
@@ -171,7 +172,7 @@ class AssignmentActive extends React.Component {
         <div style={waitingStyle}>
           <Card>
             <CardContent>
-              <Typography type='subheading'>Text answers to: { profile.sms }</Typography>
+              <Typography type='subheading'>Text answers to: {profile.sms && phoneFormatter.format(profile.sms, "(NNN) NNN-NNNN")}</Typography>
               <Typography>Waiting on...</Typography>
               <Typography type="headline">{this.renderWaitingOnName()}</Typography>
               <ReactInterval timeout={1000} enabled={true} callback={this.updateWaitingOnIndex.bind(this)} />

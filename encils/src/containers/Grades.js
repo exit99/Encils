@@ -75,7 +75,7 @@ class Grades extends React.Component {
 
   getQuestionAnswers({ pk }) {
     const { dispatch } = this.props;
-    dispatch(getQuestionAnswers(pk));
+    dispatch(getQuestionAnswers(pk)).then(this.setState({}));
   }
 
   getCompletedClassroomAssignments() {
@@ -108,17 +108,19 @@ class Grades extends React.Component {
     } = this.props;
 
     const questionIndex = parseInt(this.state.questionIndex);
+    const answeredClassrooms = filter(classrooms, (classroom) => classroom.assignments_given && classroom.assignments_given.length > 0);
 
     return (
         <Dashboard>
           <div style={{padding:40}}>
+            { answeredClassrooms.length === 0 || assignments.length === 0 ? <p>No answered assignments</p> :
             <Grid container>
               <Grid item md={3} sm={12} xs={12}>
                 <Card style={{background: grey[100]}}>
                   <CardContent>
                     <SelectList 
                       title="Classroom"
-                      items={filter(classrooms, (classroom) => classroom.assignments_given && classroom.assignments_given.length > 0)}
+                      items={answeredClassrooms}
                       selected={classroom}
                       primaryField="name"
                       onClick={this.getClassroom.bind(this)} />
@@ -155,6 +157,7 @@ class Grades extends React.Component {
                 </Card>
               </Grid>
             </Grid>
+            }
           </div>
         </Dashboard>
     );

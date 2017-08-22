@@ -10,6 +10,7 @@
     "lodash": "^4.17.4",
     "material-ui": "next",
     "material-ui-icons": "^1.0.0-alpha.19",
+    "phone-formatter": "^0.0.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-interval": "^2.0.1",

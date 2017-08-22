@@ -65,10 +65,10 @@ class Classrooms extends React.Component {
   }
 
   componentWillMount() {
-    const { dispatch } = this.props;
+    const { dispatch, classroom } = this.props;
     dispatch(getClassrooms())
       .then((data) => { 
-        if (data && data.length > 0) {
+        if (data && data.length > 0 && isEmpty(classroom)) {
           this.getClassroom(data[0]);
           dispatch(getAssignments());
         }
@@ -188,6 +188,7 @@ class Classrooms extends React.Component {
                   </CardContent>
                 </Card>
               </Grid>
+              { classrooms.length === 0 ? null :
               <Grid item md={9} sm={12} xs={12}>
                 <AppBar position="static">
                    <Toolbar>
@@ -215,6 +216,7 @@ class Classrooms extends React.Component {
                 </Card>
                 }
               </Grid>
+              }
             </Grid>
           </div>
 
@@ -224,7 +226,7 @@ class Classrooms extends React.Component {
 
           <FullScreenDialog title="Select Assignment" open={startAssignmentDialogOpen} onClose={() => this.setState({startAssignmentDialogOpen: false})}>
             <List style={{ padding: 25, marginTop: 25 }}>
-              {assignments.map(this.renderAssignment.bind(this))}
+              {assignments.length > 0 ? assignments.map(this.renderAssignment.bind(this)) : <p>No assignments created yet.</p>}
             </List>
           </FullScreenDialog>
         </Dashboard>

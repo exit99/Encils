@@ -10,6 +10,7 @@ import Grid from 'material-ui/Grid';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 
+import phoneFormatter from 'phone-formatter';
 import ReactInterval from 'react-interval';
 
 import balloons from '../images/hot-air-balloon.jpeg'
@@ -67,7 +68,7 @@ class StudentsAdd extends React.Component {
       <div style={style}>
         <AppBar position="static" style={gradientBackground}>
           <Toolbar>
-            <Typography type='headline' style={{flex: 1}}>Hello Students! Text your name to {profile.sms}</Typography>
+            <Typography type='headline' style={{flex: 1}}>Hello Students! Text your name to {profile.sms && phoneFormatter.format(profile.sms, "(NNN) NNN-NNNN")}</Typography>
             <Button onClick={this.finish.bind(this)}>Done</Button>
           </Toolbar>
         </AppBar>

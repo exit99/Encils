@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
+import isEmpty from 'lodash/isEmpty';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -53,10 +54,10 @@ class Assignments extends React.Component {
   }
 
   componentWillMount() {
-    const { dispatch } = this.props;
+    const { dispatch, assignment } = this.props;
     dispatch(getAssignments())
       .then((data) => { 
-        if (data && data.length > 0) {
+        if (data && data.length > 0 && isEmpty(assignment)) {
           this.getAssignment(data[0]);
           dispatch(getAssignmentQuestions(data[0].pk));
         }
@@ -154,6 +155,7 @@ class Assignments extends React.Component {
                   </CardContent>
                 </Card>
               </Grid>
+              { assignments.length === 0 ? null :
               <Grid item md={9} sm={12} xs={12}>
                 <AppBar position="static">
                    <Toolbar>
@@ -177,6 +179,7 @@ class Assignments extends React.Component {
                   </CardContent>
                 </Card>
               </Grid>
+              }
             </Grid>
           </div>
 

@@ -57,6 +57,7 @@ class Reports extends React.Component {
     return (
         <Dashboard>
           <div style={{padding:40}}>
+            { classrooms.length === 0 ? <p>No classrooms on which to report.</p> :
             <Grid container>
               <Grid item md={3} sm={12} xs={12}>
                 <Card style={{background: grey[100]}}>
@@ -93,6 +94,7 @@ class Reports extends React.Component {
                 </Card>
               </Grid>
             </Grid>
+            }
           </div>
         </Dashboard>
     );

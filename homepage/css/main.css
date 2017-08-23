@@ -754,6 +754,7 @@ a:active {
     padding: 70px 0px;
     background: url(../images/class.jpeg);
     background-repeat: no-repeat;
+    background-position: 50% 50%;
     background-size: cover;
     position: relative;
     border-top: 1px solid #eee;

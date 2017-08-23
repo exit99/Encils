@@ -25,7 +25,7 @@ const AnswerTable = (props) => {
               <TableRow key={index}>
                 <TableCell>{answer.student.name}</TableCell>
                 <TableCell>{answer.text}</TableCell>
-                <TableCell><Grader defaultValue={answer.grade} onChange={onChange(answer.pk)} /></TableCell>
+                <TableCell><Grader value={answer.grade} onChange={onChange(answer.pk)} /></TableCell>
               </TableRow>
             );
           })}

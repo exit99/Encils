@@ -27,8 +27,8 @@ def student_report(classroom, student):
         'mean_score': mean(grades) if grades else 0,
         'assignments': {
             assignment.name: {
-                'mean_score': mean([answer.grade for answer in answers if answer.grade])
-                for assignment, answers in by_assignments.items() 
+                'mean_score': mean([answer.grade for answer in answers if answer.grade] or [0])
             }
+            for assignment, answers in by_assignments.items() 
         },
     }

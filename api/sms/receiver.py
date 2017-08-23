@@ -15,7 +15,6 @@ class SMSMessage(object):
         self.question = activeitem.question if activeitem else None
         self.student = Student.objects.filter(
             classroom=self.classroom, phone=self.phone).first()
-        print('*' * 10, self.classroom, self.question, self.student)
 
     def execute(self):
         if self.question and self.classroom and self.student:
@@ -45,8 +44,8 @@ class SMSMessage(object):
         data = {
             "keyword": "THIS",
             "msisdn": "18137684282",
-            "text": "I heard there was a secret cord, that david played.",
-            "to": "13232022665",
+            "text": "It stands for Parenthesis Mr Ulysses",
+            "to": "18552436932",
             "message-timestamp": "2017-03-12 00:43:33",
             "messageId": "0B0000003B7C8DE8",
             "type": "text"

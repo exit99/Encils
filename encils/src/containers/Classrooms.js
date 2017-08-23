@@ -195,8 +195,8 @@ class Classrooms extends React.Component {
                      <Typography type="title" color="inherit" style={{flex: 1}}>
                        {classroom.name}
                      </Typography>
-                     <Button color="contrast" onClick={() => this.setState({startAssignmentDialogOpen: true})}>Start Assignment</Button>
                      <Button color="contrast" onClick={this.goToAddStudents.bind(this)}>Add Students</Button>
+                     <Button color="contrast" onClick={() => this.setState({startAssignmentDialogOpen: true})}>Start Assignment</Button>
                      <Button color="contrast" onClick={() => this.setState({classroomDialogOpen: true, classroomEdit: true})}>Edit</Button>
                      <Button color="contrast" onClick={this.deleteClassroom.bind(this)}>Delete</Button>
                    </Toolbar>

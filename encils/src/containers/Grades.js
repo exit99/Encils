@@ -86,8 +86,12 @@ class Grades extends React.Component {
   }
 
   updateGrade(answer_pk, value) {
-    const { dispatch } = this.props;
-    dispatch(editQuestionAnswer(answer_pk)({ grade: value })); 
+    const { dispatch, assignmentQuestions } = this.props;
+    const { questionIndex } = this.state;
+    dispatch(editQuestionAnswer(answer_pk)({ grade: value }))
+      .then(() => {
+        this.getQuestionAnswers(assignmentQuestions[questionIndex]);
+      }); 
   }
 
   newQuestion(index) {

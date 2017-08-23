@@ -6,11 +6,6 @@ import Chip from 'material-ui/Chip';
 import { orange } from 'material-ui/colors';
 
 class GradeSlider extends React.Component {
-  componentWillMount() {
-  this.state = { 
-    value: this.props.defaultValue || null}
-  }
-
   onClick(value) {
     const { onChange } = this.props;
     this.setState({ value });
@@ -18,7 +13,7 @@ class GradeSlider extends React.Component {
   }
 
   render() {
-    const { value } = this.state;
+    const { value } = this.props;
 
     return (
       <Grid container spacing={24}>

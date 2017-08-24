@@ -10,7 +10,6 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import createPalette from 'material-ui/styles/palette';
 import { orange, blue } from 'material-ui/colors';
 
-import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import Classrooms from './Classrooms';

@@ -4,10 +4,8 @@ import isUndefined from 'lodash/isUndefined';
 import { stopSubmit } from 'redux-form'
 import {push} from 'react-router-redux';
 
-import config from '../config/local';
-
 const makeUrl = (endpoint) => { 
-  return `http://${config.host}${endpoint}`
+  return `http://${process.env.REACT_APP_API_HOST}${endpoint}`
 }
 
 const request = (method, endpoint, key = null, formName = null) => (data = null) => (dispatch) => {
@@ -54,21 +52,4 @@ const request = (method, endpoint, key = null, formName = null) => (data = null)
     });
 }
 
-const websocket = (endpoint, onMessage, onLogin) => {
-    const cookies = new Cookies();
-    const token = cookies.get("auth_token");
-    const baseUrl = config.host;
-    const ws = new WebSocket(`ws://${baseUrl}${endpoint}/?token=${token}`)
-    ws.onmessage = ({ data }) => { 
-      data = JSON.parse(data);
-      if (data.is_logged_in) {
-        if(onLogin !== null) { onLogin(); }
-      } else {
-        onMessage(data); 
-      }
-    }
-    return ws;
-}
-
-
-export { request, websocket }
+export { request }

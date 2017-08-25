@@ -39,22 +39,9 @@ You will need to `pip install awscli` (version 1.11.140).
 ### Settings
 
 1. `cd api/schooltext_api && cp prod_settings.py.example prod_settings.py` and fill it with password data.
+2. `git archive -v -o api.zip --format=zip HEAD --worktree-attributes`.
 
-### Authing ECR
 
-1. Retrieve the docker login command that you can use to authenticate your Docker client to your registry: 
-Note: 
-If you receive an "Unknown options: --no-include-email" error, install the latest version of the AWS CLI. Learn more
-
-`aws ecr get-login --no-include-email --region us-east-1`
-
-2. Run the docker login command that was returned in the previous step. 
-
-### Push to registry
-
-1. `docker build -t encils .`
-2. `docker tag encils:latest 795102151300.dkr.ecr.us-east-1.amazonaws.com/encils:latest`
-3. `docker push 795102151300.dkr.ecr.us-east-1.amazonaws.com/encils:latest`
 
 [More info here](https://console.aws.amazon.com/ecs/home?region=us-east-1#/repositories/create/new).
 

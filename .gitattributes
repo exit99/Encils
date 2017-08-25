@@ -1,0 +1,5 @@
+README.md export-ignore
+docker-compose.yaml export-ignore
+encils export-ignore
+homepage export-ignore
+.* export-ignore

@@ -22,11 +22,43 @@ The webhooks needs to link to the ngrok url `NGROKHASH.ngrok.io/receive`.
 
 ## For Production
 
-### Deployment
+# Deployment
 
-Make sure that `config.js` is using the correct IP/domain. (not localhost or 127.0.0.1).
-run `npm run build` from the `frontend` folder.
+You will need to `pip install awscli` (version 1.11.140).
 
-`pm2 restart next`
-`/usr/bin/python3 /usr/local/bin/daphne -b 0.0.0.0 -p 8000 schooltext_api.asgi:channel_layer`. I think this restarts the daphne server.  
-`iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000`
+## Homepage
+
+`cd homepage && aws s3 sync build/ s3://homepage.encils`
+
+## Dashboard
+
+`cd encils && yarn build && aws s3 sync build/ s3://dashboard.encils`
+
+## API
+
+### Settings
+
+1. `cd api/schooltext_api && cp prod_settings.py.example prod_settings.py` and fill it with password data.
+
+### Authing ECR
+
+1. Retrieve the docker login command that you can use to authenticate your Docker client to your registry: 
+Note: 
+If you receive an "Unknown options: --no-include-email" error, install the latest version of the AWS CLI. Learn more
+
+`aws ecr get-login --no-include-email --region us-east-1`
+
+2. Run the docker login command that was returned in the previous step. 
+
+### Push to registry
+
+1. `docker build -t encils .`
+2. `docker tag encils:latest 795102151300.dkr.ecr.us-east-1.amazonaws.com/encils:latest`
+3. `docker push 795102151300.dkr.ecr.us-east-1.amazonaws.com/encils:latest`
+
+[More info here](https://console.aws.amazon.com/ecs/home?region=us-east-1#/repositories/create/new).
+
+### Rebuilding EC2 Container
+
+Not sure how to do this yet.
+

@@ -9,3 +9,8 @@ frontend/config.js
 *.swp
 
 *local.py
+
+*prod_settings.py
+
+.DS_Store
+Archive.zip

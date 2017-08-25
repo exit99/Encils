@@ -36,6 +36,7 @@ ADD docker/supervisord/supervisord.conf /etc/
 EXPOSE 80
 
 COPY api/ /api
+RUN copy /api/schooltext_api/prod_settings.py /api/schooltext_api/local.py
 WORKDIR api
 
 RUN pip install -r reqs.txt

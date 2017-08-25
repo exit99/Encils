@@ -1,0 +1,12 @@
+from schooltext_api.settings import *
+
+DEBUG = False
+SECRET_KEY = "WKLHLEGHWWfekh2g89ehge2ghEbGHieklgh2"
+
+DATABASES['default'] = {
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'encilsdb',
+    'USER': 'encilsuser',
+    'PASSWORD': '',
+    'HOST': '',
+}

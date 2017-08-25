@@ -10,3 +10,4 @@ frontend/config.js
 *prod_settings.py
 .DS_Store
 api.zip
+api*.zip

@@ -36,14 +36,11 @@ You will need to `pip install awscli` (version 1.11.140).
 
 ## API
 
-### Settings
-
-1. `cd api/schooltext_api && cp prod_settings.py.example prod_settings.py` and fill it with password data.
-2. `git archive -v -o api.zip --format=zip HEAD --worktree-attributes`.
-
+1. `git archive -v -o api-$(git rev-parse --short HEAD).zip --format=zip HEAD --worktree-attributes`.
+2. Upload a new version in the ElasticBeanstalk console.  There may be a way to do it with git: 
+http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb3-cli-git.html
 
 
-[More info here](https://console.aws.amazon.com/ecs/home?region=us-east-1#/repositories/create/new).
 
 ### Rebuilding EC2 Container
 

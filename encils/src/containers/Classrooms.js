@@ -137,6 +137,12 @@ class Classrooms extends React.Component {
       });
   }
 
+  startAssignment() { 
+    const { dispatch } = this.props;
+    const { startAssignmentDialogOpen } = this.state;
+    dispatch(getAssignments()).then(() => this.setState({startAssignmentDialogOpen: true}));
+  }
+
   renderAssignment(assignment, index) {
     if (!assignment.question_count) { return null };
     const { classroom } = this.props;
@@ -196,7 +202,7 @@ class Classrooms extends React.Component {
                        {classroom.name}
                      </Typography>
                      <Button color="contrast" onClick={this.goToAddStudents.bind(this)}>Add Students</Button>
-                     <Button color="contrast" onClick={() => this.setState({startAssignmentDialogOpen: true})}>Start Assignment</Button>
+                     <Button color="contrast" onClick={this.startAssignment.bind(this)}>Give Assignment</Button>
                      <Button color="contrast" onClick={() => this.setState({classroomDialogOpen: true, classroomEdit: true})}>Edit</Button>
                      <Button color="contrast" onClick={this.deleteClassroom.bind(this)}>Delete</Button>
                    </Toolbar>

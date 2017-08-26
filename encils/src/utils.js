@@ -8,7 +8,7 @@ const gradientBackground = {
 
 const onDesktop = () => window.matchMedia(`(min-width: 1224px)`).matches;
 
-const requestLimit = 2;
+const requestLimit = 600;
 
 export {
   gradientBackground,

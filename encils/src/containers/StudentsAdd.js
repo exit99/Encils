@@ -11,6 +11,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 
 import StillThereDialog from '../components/StillThereDialog';
+import StudentCount from '../components/StudentCount';
 
 import phoneFormatter from 'phone-formatter';
 import ReactInterval from 'react-interval';
@@ -79,12 +80,12 @@ class StudentsAdd extends React.Component {
   render() {
     const { dispatch, classroom, classroomStudents, profile} = this.props;
     const { requestCount } = this.state;
-    console.log(requestCount, requestLimit, requestCount < requestLimit);
     return (
       <div style={style}>
         <AppBar position="static" style={gradientBackground}>
           <Toolbar>
             <Typography type='headline' style={{flex: 1}}>Hello Students! Text your name to {profile.sms && phoneFormatter.format(profile.sms, "(NNN) NNN-NNNN")}</Typography>
+            <StudentCount count={classroomStudents.length} />
             <Button onClick={this.finish.bind(this)}>Done</Button>
           </Toolbar>
         </AppBar>

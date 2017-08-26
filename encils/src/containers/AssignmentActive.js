@@ -15,6 +15,7 @@ import LeftIcon from 'material-ui-icons/KeyboardArrowLeft';
 import RightIcon from 'material-ui-icons/KeyboardArrowRight';
 
 import StillThereDialog from '../components/StillThereDialog';
+import StudentCount from '../components/StudentCount';
 
 import phoneFormatter from 'phone-formatter';
 import ReactInterval from 'react-interval';
@@ -121,6 +122,7 @@ class AssignmentActive extends React.Component {
     dispatch(editActiveItem({classroom: classroom.pk, question: assignmentQuestions[index].pk}))
       .then(() => {
         dispatch(push(`/assignment-active/${classroom.pk}/${assignment.pk}/${index}`));
+        this.setState({ requestCount: 0 });
       });
   }
 
@@ -159,9 +161,9 @@ class AssignmentActive extends React.Component {
             <Typography type='headline' style={{flex: 1}}>
               { question ? question.text : 'Loading...' }
             </Typography>
-            {questionIndex === 0 ? null :
-              <Button onClick={() => this.newQuestion(questionIndex - 1)}><LeftIcon />Previous</Button>
-            }
+            <StudentCount count={questionAnswers.length} max={classroomStudents.length} />
+            <Button disabled={questionIndex === 0} onClick={() => this.newQuestion(questionIndex - 1)}><LeftIcon />Previous</Button>
+            <Typography style={{padding: 10}}>{questionIndex+1} of {assignmentQuestions.length}</Typography>
             {questionIndex === assignmentQuestions.length - 1 ?
               <Button onClick={this.finish.bind(this)}>Done</Button> :
               <Button onClick={() => this.newQuestion(questionIndex + 1)}>Next<RightIcon /></Button>

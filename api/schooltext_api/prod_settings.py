@@ -1,3 +1,5 @@
+import os
+
 from schooltext_api.settings import *
 
 DEBUG = False
@@ -7,6 +9,6 @@ DATABASES['default'] = {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'encilsdb',
     'USER': 'encilsuser',
-    'PASSWORD': '',
-    'HOST': '',
+    'HOST': 'aa1dlwzd9c7n274.c1vqcdpwlpkq.us-east-1.rds.amazonaws.com',
+    'PASSWORD': os.environ.get('RDS_PASSWORD', ''),
 }

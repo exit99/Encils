@@ -4,7 +4,7 @@ services:
     build:
       context: .
     ports:
-      - "8000:8000"
+      - "80:8000"
     network_mode: "host"
     environment:
       - PYTHONDONTWRITEBYTECODE=1

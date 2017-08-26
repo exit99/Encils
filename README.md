@@ -41,7 +41,6 @@ You will need to `pip install awscli` (version 1.11.140).
 http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb3-cli-git.html
 
 
-
 ### Rebuilding EC2 Container
 
 Not sure how to do this yet.

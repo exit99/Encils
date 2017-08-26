@@ -7,7 +7,6 @@ frontend/config.js
 *.sqlite3
 *.swp
 *local.py
-*prod_settings.py
 .DS_Store
 api.zip
 api*.zip

@@ -14,12 +14,14 @@ import Typography from 'material-ui/Typography';
 import LeftIcon from 'material-ui-icons/KeyboardArrowLeft';
 import RightIcon from 'material-ui-icons/KeyboardArrowRight';
 
+import StillThereDialog from '../components/StillThereDialog';
+
 import phoneFormatter from 'phone-formatter';
 import ReactInterval from 'react-interval';
 
 import balloons from '../images/hot-air-balloon.jpeg'
 
-import { gradientBackground, onDesktop } from '../utils';
+import { gradientBackground, onDesktop, requestLimit } from '../utils';
 
 import { getProfile } from '../api-client/auth';
 import { getClassroom, getClassroomStudents } from '../api-client/classrooms';
@@ -56,6 +58,7 @@ class AssignmentActive extends React.Component {
     super(props);
     this.state = {
       waitingOnIndex: -1,
+      requestCount: 0,
     }
   }
 
@@ -83,18 +86,20 @@ class AssignmentActive extends React.Component {
   }
 
   unAnsweredStudents() {
-      const { questionAnswers, classroomStudents } = this.props;
-      const answeredPks = questionAnswers.map((ans) => ans.student.pk);
-      return filter(classroomStudents, (s) => answeredPks.indexOf(s.pk) === -1);
+    const { questionAnswers, classroomStudents } = this.props;
+    const answeredPks = questionAnswers.map((ans) => ans.student.pk);
+    return filter(classroomStudents, (s) => answeredPks.indexOf(s.pk) === -1);
   }
 
   getAnswers() {
     const { dispatch, assignmentQuestions } = this.props;
-    if (assignmentQuestions.length) {
+    const { requestCount } = this.state;
+    if (assignmentQuestions.length && requestCount < requestLimit ) {
       const questionPk = assignmentQuestions[this.props.match.params.questionIndex].pk;
       dispatch(getQuestionAnswers(questionPk));
+      this.setState({ requestCount: requestCount + 1 });
     }
-}
+  }
 
   renderWaitingOnName() {
     const { waitingOnIndex } = this.state;
@@ -142,6 +147,7 @@ class AssignmentActive extends React.Component {
       questionAnswers,
       dispatch,
     } = this.props;
+    const { requestCount } = this.state;
 
     const questionIndex = parseInt(this.props.match.params.questionIndex)
     const question = assignmentQuestions && assignmentQuestions[questionIndex];
@@ -176,10 +182,12 @@ class AssignmentActive extends React.Component {
               <Typography>Waiting on...</Typography>
               <Typography type="headline">{this.renderWaitingOnName()}</Typography>
               <ReactInterval timeout={1000} enabled={true} callback={this.updateWaitingOnIndex.bind(this)} />
-              <ReactInterval timeout={1000} enabled={true} callback={this.getAnswers.bind(this)} />
+              <ReactInterval timeout={3000} enabled={true} callback={this.getAnswers.bind(this)} />
             </CardContent>
           </Card>
         </div>
+
+        <StillThereDialog open={requestCount >= requestLimit} onClose={() => this.setState({ requestCount: 0 })} />
       </div>
     );
   }

@@ -14,35 +14,34 @@ import Slide from 'material-ui/transitions/Slide';
 
 import { gradientBackground } from '../utils';
 
-class FullScreenDialog extends Component {
-  render() {
-    const { title, open, onClose, children } = this.props;
+const FullScreenDialog = (props) => {
+  const { title, open, onClose, children } = props;
 
-    return (
-      <div>
-        <Dialog
-          fullScreen
-          open={open}
-          onRequestClose={onClose}
-          transition={<Slide direction="up" />}
-        >
-          <AppBar style={gradientBackground}>
-            <Toolbar>
-              <Typography type="title" color="inherit" style={{flex: 1}}>
-                {title} 
-              </Typography>
-              <IconButton color="contrast" onClick={onClose} aria-label="Close">
-                <CloseIcon />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <div style={{marginTop: 25}}>
-            {children}
-          </div>
-        </Dialog>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Dialog
+        fullScreen
+        open={open}
+        onRequestClose={onClose}
+        transition={<Slide direction="up" />}
+      >
+        <AppBar style={gradientBackground}>
+          <Toolbar>
+            <Typography type="title" color="inherit" style={{flex: 1}}>
+              {title} 
+            </Typography>
+            <IconButton color="contrast" onClick={onClose} aria-label="Close">
+              <CloseIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <div style={{marginTop: 25}}>
+          {children}
+        </div>
+      </Dialog>
+    </div>
+  );
 }
+
 
 export default FullScreenDialog;

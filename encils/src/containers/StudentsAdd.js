@@ -10,12 +10,14 @@ import Grid from 'material-ui/Grid';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 
+import StillThereDialog from '../components/StillThereDialog';
+
 import phoneFormatter from 'phone-formatter';
 import ReactInterval from 'react-interval';
 
 import balloons from '../images/hot-air-balloon.jpeg'
 
-import { gradientBackground, onDesktop } from '../utils';
+import { gradientBackground, onDesktop, requestLimit } from '../utils';
 
 import { getProfile } from '../api-client/auth';
 import { getClassroom, getClassroomStudents } from '../api-client/classrooms';
@@ -36,6 +38,9 @@ const style = {
 class StudentsAdd extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      requestCount: 0
+    }
   }
 
   componentWillMount() {
@@ -48,6 +53,15 @@ class StudentsAdd extends React.Component {
     const { dispatch } = this.props
     dispatch(editActiveItem({classroom: null, question: null}))
       .then(() => dispatch(push('/classrooms')));
+  }
+
+  getStudents() {
+    const { dispatch, classroom } = this.props;
+    const { requestCount } = this.state;
+    if (requestCount < requestLimit) {
+      dispatch(getClassroomStudents(classroom.pk))
+      this.setState({ requestCount: requestCount + 1 });
+    }
   }
 
   renderStudent(student, index) {
@@ -63,7 +77,9 @@ class StudentsAdd extends React.Component {
   }
 
   render() {
-    const { dispatch, classroom, classroomStudents, profile } = this.props;
+    const { dispatch, classroom, classroomStudents, profile} = this.props;
+    const { requestCount } = this.state;
+    console.log(requestCount, requestLimit, requestCount < requestLimit);
     return (
       <div style={style}>
         <AppBar position="static" style={gradientBackground}>
@@ -77,7 +93,9 @@ class StudentsAdd extends React.Component {
             {classroomStudents.map(this.renderStudent)} 
           </Grid>
         </div>
-        <ReactInterval timeout={3000} enabled={true} callback={() => dispatch(getClassroomStudents(classroom.pk))} />
+        <ReactInterval timeout={3000} enabled={true} callback={this.getStudents.bind(this)} />
+
+        <StillThereDialog open={requestCount >= requestLimit} onClose={() => this.setState({ requestCount: 0 })} />
       </div>
     );
   }

@@ -43,7 +43,7 @@ class SMSMessage(object):
     def _default():
         data = {
             "keyword": "THIS",
-            "msisdn": "18137684282",
+            "msisdn": "18133893559",
             "text": "It stands for Parenthesis Mr Ulysses",
             "to": "18552436932",
             "message-timestamp": "2017-03-12 00:43:33",

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Checkbox from 'material-ui/Checkbox';
+import { FormControlLabel } from 'material-ui/Form';
 import TextField from 'material-ui/TextField';
 
 export default ({ meta: { touched, error } = {}, input: { ...inputProps }, errors, ...props }) => {
@@ -10,5 +12,14 @@ export default ({ meta: { touched, error } = {}, input: { ...inputProps }, error
       inputProps.error = true;
     }
   }
-  return <TextField {...inputProps} {...props} />
+  if(props.type === 'checkbox') {
+    return (
+      <FormControlLabel
+        control={<Checkbox {...inputProps} {...props} />}
+        label={props.label}
+      />
+    );
+  } else {
+    return <TextField {...inputProps} {...props} />
+  }
 }

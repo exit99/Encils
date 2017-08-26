@@ -11,6 +11,10 @@ from sms.models import (
 )
 
 
+# Redux-Form + Material UI sends back True or '' from checkbox fields.
+serializers.BooleanField.FALSE_VALUES.add('')
+
+
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
@@ -46,7 +50,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Assignment
-        fields = ('pk', 'name', 'created', 'question_count')
+        fields = ('pk', 'name', 'created', 'hide_answers', 'one_at_a_time', 'question_count')
         read_only_fields = ('pk', 'created')
 
 

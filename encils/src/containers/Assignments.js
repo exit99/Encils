@@ -80,6 +80,7 @@ class Assignments extends React.Component {
     const { dispatch, assignment } = this.props;
     const { assignmentEdit } = this.state;
     const method = assignmentEdit ? editAssignment(assignment.pk) : createAssignment;
+    console.log(values);
     dispatch(method(values)).then((res) => {
       if (!isUndefined(res)) {
         this.closeUpdateAssignmentDialog();
@@ -183,7 +184,7 @@ class Assignments extends React.Component {
             </Grid>
           </div>
 
-          <FullScreenDialog title="Create Classoom" open={assignmentDialogOpen} onClose={this.closeUpdateAssignmentDialog.bind(this)}>
+          <FullScreenDialog title="Create Assignment" open={assignmentDialogOpen} onClose={this.closeUpdateAssignmentDialog.bind(this)}>
             <AssignmentForm dispatch={dispatch} onSubmit={this.submitAssignmentForm.bind(this)} initialValues={assignmentEdit ? assignment : {}} />
           </FullScreenDialog>
 

@@ -11,6 +11,8 @@ import Card, { CardContent } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
+import { FormControlLabel } from 'material-ui/Form';
+import Switch from 'material-ui/Switch';
 import LeftIcon from 'material-ui-icons/KeyboardArrowLeft';
 import RightIcon from 'material-ui-icons/KeyboardArrowRight';
 
@@ -54,12 +56,21 @@ const waitingStyle = {
   width: '20em'
 };
 
+const blurryStyle = {
+  color: 'transparent',
+  textShadow: '0 0 10px rgba(0,0,0,0.5)',
+  paddingTop: 5,
+}
+
 class AssignmentActive extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       waitingOnIndex: -1,
       requestCount: 0,
+      hideAnswers: true,
+      oneByOne: false,
+      answerIndex: 0,
     }
   }
 
@@ -67,7 +78,11 @@ class AssignmentActive extends React.Component {
     const { dispatch } = this.props;
     resetQuestionAnswers(dispatch);
     dispatch(getProfile());
-    dispatch(getAssignment(this.props.match.params.assignmentPk));
+    dispatch(getAssignment(this.props.match.params.assignmentPk))
+      .then((assignment) => { 
+        this.state.hideAnswers = assignment.hide_answers
+        this.state.oneByOne = assignment.one_at_a_time
+      });
     dispatch(getClassroomStudents(this.props.match.params.classroomPk));
     dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
       .then((questions) => {
@@ -122,21 +137,62 @@ class AssignmentActive extends React.Component {
     dispatch(editActiveItem({classroom: classroom.pk, question: assignmentQuestions[index].pk}))
       .then(() => {
         dispatch(push(`/assignment-active/${classroom.pk}/${assignment.pk}/${index}`));
-        this.setState({ requestCount: 0 });
+        this.setState({ requestCount: 0, answerIndex: 0 });
       });
   }
 
   renderAnswer(answer, index) {
-    return (
-      <Grid key={index} item xs={12} sm={6} md={3} lg={3} xl={2}>
-        <Card>
-          <CardContent>
-            <Typography type="headline">{answer.student.name}</Typography>
-            <Typography type="subheading" style={{paddingTop: 5}}>{answer.text}</Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-    )
+    const { questionAnswers } = this.props;
+    const { hideAnswers, oneByOne, answerIndex } = this.state;
+    if (oneByOne) {
+      if (answerIndex === index) {
+        return ( 
+          <Grid container style={{ position: 'absolute', top: '50%', marginTop: -200 }} justify="center">
+            <Grid item>
+              <Card style={{minWidth: 400}}>
+                <CardContent>
+                  <Typography type="headline">{answer.student.name}</Typography>
+                  <Typography type="subheading" style={hideAnswers ? blurryStyle : {paddingTop: 5}}>{answer.text}</Typography>
+                </CardContent>
+              </Card>
+              <br />
+              <Grid container justify="center">
+                <Grid item xs={4}>
+                  <Button
+                    disabled={answerIndex === 0}
+                    onClick={() => this.setState({answerIndex: answerIndex - 1})}
+                    style={{width: '100%'}}
+                  >
+                    <LeftIcon />Previous
+                  </Button>
+                </Grid>
+                <Grid item xs={4}><center><Typography style={{padding: 10}}>{answerIndex + 1} of {questionAnswers.length}</Typography></center></Grid>
+                <Grid item xs={4}>
+                  <Button 
+                    disabled={answerIndex === questionAnswers.length - 1}
+                    onClick={() => this.setState({answerIndex: answerIndex + 1})}
+                    style={{width: '100%'}}
+                  >
+                    Next<RightIcon />
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        )
+      }
+    } else {
+      return (
+        <Grid key={index} item xs={12} sm={6} md={3} lg={3} xl={2}>
+          <Card>
+            <CardContent>
+              <Typography type="headline">{answer.student.name}</Typography>
+              <Typography type="subheading" style={hideAnswers ? blurryStyle : {paddingTop: 5}}>{answer.text}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      )
+    }
   }
 
   render() {
@@ -149,7 +205,7 @@ class AssignmentActive extends React.Component {
       questionAnswers,
       dispatch,
     } = this.props;
-    const { requestCount } = this.state;
+    const { requestCount, hideAnswers } = this.state;
 
     const questionIndex = parseInt(this.props.match.params.questionIndex)
     const question = assignmentQuestions && assignmentQuestions[questionIndex];
@@ -161,6 +217,16 @@ class AssignmentActive extends React.Component {
             <Typography type='headline' style={{flex: 1}}>
               { question ? question.text : 'Loading...' }
             </Typography>
+            {assignment.hide_answers ? 
+            <FormControlLabel style={{color: 'black'}}
+              control={
+                <Switch
+                  checked={!hideAnswers}
+                  onChange={(event, checked) => this.setState({ hideAnswers: !checked })}
+                />
+              }
+              label="Show answers"
+            /> : null}
             <StudentCount count={questionAnswers.length} max={classroomStudents.length} />
             <Button disabled={questionIndex === 0} onClick={() => this.newQuestion(questionIndex - 1)}><LeftIcon />Previous</Button>
             <Typography style={{padding: 10}}>{questionIndex+1} of {assignmentQuestions.length}</Typography>
@@ -173,7 +239,7 @@ class AssignmentActive extends React.Component {
 
         <div style={{padding: 25}}>
           <Grid container direction='row' justify='flex-start'>
-            {questionAnswers.map(this.renderAnswer)} 
+            {questionAnswers.map(this.renderAnswer.bind(this))} 
           </Grid>
         </div>
 

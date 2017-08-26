@@ -133,6 +133,8 @@ class Assignment(models.Model):
     teacher = models.ForeignKey(Teacher)
     name = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
+    hide_answers = models.BooleanField(default=False)
+    one_at_a_time = models.BooleanField(default=False)
 
     @property
     def question_count(self):

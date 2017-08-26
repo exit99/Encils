@@ -22,6 +22,24 @@ let AssignmentForm = props => {
           fullWidth={true}
           errors={error}
         />
+        <Field
+          name="hide_answers"
+          label="Hide answers."
+          type="checkbox"
+          component={RenderedInput}
+          margin="normal"
+          fullWidth={true}
+          errors={error}
+        />
+        <Field
+          name="one_at_a_time"
+          label="Show one answer at a time."
+          type="checkbox"
+          component={RenderedInput}
+          margin="normal"
+          fullWidth={true}
+          errors={error}
+        />
         {error && error.non_field_errors ? error.non_field_errors.map((message, index) => <Message key={index} type="error" message={message} />) : null}
       </form>
       <br />

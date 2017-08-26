@@ -5,7 +5,7 @@ import { stopSubmit } from 'redux-form'
 import {push} from 'react-router-redux';
 
 const makeUrl = (endpoint) => { 
-  return `http://${process.env.REACT_APP_API_HOST}${endpoint}`
+  return `${process.env.REACT_APP_API_HOST}${endpoint}`
 }
 
 const request = (method, endpoint, key = null, formName = null) => (data = null) => (dispatch) => {

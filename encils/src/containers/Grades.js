@@ -149,9 +149,10 @@ class Grades extends React.Component {
                 <br />
                 <AppBar position="static">
                   <Toolbar>
-                    <Typography style={{color: 'white', flex: 1}}>{isUndefined(assignmentQuestions[questionIndex]) ? 'Loading...' : assignmentQuestions[questionIndex].text}</Typography>
-                    {questionIndex === 0 ? null : <Button onClick={() => this.newQuestion(questionIndex - 1)} style={{color: 'white'}}><LeftIcon />Previous</Button>}
-                    {questionIndex === assignmentQuestions.length - 1 ? null : <Button onClick={() => this.newQuestion(questionIndex + 1)} style={{color: 'white'}}>Next<RightIcon /></Button>}
+                    <Typography style={{color: 'white', flex: 1}}>{isUndefined(assignmentQuestions[questionIndex]) ? 'Loading...' : `Q${questionIndex+1}: ${assignmentQuestions[questionIndex].text}`}</Typography>
+                    <Button disabled={questionIndex === 0} onClick={() => this.newQuestion(questionIndex - 1)} style={{color: 'white'}}><LeftIcon />Previous</Button>
+                    <Typography style={{color: 'white'}}>{questionIndex + 1}/{assignmentQuestions.length}</Typography>
+                    <Button disabled={questionIndex === assignmentQuestions.length - 1} onClick={() => this.newQuestion(questionIndex + 1)} style={{color: 'white'}}>Next<RightIcon /></Button>
                   </Toolbar>
                 </AppBar>
                  <Card style={{background: grey[100]}}>

@@ -12,6 +12,7 @@ const QuestionTable = (props) => {
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell>Number</TableCell>
             <TableCell>Question</TableCell>
             <TableCell></TableCell>
           </TableRow>
@@ -20,6 +21,7 @@ const QuestionTable = (props) => {
           {questions.map((question, index) => {
             return (
               <TableRow key={index}>
+                  <TableCell>{`Q${index+1}`}</TableCell>
                   <TableCell>{question.text}</TableCell>
                   <TableCell><Button onClick={() => onDelete(question.pk)} style={{float:'right'}}>Delete</Button></TableCell>
               </TableRow>

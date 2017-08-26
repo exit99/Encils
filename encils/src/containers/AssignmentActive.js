@@ -137,7 +137,7 @@ class AssignmentActive extends React.Component {
     dispatch(editActiveItem({classroom: classroom.pk, question: assignmentQuestions[index].pk}))
       .then(() => {
         dispatch(push(`/assignment-active/${classroom.pk}/${assignment.pk}/${index}`));
-        this.setState({ requestCount: 0, answerIndex: 0 });
+        this.setState({ requestCount: 0, answerIndex: 0, hideAnswers: assignment.hide_answers });
       });
   }
 
@@ -215,7 +215,7 @@ class AssignmentActive extends React.Component {
         <AppBar position="static" style={gradientBackground}>
           <Toolbar>
             <Typography type='headline' style={{flex: 1}}>
-              { question ? question.text : 'Loading...' }
+              { question ? `Q${questionIndex+1}: ${question.text}` : 'Loading...' }
             </Typography>
             {assignment.hide_answers ? 
             <FormControlLabel style={{color: 'black'}}

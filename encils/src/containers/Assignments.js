@@ -80,7 +80,6 @@ class Assignments extends React.Component {
     const { dispatch, assignment } = this.props;
     const { assignmentEdit } = this.state;
     const method = assignmentEdit ? editAssignment(assignment.pk) : createAssignment;
-    console.log(values);
     dispatch(method(values)).then((res) => {
       if (!isUndefined(res)) {
         this.closeUpdateAssignmentDialog();

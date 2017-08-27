@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { submit } from 'redux-form'
 import { push } from 'react-router-redux';
+import isUndefined from 'lodash/isUndefined';
 
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
@@ -19,7 +20,9 @@ import { login } from '../api-client/auth';
 class Login extends React.Component {
   onSubmit(values) {
     const { dispatch } = this.props
-    dispatch(login(values)).then(() => dispatch(push('/classrooms')))
+    dispatch(login(values)).then((res) => {
+      if(!isUndefined(res)) { dispatch(push('/classrooms')) };
+    });
   }
 
   render() {

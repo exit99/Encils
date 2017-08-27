@@ -3,26 +3,33 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
-import Card, { CardContent } from 'material-ui/Card';
-import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 
-import Dashboard from './Dashboard';
+import Logo from '../components/Logo';
+import Main from '../components/Main';
 
 const NotFound = (props) => {
   const { dispatch } = props;
   return (
-    <Dashboard>
-      <div style={{padding:40}}>
-        <center>
-        <Typography type="display4">404</Typography>
-        <Typography type="display3">Page Not Found</Typography>
-        </center>
-      </div>
-    </Dashboard>
+      <Main>
+        <div style={{padding:40}}>
+          <center>
+          <a onClick={() => dispatch(push('/classrooms'))}>
+            <Logo style={{cursor: 'pointer'}}/>
+          </a>
+          <br />
+          <br />
+          <hr />
+          <Typography type="display4">404</Typography>
+          <Typography type="display3">Page Not Found</Typography>
+          <hr />
+          <br />
+          <br />
+          <Button raised color="accent" onClick={() => dispatch(push('/classrooms'))}>Return</Button>
+          </center>
+        </div>
+      </Main>
   );
 }
 

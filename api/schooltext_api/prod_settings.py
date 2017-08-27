@@ -5,8 +5,6 @@ from schooltext_api.settings import *
 DEBUG = False
 SECRET_KEY = "WKLHLEGHWWfekh2g89ehge2ghEbGHieklgh2"
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 DATABASES['default'] = {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'encilsdb',
@@ -16,3 +14,5 @@ DATABASES['default'] = {
 }
 
 DJOSER['DOMAIN'] = 'http://dashboard.encils.s3-website-us-east-1.amazonaws.com'
+
+EMAIL_BACKEND = 'django_ses.SESBackend'

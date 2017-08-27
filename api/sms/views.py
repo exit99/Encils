@@ -195,7 +195,6 @@ def demo_request(request):
     if form.is_valid():
         form.send_email()
         return HttpResponse()
-    print(form.errors)
     return HttpResponseBadRequest()
         
 

@@ -11,7 +11,6 @@ import createPalette from 'material-ui/styles/palette';
 import { orange, blue } from 'material-ui/colors';
 
 import Login from './Login';
-import Register from './Register';
 import Classrooms from './Classrooms';
 import Assignments from './Assignments';
 import StudentsAdd from './StudentsAdd';
@@ -53,7 +52,6 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Login} />
               <Route exact path='/login' component={Login} />
-              <Route exact path='/register' component={Register} />
               <Route exact path='/classrooms' component={Classrooms} />
               <Route exact path='/assignments' component={Assignments} />
               <Route exact path='/students-add/:classroomPk' component={StudentsAdd} />

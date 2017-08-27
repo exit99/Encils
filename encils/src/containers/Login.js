@@ -44,9 +44,6 @@ class Login extends React.Component {
           <CardActions>
             <Grid container justify="flex-end" spacing={8}>
               <Grid item>
-                <Button raised color="primary" onClick={() => dispatch(push('/register'))}>Register</Button>
-              </Grid>
-              <Grid item>
                 <Button raised color="accent" onClick={() => dispatch(submit('loginForm'))}>Sign in</Button>
               </Grid>
             </Grid>

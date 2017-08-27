@@ -41,6 +41,8 @@ WORKDIR api
 
 RUN pip install -r reqs.txt
 
+RUN python manage.py migrate --no-input
+
 ENV PYTHONPATH /api/
 
 CMD supervisord -n

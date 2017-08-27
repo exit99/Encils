@@ -16,3 +16,12 @@ DATABASES['default'] = {
 DJOSER['DOMAIN'] = 'http://dashboard.encils.s3-website-us-east-1.amazonaws.com'
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
+
+LOGGING_CONFIG = None
+LOGGING = {
+    'loggers': {
+        'django': {
+            'level': 'ERROR', 'handlers': ['console'],
+         },
+    }
+}

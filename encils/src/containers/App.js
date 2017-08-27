@@ -18,6 +18,8 @@ import AssignmentActive from './AssignmentActive';
 import Grades from './Grades';
 import Reports from './Reports';
 import Settings from './Settings';
+import PasswordReset from './PasswordReset';
+import PasswordResetConfirmation from './PasswordResetConfirmation';
 import NotFound from './NotFound';
 import ScrollToTop from './router/ScrollToTop';
 
@@ -59,6 +61,8 @@ class App extends Component {
               <Route exact path='/grades' component={Grades} />
               <Route exact path='/reports' component={Reports} />
               <Route exact path='/settings' component={Settings} />
+              <Route exact path='/password-reset' component={PasswordReset} />
+              <Route exact path='/password-reset-confirm/:uid/:token' component={PasswordResetConfirmation} />
               <Route exact path='*' component={NotFound} status={404} />
             </Switch>
           </ScrollToTop>

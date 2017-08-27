@@ -145,6 +145,9 @@ DJOSER = {
     'SERIALIZERS': {
         'user': 'sms.serializers.TeacherSerializer',
     },
+    'PASSWORD_RESET_CONFIRM_URL': 'password-reset-confirm/{uid}/{token}',
+    'SITE_NAME': 'Encils',
+    'DOMAIN': '127.0.0.1:3000',
 }
 
 APPEND_SLASH = False

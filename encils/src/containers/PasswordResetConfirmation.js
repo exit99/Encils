@@ -13,38 +13,44 @@ import Typography from 'material-ui/Typography';
 import Logo from '../components/Logo';
 import Main from '../components/Main';
 
-import LoginForm from './forms/LoginForm';
+import PasswordResetConfirmationForm from './forms/PasswordResetConfirmationForm';
 
-import { login } from '../api-client/auth';
+import { passwordResetConfirmation } from '../api-client/auth';
 
-class Login extends React.Component {
+class PasswordResetConfirmation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { successful: false }
+  }
+
   onSubmit(values) {
     const { dispatch } = this.props
-    dispatch(login(values)).then((res) => {
-      if(!isUndefined(res)) { dispatch(push('/classrooms')) };
+    const formValues = Object.assign({}, values, this.props.match.params);
+    dispatch(passwordResetConfirmation(formValues)).then((res) => {
+      if (!isUndefined(res)) { this.setState({ successful: true }) };
     });
   }
 
   render() {
     const { dispatch } = this.props;
+    const { successful } = this.state;
 
     return (
       <Main gradient={true}>
         <Card style={{padding: 20, minWidth: 400}}>
           <CardContent>
             <Logo style={{marginBottom: 10}}/>
-            <Typography type="subheading">Sign in to continue</Typography>
-            <LoginForm onSubmit={this.onSubmit.bind(this)}/>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <a style={{cursor: 'pointer', fontSize: 12}} onClick={() => dispatch(push('/password-reset'))} >Forgot password?</a>
-              </Grid>
-            </Grid>
+            <Typography type="subheading">{successful ? 'Password reset successful.' : 'Reset Password' }</Typography>
+            {successful ? null : <PasswordResetConfirmationForm onSubmit={this.onSubmit.bind(this)}/>}
           </CardContent>
           <CardActions>
             <Grid container justify="flex-end" spacing={8}>
               <Grid item>
-                <Button raised color="accent" onClick={() => dispatch(submit('loginForm'))}>Sign in</Button>
+                {successful ?
+                <Button raised color="accent" onClick={() => dispatch(push('/login'))}>Return to login</Button>
+                :
+                <Button raised color="accent" onClick={() => dispatch(submit('passwordResetConfirmationForm'))}>Submit</Button>
+                }
               </Grid>
             </Grid>
           </CardActions>
@@ -62,4 +68,4 @@ const mapDispatchToProps = (dispatch) => ({
   dispatch: dispatch
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(PasswordResetConfirmation)

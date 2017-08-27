@@ -44,6 +44,7 @@ const request = (method, endpoint, key = null, formName = null) => (data = null)
           dispatch(push('/login'));
       } else if (statusCode.startsWith('4')) {
         return response.json().then((resData) => {
+          console.log(formName, resData);
           dispatch(stopSubmit(formName, {_error: resData}));
         });
       } else {

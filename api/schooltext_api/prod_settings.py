@@ -14,3 +14,5 @@ DATABASES['default'] = {
     'HOST': 'aa1dlwzd9c7n274.c1vqcdpwlpkq.us-east-1.rds.amazonaws.com',
     'PASSWORD': os.environ.get('RDS_PASSWORD', ''),
 }
+
+DJOSER['DOMAIN'] = 'http://dashboard.encils.s3-website-us-east-1.amazonaws.com'

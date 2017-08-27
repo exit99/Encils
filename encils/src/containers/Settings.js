@@ -24,7 +24,6 @@ class Settings extends React.Component {
   componentWillMount() {
     this.state = {
       passwordReset: false,
-      passwordResetFail: false,
     }
     const { dispatch } = this.props;
     dispatch(getProfile());
@@ -35,14 +34,13 @@ class Settings extends React.Component {
     dispatch(setPassword(values)).then((res) => {
       this.setState({ 
         passwordReset: res && res.status === 204,
-        passwordResetFail: isUndefined(res)
       })
     });
   }
 
   render() {
     const { profile, dispatch } = this.props;
-    const { passwordReset, passwordResetFail } = this.state;
+    const { passwordReset } = this.state;
     
     return (
       <Dashboard>
@@ -63,7 +61,6 @@ class Settings extends React.Component {
               </Card>
               <br />
               {passwordReset ? <div><Message type="success" message='Password updated' /><br /></div> : null}
-              {passwordResetFail ? <div><Message type="error" message='Incorrect current password' /><br /></div> : null}
               <Card style={{background: grey[100]}}>
                 <CardContent>
                   <Typography type="headline">Change password</Typography>

@@ -1,8 +1,9 @@
 from django.conf import settings
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from rest_framework import decorators, generics, permissions, response
 
+from sms.forms import DemoRequestForm
 from sms.models import (
     Answer,
     Assignment,
@@ -186,3 +187,16 @@ def get_classroom_report(request, pk):
     report = classroom_report(classroom)
     return JsonResponse(report)
 
+
+@decorators.api_view(['POST'])
+@decorators.permission_classes([])
+def demo_request(request):
+    form = DemoRequestForm(request.POST or None)
+    if form.is_valid():
+        form.send_email()
+        return HttpResponse()
+    print(form.errors)
+    return HttpResponseBadRequest()
+        
+
+    

@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^receive/$', views.receive_sms),
     url(r'^active-item/$', views.active_item),
     url(r'^reports/(?P<pk>[0-9]+)/$', views.get_classroom_report),
+    url(r'^demo-request/$', views.demo_request),
 ]

@@ -149,14 +149,32 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 wow text-center">
-                        <div class="block">
-                            <h2 style="color: white; font-size: 30px">Learn more about Encils</h2>
+                        <div class="block" id="formblock">
+                            <h2 style="color: white; font-size: 30px">Request a Demo</h2>
                             <p style="color: white; font-size: 20px">Want to learn how to improve engagment?<br />Would you like to experience our SMS testing solution firsthand?<br />We'd love to hear from you.</p>
-                            <div class="form-group">
-                                <center>
-                                    <button class="btn btn-default btn-bright" type="submit">Request a Demo</button>
-                                </center>
-                            </div>
+                            <form id="demoform">
+                                <div class="form-group">
+                                    <input placeholder="Name" type="text" class="form-control" id="name" name="name">
+                                    <p style="color: red;" id="name-error"></p>
+                                </div>
+                                <div class="form-group">
+                                    <input placeholder="School" type="text" class="form-control" id="school" school="school">
+                                    <p style="color: red;" id="school-error"></p>
+                                </div>
+                                <div class="form-group">
+                                    <input placeholder="Email" type="email" class="form-control" id="email" email="email">
+                                    <p style="color: red;" id="email-error"></p>
+                                </div>
+                                <div class="form-group">
+                                    <input placeholder="Phone: (555) 555-5555" type='tel' pattern='[\(]\d{3}[\)]\d{3}[\-]\d{4}' class="form-control" id="phone" phone="phone">
+                                    <p style="color: red;" id="phone-error"></p>
+                                </div>
+                                <button id="formbtn" class="btn btn-default btn-bright" type="button">Request a Demo</button>
+                            </form>
+                        </div>
+                        <div class="block" id="submittedblock">
+                            <h2 style="color: white; font-size: 30px">Demo Request Sent!</h2>
+                            <p style="color: white; font-size: 20px">One of our representatives will be in touch with you soon.</p>
                         </div>
                     </div>
                 </div>
@@ -175,13 +193,78 @@
             </div>
         </footer>
 
-
         <!-- Js -->
         <script src="js/jquery-1.10.2.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/jquery.nav.js"></script>
         <script src="js/wow.min.js"></script>
         <script src="js/main.js"></script>
+
+        <script>
+            var submittedblock = $('#submittedblock');
+            submittedblock.hide();
+            $('#formbtn').click( function() {
+                var name = $('#name').val();
+                var school = $('#school').val();
+                var email = $('#email').val();
+                var phone = $('#phone').val();
+                var valid = true;
+                if(name === '') {
+                    $('#name-error').show(); 
+                    $('#name-error').text("This field is required."); 
+                    valid = false;
+                } else {
+                    $('#name-error').hide(); 
+                    $('#name-error').text(""); 
+                }
+                if (school === '') {
+                    $('#school-error').show(); 
+                    $('#school-error').text("This field is required."); 
+                    valid = false;
+                } else {
+                    $('#school-error').hide(); 
+                    $('#school-error').text(""); 
+                }
+                if (email === '') {
+                    $('#email-error').show(); 
+                    $('#email-error').text("This field is required."); 
+                    valid = false;
+                } else if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+                    $('#email-error').show(); 
+                    $('#email-error').text("Invalid email address."); 
+                    valid = false;
+                } else {
+                    $('#email-error').hide(); 
+                    $('#email-error').text(""); 
+                }
+                if (phone === '') {
+                    $('#phone-error').show(); 
+                    $('#phone-error').text("This field is required."); 
+                    valid = false;
+                } else if(!(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phone))) {
+                    $('#phone-error').show(); 
+                    $('#phone-error').text("Invalid phone number."); 
+                    valid = false;
+                } else {
+                    $('#phone-error').hide(); 
+                    $('#phone-error').text(""); 
+                }
+
+                if (valid) {
+                    $.ajax({
+                        url: "http://localhost:8000/demo-request/",
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'name': name, 'school': school, 'email': email, 'phone': phone}
+                    });
+                    $('#formblock').hide();
+                    submittedblock.show();
+                }
+            });
+        </script>
+
+
+
         
     </body>
 </html>

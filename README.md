@@ -28,7 +28,7 @@ You will need to `pip install awscli` (version 1.11.140).
 
 ## Homepage
 
-`aws s3 sync homepage/ s3://homepage.encils`
+`aws s3 sync homepage/ s3://encils.com`
 
 ## Dashboard
 

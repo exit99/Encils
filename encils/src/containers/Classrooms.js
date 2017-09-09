@@ -8,6 +8,7 @@ import isUndefined from 'lodash/isUndefined';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
+import Checkbox from 'material-ui/Checkbox';
 import Card, { CardContent } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import IconButton from 'material-ui/IconButton';
@@ -21,12 +22,15 @@ import List, {
   ListItem,
   ListItemIcon,
   ListItemText,
+  ListItemSecondaryAction,
 } from 'material-ui/List';
 
 import AssignmentTable from '../components/AssignmentTable';
 import FullScreenDialog from '../components/FullScreenDialog';
 import SelectList from '../components/SelectList';
 import StudentTable from '../components/StudentTable';
+import Header from '../components/Header';
+import SortableList from '../components/SortableList';
 
 import Dashboard from './Dashboard';
 import ClassroomForm from './forms/ClassroomForm';
@@ -176,65 +180,13 @@ class Classrooms extends React.Component {
     return (
         <Dashboard>
           <div style={{padding:40}}>
+            <Header text="Classes" buttonText="Create Class" />
             <Grid container>
-              <Grid item md={3} sm={12} xs={12}>
-                <Card style={{background: grey[100]}}>
-                  <CardContent>
-                    <SelectList 
-                      title="Classrooms"
-                      items={classrooms}
-                      selected={classroom}
-                      primaryField="name"
-                      secondaryField="school"
-                      onClick={this.getClassroom.bind(this)} />
-                    <Button style={{width: '100%'}} raised color="primary"
-                      onClick={() => this.setState({classroomDialogOpen: true, classroomEdit: false})}>
-                      Create Classroom
-                    </Button>
-                  </CardContent>
-                </Card>
+              <Grid item xs={12}>
+                <SortableList items={classrooms} />
               </Grid>
-              { classrooms.length === 0 ? null :
-              <Grid item md={9} sm={12} xs={12}>
-                <AppBar position="static">
-                   <Toolbar>
-                     <Typography type="title" color="inherit" style={{flex: 1}}>
-                       {classroom.name}
-                     </Typography>
-                     <Button color="contrast" onClick={this.goToAddStudents.bind(this)}>Add Students</Button>
-                     <Button color="contrast" onClick={this.startAssignment.bind(this)}>Give Assignment</Button>
-                     <Button color="contrast" onClick={() => this.setState({classroomDialogOpen: true, classroomEdit: true})}>Edit</Button>
-                     <Button color="contrast" onClick={this.deleteClassroom.bind(this)}>Delete</Button>
-                   </Toolbar>
-                 </AppBar>
-                <br />
-
-                <AppBar position="static">
-                  <Tabs value={tabValue} onChange={this.handleTabChange.bind(this)}>
-                    <Tab disabled={true} style={tabValue === 0 ? {opacity: 1} : {}} label="Students" />
-                  </Tabs>
-                </AppBar>
-                {tabValue === 0 && 
-                 <Card style={{background: grey[100]}}>
-                  <CardContent>
-                    <StudentTable students={classroomStudents} onDelete={this.onStudentDelete.bind(this)} />
-                  </CardContent>
-                </Card>
-                }
-              </Grid>
-              }
             </Grid>
           </div>
-
-          <FullScreenDialog title="Create Classoom" open={classroomDialogOpen} onClose={this.closeUpdateClassroomDialog.bind(this)}>
-            <ClassroomForm dispatch={dispatch} onSubmit={this.submitClassroomForm.bind(this)} initialValues={classroomEdit ? classroom : {}} />
-          </FullScreenDialog>
-
-          <FullScreenDialog title="Select Assignment" open={startAssignmentDialogOpen} onClose={() => this.setState({startAssignmentDialogOpen: false})}>
-            <List style={{ padding: 25, marginTop: 25 }}>
-              {assignments.length > 0 ? assignments.map(this.renderAssignment.bind(this)) : <p>No assignments created yet.</p>}
-            </List>
-          </FullScreenDialog>
         </Dashboard>
     );
   }

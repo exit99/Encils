@@ -2,7 +2,7 @@
 const gradientBackground = {
   //background: '#F7971E',
   //background: '-webkit-linear-gradient(to right, #FFD200, #F7971E)',
-  background: 'linear-gradient(to right, #FFD200, #F7971E)'
+  background: 'linear-gradient(to right, #ffffff, #2196f3)'
 }
 
 const onDesktop = () => window.matchMedia(`(min-width: 1224px)`).matches;

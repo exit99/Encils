@@ -1,3 +1,5 @@
+// TODO: Need to adjust checkboxes for sort order.
+
 import React from 'react';
 import capitalize from 'lodash/capitalize';
 import sortBy from 'lodash/sortBy';
@@ -14,8 +16,15 @@ import ArrowDownwardIcon from 'material-ui-icons/ArrowDownward';
 import CheckboxIcon from 'material-ui-icons/CheckBox';
 import CheckboxOutlineIcon from 'material-ui-icons/CheckBoxOutlineBlank';
 import { blue, grey } from 'material-ui/colors';
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
 
 import Link from './Link';
+import NothingHere from './NothingHere';
 
 class SortableList extends React.Component {
   componentWillMount() {
@@ -25,6 +34,7 @@ class SortableList extends React.Component {
       selectedIndex: 0,
       sortDown: true,
       checked: this.props.items.map(() => false),
+      deleteDialogOpen: false,
     }
   }
 
@@ -61,18 +71,30 @@ class SortableList extends React.Component {
     return checked.filter((item) => item).length > 0
   }
 
+  onDelete() {
+    const { checked } = this.state;
+    const { items, onDelete } = this.props;
+    checked.map((value, index) => {
+      if (value) { onDelete(items[index].pk) };
+    });
+    this.setState({ deleteDialogOpen: false,  checked: items.map(() => false)});
+  }
+
   render() {
-    const { getTitle, getSubtitle, properties, sortFields } = this.props;
-    const { anchorEl, selectedIndex, sortDown, checked } = this.state;
+    const { getTitle, getSubtitle, properties, sortFields, nothingText } = this.props;
+    const { anchorEl, selectedIndex, sortDown, checked, deleteDialogOpen } = this.state;
     const items = sortBy(this.props.items, sortFields[selectedIndex])
-    if (!sortDown) { items.reverse() };
+    if (!sortDown) { 
+      items.reverse()
+    };
+    const atLeastOneChecked = this.atLeastOneChecked();
 
     return (
       <div>
         <Grid container style={{borderBottom: '1px solid', borderColor: grey[300], paddingTop: 15}}>
           <Grid item xs={1}>
             <center>
-              {this.atLeastOneChecked() ?
+              {atLeastOneChecked ?
                 <CheckboxIcon
                   onClick={this.allCheckboxClicked.bind(this)}
                   style={{cursor: 'pointer', width: 45, height: 45, color: blue[700]}} />
@@ -83,12 +105,13 @@ class SortableList extends React.Component {
               }
             </center>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={11}>
             <Typography type="header" style={{marginTop: 10, float: 'left', marginRight: 15}}>Sort by</Typography>
             <Button aria-owns={this.state.open ? 'simple-menu' : null} aria-haspopup="true" onClick={this.handleClick} style={{backgroundColor: grey[300], float: 'left', marginRight: 15, height: '42px'}}>{sortFields[selectedIndex]}</Button>
             <Button onClick={() => this.setState({ sortDown: !sortDown})} style={{backgroundColor: grey[300], float: 'left', marginRight: 15}}>
               { sortDown ?  <ArrowDownwardIcon style={{height: 20}}/> : <ArrowUpwardIcon style={{height: 20}}/> }
             </Button>
+            {atLeastOneChecked ? <Button style={{backgroundColor: grey[300], float: 'left', marginRight: 15, height: '42px'}} onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button> : null}
           </Grid>
         </Grid>
 
@@ -101,7 +124,7 @@ class SortableList extends React.Component {
           {sortFields.map((field, index) => <MenuItem onClick={(event) => this.handleMenuItemClick(event, index)}>{capitalize(field)}</MenuItem>)}
         </Menu>
 
-        {items.map((value, index) => (
+        {items.length > 0 ? items.map((value, index) => (
           <div>
             <Grid container style={{borderBottom: '1px solid', borderColor: grey[300], paddingTop: 15}}>
               <Grid item xs={1}>
@@ -117,21 +140,40 @@ class SortableList extends React.Component {
                   }
                 </center>
               </Grid>
-              <Grid item xs={11} md={7}>
+              <Grid item xs={11} md={11 - Object.keys(properties).length}>
                 <div style={{flex: 1}}>
                   <Link text={getTitle(value)} />
                   <Typography style={{paddingTop: 5}}>{getSubtitle(value)}</Typography>
                 </div>
               </Grid>
               {Object.keys(properties).map(key => (
-                <Grid item xs={3} md={1}>
+                <Grid item xs={12} md={1}>
                   <Typography><b>{properties[key](value)}</b></Typography>
                   <Typography>{key}</Typography>
                 </Grid>
               ))}
             </Grid>
           </div>
-        ))}
+          )) : <NothingHere text={nothingText} /> }
+
+        <Dialog open={deleteDialogOpen} onRequestClose={() => this.setState({ deleteDialogOpen: false })}>
+          <DialogTitle>Are you sure you want to delete these Classrooms?</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <Typography>This will delete all students and graded assignments for these classrooms and cannot be undone.</Typography>
+              <br />
+              <Typography>This CANNOT be undone.</Typography>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.setState({ deleteDialogOpen: false })} color="accent">
+              No, Cancel
+            </Button>
+            <Button onClick={this.onDelete.bind(this)} color="primary">
+              Yes, Delete 
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }

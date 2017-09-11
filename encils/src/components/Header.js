@@ -10,9 +10,10 @@ export default ({ text, buttonText, buttonIcon, onClick }) => {
       <Grid item md={10} sm={12} xs={12}>
         <Headline style={{ paddingBottom: 10 }} text={text} />
       </Grid>
+      {buttonText ?
       <Grid item md={2} sm={12} xs={12}>
-        <Button raised dense color="primary" style={{ width: '100%' }}>{buttonText}</Button>
-      </Grid>
+        <Button raised dense color="primary" style={{ width: '100%' }} onClick={onClick}>{buttonText}</Button>
+      </Grid> : null}
     </Grid>
   );
 }

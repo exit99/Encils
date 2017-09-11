@@ -12,7 +12,8 @@ import Typography from 'material-ui/Typography';
 import CloseIcon from 'material-ui-icons/Close';
 import Slide from 'material-ui/transitions/Slide';
 
-import { gradientBackground } from '../utils';
+import { gradientBackground, gutterPadding } from '../utils';
+import Header from './Header';
 
 const FullScreenDialog = (props) => {
   const { title, open, onClose, children } = props;
@@ -26,22 +27,23 @@ const FullScreenDialog = (props) => {
         transition={<Slide direction="up" />}
       >
         <AppBar style={gradientBackground}>
-          <Toolbar>
-            <Typography type="title" color="inherit" style={{flex: 1}}>
+          <Toolbar style={gutterPadding}>
+            <Typography type="title" style={{flex: 1}}>
               {title} 
             </Typography>
-            <IconButton color="contrast" onClick={onClose} aria-label="Close">
+            <IconButton onClick={onClose} aria-label="Close">
               <CloseIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
-        <div style={{marginTop: 25}}>
-          {children}
+        <div style={{marginTop: 75}}>
+          <div style={gutterPadding}>
+            {children}
+          </div>
         </div>
       </Dialog>
     </div>
   );
 }
-
 
 export default FullScreenDialog;

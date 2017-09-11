@@ -16,10 +16,7 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 
 import Logo from '../components/Logo';
 
-import { gradientBackground, onDesktop } from '../utils';
-
-
-const gutterPadding = {paddingLeft: 100, paddingRight: 100};
+import { gradientBackground, onDesktop, gutterPadding } from '../utils';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -38,12 +35,6 @@ class Dashboard extends React.Component {
     dispatch(push('/login'));
   }
 
-  navigate(path) {
-    const { dispatch } = this.props;
-    if (!onDesktop) { this.setState({open: false}) };
-    dispatch(push(path));
-  }
-
   handleClick = event => {
     this.setState({ open: true, anchorEl: event.currentTarget });
   };
@@ -53,7 +44,7 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const { children, routing } = this.props;
+    const { children, routing, dispatch } = this.props;
     const { open, onDesktop } = this.state;
 
     return (
@@ -62,8 +53,8 @@ class Dashboard extends React.Component {
           <Toolbar style={gutterPadding}>
               <div style={{flex: 1}}>
                 <Button><Logo style={{padding: 10, height: '2.5em'}} /></Button>
-                <Button onClick={this.logout.bind(this)}><Typography>Quizzes</Typography></Button>
-                <Button onClick={this.logout.bind(this)}><Typography>Classrooms</Typography></Button>
+                <Button onClick={() => dispatch(push('/assignments'))}><Typography>Quizzes</Typography></Button>
+                <Button onClick={() => dispatch(push('/classrooms'))}><Typography>Classrooms</Typography></Button>
               </div>
               <Avatar className={{backgroundColor: 'orange'}}>VK</Avatar>
               <div>

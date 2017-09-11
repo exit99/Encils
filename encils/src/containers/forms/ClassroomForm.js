@@ -11,7 +11,7 @@ let ClassroomForm = props => {
   const { dispatch, onSubmit, error } = props;
 
   return (
-    <div style={{padding: 25, marginTop: 25}}>
+    <div>
       <form onSubmit={ onSubmit }>
         <Field
           name="name"

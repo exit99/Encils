@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
+import moment from 'moment'
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -183,7 +184,18 @@ class Classrooms extends React.Component {
             <Header text="Classes" buttonText="Create Class" />
             <Grid container>
               <Grid item xs={12}>
-                <SortableList items={classrooms} />
+                <SortableList 
+                  items={classrooms}
+                  getTitle={(classroom) => classroom.name}
+                  getSubtitle={(classroom) => `Created: ${moment(classroom.created).calendar()}`}
+                  properties={{
+                    'Avg. Score': (classroom) => `${classroom.gpa}%`,
+                    'Answer Rate': (classroom) => `${classroom.answer_rate}%`,
+                    'Assignments': (classroom) => classroom.assignments_given.length,
+                    'Students': (classroom) => classroom.students.length,
+                  }}
+                  sortFields={['name', 'created']}
+                />
               </Grid>
             </Grid>
           </div>

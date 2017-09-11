@@ -80,14 +80,18 @@ class Classroom(models.Model):
     @property
     def gpa(self):
         grades = [a.grade for a in self.answer_set.all() if a.grade]
-        return mean(grades) if grades else 0
+        return round(mean(grades) if grades else 0, 0)
 
     @property
     def answer_rate(self):
         max_answers = self.student_set.count() * len(self.questions)
         if max_answers:
-            return self.answer_set.count() / max_answers
+            return round(self.answer_set.count() / max_answers * 100, 0)
         return 0
+
+    @property
+    def students(self):
+        return [s.pk for s in Student.objects.filter(classroom=self).all()]
 
 
 class Student(models.Model):

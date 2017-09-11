@@ -23,10 +23,14 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 class ClassroomSerializer(serializers.ModelSerializer):
     assignments_given = serializers.ReadOnlyField()
+    gpa = serializers.ReadOnlyField()
+    answer_rate = serializers.ReadOnlyField()
+    students = serializers.ReadOnlyField()
 
     class Meta:
         model = Classroom
-        fields = ('pk', 'name', 'school', 'created', 'assignments_given')
+        fields = ('pk', 'name', 'school', 'created', 'assignments_given', 'gpa',
+                  'answer_rate', 'students')
         read_only_fields = ('pk', 'created')
 
 

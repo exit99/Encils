@@ -79,6 +79,7 @@ class Classrooms extends React.Component {
                   sortFields={['name', 'created']}
                   onDelete={this.deleteClassroom.bind(this)}
                   nothingText="You have no classrooms yet."
+                  onLinkClick={({pk}) => dispatch(push(`/classrooms/${pk}`))}
                 />
               </Grid>
             </Grid>

@@ -23,16 +23,18 @@ class Link extends React.Component {
   }
 
   render() {
-    const { text, onClick } = this.props;
+    const { text, onClick, highlighted, style } = this.props;
     const { hover } = this.state;
 
     return (
-      <Typography 
-        onMouseEnter={() => this.setState({ hover: true })}
-        onMouseLeave={() => this.setState({ hover: false })}
-        onClick={onClick}
-        style={hover ? hoverStyle : regularStyle}
-      >{text}</Typography>
+      <div style={style}>
+        <Typography 
+          onMouseEnter={() => this.setState({ hover: true })}
+          onMouseLeave={() => this.setState({ hover: false })}
+          onClick={onClick}
+          style={hover || highlighted ? hoverStyle : regularStyle}
+        >{text}</Typography>
+      </div>
     );
   }
 }

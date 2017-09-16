@@ -47,7 +47,7 @@ class ClassroomDetail(generics.RetrieveUpdateDestroyAPIView):
         serializer.save(teacher=self.request.user)
 
 
-class StudentList(generics.ListAPIView):
+class StudentList(generics.ListCreateAPIView):
     serializer_class = StudentSerializer
     permission_classes = (permissions.IsAuthenticated,)
     filter_fields = ('classroom',)

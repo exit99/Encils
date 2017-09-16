@@ -93,6 +93,10 @@ class Classroom(models.Model):
     def students(self):
         return [s.pk for s in Student.objects.filter(classroom=self).all()]
 
+    @property
+    def assignments_needing_grading(self):
+        Assignment.obje
+
 
 class Student(models.Model):
     classroom = models.ForeignKey(Classroom)

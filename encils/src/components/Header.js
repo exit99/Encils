@@ -12,7 +12,7 @@ export default ({ text, buttonText, buttonIcon, onClick }) => {
       </Grid>
       {buttonText ?
       <Grid item md={2} sm={12} xs={12}>
-        <Button raised dense color="primary" style={{ width: '100%' }} onClick={onClick}>{buttonText}</Button>
+        <Button raised dense color="accent" style={{ width: '100%' }} onClick={onClick}>{buttonText}</Button>
       </Grid> : null}
     </Grid>
   );

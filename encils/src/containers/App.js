@@ -12,6 +12,7 @@ import { orange, blue } from 'material-ui/colors';
 
 import Login from './Login';
 import Classrooms from './Classrooms';
+import Classroom from './Classroom';
 import Assignments from './Assignments';
 import StudentsAdd from './StudentsAdd';
 import AssignmentActive from './AssignmentActive';
@@ -55,6 +56,7 @@ class App extends Component {
               <Route exact path='/' component={Login} />
               <Route exact path='/login' component={Login} />
               <Route exact path='/classrooms' component={Classrooms} />
+              <Route exact path='/classrooms/:classroomPk' component={Classroom} />
               <Route exact path='/assignments' component={Assignments} />
               <Route exact path='/students-add/:classroomPk' component={StudentsAdd} />
               <Route exact path='/assignment-active/:classroomPk/:assignmentPk/:questionIndex' component={AssignmentActive} />

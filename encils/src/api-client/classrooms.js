@@ -7,6 +7,7 @@ const editClassroom = (pk) => request('PUT', `/classrooms/${pk}/`, 'classroom');
 const deleteClassroom = (pk) => request('DELETE', `/classrooms/${pk}/`)();
 
 const getClassroomStudents = (pk) => request('GET', `/students/?classroom=${pk}`, 'classroomStudents')();
+const createClassroomStudent = request('POST', '/students/', null, 'studentForm');
 const deleteStudent = (pk) => request('DELETE', `/students/${pk}/`)();
 
 const getClassroomReport = (pk) => request('GET', `/reports/${pk}/`, 'classroomReport')();
@@ -19,6 +20,7 @@ export {
   deleteClassroom,
 
   getClassroomStudents,
+  createClassroomStudent,
   deleteStudent,
 
   getClassroomReport,

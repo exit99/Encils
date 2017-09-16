@@ -7,7 +7,7 @@ import Grid from 'material-ui/Button';
 import Message from '../../components/Message';
 import RenderedInput from '../../components/RenderedInput';
 
-let ClassroomForm = props => {
+let StudentForm = props => {
   const { dispatch, onSubmit, error } = props;
 
   return (
@@ -24,9 +24,9 @@ let ClassroomForm = props => {
         />
         <br />
         <Field
-          name="school"
-          label="School"
-          type="text"
+          name="phone"
+          label="Phone"
+          type="phone"
           component={RenderedInput}
           margin="normal"
           fullWidth={true}
@@ -35,15 +35,15 @@ let ClassroomForm = props => {
         {error && error.non_field_errors ? error.non_field_errors.map((message, index) => <Message key={index} type="error" message={message} />) : null}
       </form>
       <br />
-      <Button raised color="accent" onClick={() => dispatch(submit('classroomForm'))}>Save</Button>
+      <Button raised color="accent" onClick={() => dispatch(submit('studentForm'))}>Save</Button>
     </div>
   );
 }
 
-ClassroomForm = reduxForm({
-  form: 'classroomForm',
-})(ClassroomForm)
+StudentForm = reduxForm({
+  form: 'studentForm',
+})(StudentForm)
 
-export default ClassroomForm
+export default StudentForm
 
 

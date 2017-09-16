@@ -10,7 +10,6 @@ from sms.models import (
     Teacher
 )
 
-
 # Redux-Form + Material UI sends back True or '' from checkbox fields.
 serializers.BooleanField.FALSE_VALUES.add('')
 

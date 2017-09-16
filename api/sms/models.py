@@ -116,6 +116,14 @@ class Student(models.Model):
             data[attendance.status] += 1
         return data
 
+    @property
+    def grade(self):
+        answers = Answer.objects.filter(
+            ~models.Q(grade=None), student=self, classroom=self.classroom
+        ).values('grade')
+        grades = [answer['grade'] for answer in answers]
+        return round(mean(grades) if grades else 0, 0)
+        
 
 class Attendance(models.Model):
     student = models.ForeignKey(Student)
@@ -157,6 +165,12 @@ class Question(models.Model):
     @property
     def teacher(self):
         return self.assignment.teacher
+
+    @property
+    def grade(self):
+        answers = Answer.objects.filter(question=self).values('grade')
+        grades = [answer['grade'] for answer in answers]
+        return round(mean(grades) if grades else 0, 0)
 
 
 class Answer(models.Model):

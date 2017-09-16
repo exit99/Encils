@@ -81,7 +81,7 @@ class SortableList extends React.Component {
   }
 
   render() {
-    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick } = this.props;
+    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg } = this.props;
     const { anchorEl, selectedIndex, sortDown, checked, deleteDialogOpen } = this.state;
     const items = sortBy(this.props.items, sortFields[selectedIndex])
     if (!sortDown) { 
@@ -157,10 +157,10 @@ class SortableList extends React.Component {
           )) : <NothingHere text={nothingText} /> }
 
         <Dialog open={deleteDialogOpen} onRequestClose={() => this.setState({ deleteDialogOpen: false })}>
-          <DialogTitle>Are you sure you want to delete these Classrooms?</DialogTitle>
+          <DialogTitle>Are you sure you want to delete these items?</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              <Typography>This will delete all students and graded assignments for these classrooms and cannot be undone.</Typography>
+              <Typography>{deleteMsg}</Typography>
               <br />
               <Typography>This CANNOT be undone.</Typography>
             </DialogContentText>

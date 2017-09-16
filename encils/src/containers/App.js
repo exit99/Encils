@@ -14,6 +14,7 @@ import Login from './Login';
 import Classrooms from './Classrooms';
 import Classroom from './Classroom';
 import Assignments from './Assignments';
+import Assignment from './Assignment';
 import StudentsAdd from './StudentsAdd';
 import AssignmentActive from './AssignmentActive';
 import Grades from './Grades';
@@ -58,6 +59,7 @@ class App extends Component {
               <Route exact path='/classrooms' component={Classrooms} />
               <Route exact path='/classrooms/:classroomPk' component={Classroom} />
               <Route exact path='/assignments' component={Assignments} />
+              <Route exact path='/assignments/:assignmentPk' component={Assignment} />
               <Route exact path='/students-add/:classroomPk' component={StudentsAdd} />
               <Route exact path='/assignment-active/:classroomPk/:assignmentPk/:questionIndex' component={AssignmentActive} />
               <Route exact path='/grades' component={Grades} />

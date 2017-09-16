@@ -78,6 +78,7 @@ class Classrooms extends React.Component {
                   }}
                   sortFields={['name', 'created']}
                   onDelete={this.deleteClassroom.bind(this)}
+                  deleteMsg="This will delete all students and grades related to this classroom."
                   nothingText="You have no classrooms yet."
                   onLinkClick={({pk}) => dispatch(push(`/classrooms/${pk}`))}
                 />

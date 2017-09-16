@@ -87,7 +87,9 @@ class Assignments extends React.Component {
                   }}
                   sortFields={['name', 'created']}
                   onDelete={this.deleteAssignment.bind(this)}
+                  deleteMsg="This will delete all of this quizzes grades and could change student averages."
                   nothingText="You have not made any quizzes yet."
+                  onLinkClick={({pk}) => dispatch(push(`/assignments/${pk}`))}
                 />
               </Grid>
             </Grid>

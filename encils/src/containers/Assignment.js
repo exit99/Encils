@@ -5,75 +5,109 @@ import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
 import moment from 'moment';
 
+import Button from 'material-ui/Button';
+import Dialog, { DialogTitle, DialogContent, DialogContentText } from 'material-ui/Dialog';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
-import CheckIcon from 'material-ui-icons/Check';
-import CloseIcon from 'material-ui-icons/Close';
+import CreateIcon from 'material-ui-icons/Create';
+import SMSIcon from 'material-ui-icons/Sms';
+import { grey } from 'material-ui/colors';
 
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
+import Message from '../components/Message';
 import SortableList from '../components/SortableList';
+import Tabs from '../components/Tabs';
 
 import Dashboard from './Dashboard';
-import AssignmentForm from './forms/AssignmentForm';
+import QuestionForm from './forms/QuestionForm';
+
+import { editActiveItem } from '../api-client/activeItems';
 
 import { 
   getAssignment,
-  editAssignment,
+  getAssignmentQuestions,
+  createQuestion,
+  deleteQuestion,
 } from '../api-client/assignments';
 
-class Assignments extends React.Component {
+class Assignment extends React.Component {
     constructor(props) {
     super(props);
     this.state = {
-      assignmentDialogOpen: false,
+      addQuestionsDialogOpen: false,
     }
   }
 
   componentWillMount() {
     const { dispatch, assignment } = this.props;
-    dispatch(getAssignment(this.props.match.params.classroomPk))
+    dispatch(getAssignment(this.props.match.params.assignmentPk))
+      .then(() => {
+        dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
+      });
   }
 
-  closeUpdateAssignmentDialog() {
-    this.setState({assignmentDialogOpen: false});
-  }
-
-  submitAssignmentForm(values) {
+  submitQuestionForm(values) {
     const { dispatch, assignment } = this.props;
-    const { assignmentEdit } = this.state;
-    dispatch(editAssignment(values)).then((res) => {
+    values.assignment = assignment.pk;
+
+    dispatch(createQuestion(values)).then((res) => {
       if (!isUndefined(res)) {
-        this.closeUpdateAssignmentDialog();
-        dispatch(getAssignment(this.props.match.params.classroomPk));
+        this.setState({addQuestionsDialogOpen: false});
+        dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk));
       };
     });
+  }
+
+  deleteQuestion(pk) {
+    const { dispatch } = this.props;
+    dispatch(deleteQuestion(pk))
+      .then(() => {
+        dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
+      });
   }
 
   render() {
     const {
       assignment,
+      assignmentQuestions,
       dispatch,
     } = this.props;
     
     const { 
-      assignmentDialogOpen,
+      addQuestionsDialogOpen,
     } = this.state;
 
     return (
         <Dashboard>
           <div style={{padding:40}}>
-            <Header text={classroom.name} buttonText="Add Question" onClick={() => this.setState({ assignmentDialogOpen: true })} />
+            <Header text={assignment.name} buttonText="Add Question" onClick={() => this.setState({ addQuestionsDialogOpen: true })} />
             <Grid container>
               <Grid item xs={12}>
-                Stuff here
+                <Tabs
+                  titles={['Questions', 'Completed Quizzes']}
+                  items={[
+                    (<SortableList
+                      items={assignmentQuestions}
+                      getTitle={(question) => question.text}
+                      getSubtitle={(question) => moment(question.created).calendar()}
+                      sortFields={['text', 'grade']}
+                      properties={{
+                        'Avg. Grade': question => `${question.grade}%`
+                      }}
+                      nothingText="You have no questions in this quiz yet."
+                      onDelete={this.deleteQuestion.bind(this)}
+                      deleteMsg="This will delete all grades for this question and could change student averages."
+                    />),
+                    null,
+                  ]}
+                />
               </Grid>
             </Grid>
           </div>
 
-
-          <FullScreenDialog title="Create Quiz" open={assignmentDialogOpen} onClose={this.closeUpdateAssignmentDialog.bind(this)}>
-            <AssignmentForm dispatch={dispatch} onSubmit={this.submitAssignmentForm.bind(this)} />
+          <FullScreenDialog title="Add Question" open={addQuestionsDialogOpen} onClose={() => this.setState({addQuestionsDialogOpen: false})}>
+            <QuestionForm dispatch={dispatch} onSubmit={this.submitQuestionForm.bind(this)} />
           </FullScreenDialog>
         </Dashboard>
     );
@@ -82,11 +116,12 @@ class Assignments extends React.Component {
 
 const mapStateToProps = state => ({
   routing: state.routing,
-  assignment: state.apiReducer.assignments,
+  assignment: state.apiReducer.assignment,
+  assignmentQuestions: state.apiReducer.assignmentQuestions,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   dispatch: dispatch
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Assignments)
+export default connect(mapStateToProps, mapDispatchToProps)(Assignment)

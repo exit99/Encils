@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
-import moment from 'moment';
 import phoneFormatter from 'phone-formatter';
 
 import Button from 'material-ui/Button';
@@ -23,6 +22,8 @@ import Tabs from '../components/Tabs';
 import Dashboard from './Dashboard';
 import StudentForm from './forms/StudentForm';
 
+import { editActiveItem } from '../api-client/activeItems';
+
 import { 
   getClassroom,
   getClassroomStudents,
@@ -30,14 +31,12 @@ import {
   deleteStudent,
 } from '../api-client/classrooms';
 
-class Classrooms extends React.Component {
+class Classroom extends React.Component {
     constructor(props) {
     super(props);
     this.state = {
       addStudentsDialogOpen: false,
       addStudentsManuallyDialogOpen: false,
-      studentsCreated: [],
-      studentCreatedSuccess: false,
     }
   }
 
@@ -77,9 +76,11 @@ class Classrooms extends React.Component {
       });
   }
 
-  doNotAddAnother() {
-    this.setState({ studentCreatedSuccess: false })
-    this.closeDialogs()
+ goToAddStudents() {
+    const { dispatch } = this.props;
+    const classroomPk = this.props.match.params.classroomPk;
+    dispatch(editActiveItem({classroom: classroomPk, question: null}))
+      .then(() => dispatch(push(`/students-add/${classroomPk}`)));
   }
 
   render() {
@@ -92,8 +93,6 @@ class Classrooms extends React.Component {
     const { 
       addStudentsDialogOpen,
       addStudentsManuallyDialogOpen,
-      studentsCreated,
-      studentCreatedSuccess,
     } = this.state;
 
     return (
@@ -108,13 +107,14 @@ class Classrooms extends React.Component {
                     (<SortableList
                       items={classroomStudents}
                       getTitle={(student) => student.name}
-                      getSubtitle={(student) => student.phone}
-                      sortFields={['name']}
+                      getSubtitle={(student) => phoneFormatter.format(student.phone, "(NNN) NNN-NNNN")}
+                      sortFields={['name', 'grade']}
                       properties={{
-                        'Grade': student => 284
+                        'Grade': student => `${student.grade}%`
                       }}
                       nothingText="You have no students in this class yet."
                       onDelete={this.deleteStudent.bind(this)}
+                      deleteMsg="This will delete all of the student's grades."
                     />),
                     null
                   ]}
@@ -130,9 +130,9 @@ class Classrooms extends React.Component {
                 <Grid container>
                   <Grid item xs={12} md={5}>
                     <center>
-                      <SMSIcon style={{width: 80, height: 80, cursor: 'pointer'}}/>
+                      <SMSIcon style={{width: 80, height: 80, cursor: 'pointer'}} onClick={this.goToAddStudents.bind(this)} />
                       <br />
-                      <Button style={{backgroundColor: grey[300]}}>via Text</Button>
+                      <Button style={{backgroundColor: grey[300]}} onClick={this.goToAddStudents.bind(this)}>via Text</Button>
                     </center>
                   </Grid>
                   <Grid item xs={12} md={2}><Typography type="title"><center style={{marginTop: 40}}>OR</center></Typography></Grid>
@@ -149,14 +149,7 @@ class Classrooms extends React.Component {
           </Dialog>
 
           <FullScreenDialog title="Add Student" open={addStudentsManuallyDialogOpen} onClose={this.closeDialogs.bind(this)}>
-            {studentsCreated.map((student) => <Message type="success" message={`${student.name} created!`} />)}
-            {studentCreatedSuccess ? 
-            <div>
-              <Typography type="title">Student created successfully!  Create another?</Typography>
-              <Button type="primary" raised onClick={() => this.setState({ studentCreatedSuccess: false })}>Yes</Button>
-              <Button type="primary" raised onClick={this.doNotAddAnother.bind(this)}>No</Button>
-            </div>
-            : <StudentForm dispatch={dispatch} onSubmit={this.submitStudentForm.bind(this)} />}
+            <StudentForm dispatch={dispatch} onSubmit={this.submitStudentForm.bind(this)} />
           </FullScreenDialog>
         </Dashboard>
     );
@@ -173,4 +166,4 @@ const mapDispatchToProps = (dispatch) => ({
   dispatch: dispatch
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Classrooms)
+export default connect(mapStateToProps, mapDispatchToProps)(Classroom)

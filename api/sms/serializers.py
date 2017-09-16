@@ -35,10 +35,12 @@ class ClassroomSerializer(serializers.ModelSerializer):
 
 class StudentSerializer(serializers.ModelSerializer):
     attendance = serializers.ReadOnlyField()
+    grade = serializers.ReadOnlyField()
 
     class Meta:
         model = Student
-        fields = ('pk', 'name', 'classroom', 'phone', 'created', 'attendance')
+        fields = ('pk', 'name', 'classroom', 'phone', 'created', 'attendance',
+                  'grade')
         read_only_fields = ('pk', 'created')
 
     def validate_classroom(self, classroom):

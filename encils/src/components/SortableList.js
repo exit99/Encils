@@ -81,7 +81,7 @@ class SortableList extends React.Component {
   }
 
   render() {
-    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg, disabledLink } = this.props;
+    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg, disabledLink, noCheckbox, noSort } = this.props;
     const { anchorEl, selectedIndex, sortDown, checked, deleteDialogOpen } = this.state;
     const items = sortBy(this.props.items, sortFields[selectedIndex])
     if (!sortDown) { 
@@ -92,6 +92,7 @@ class SortableList extends React.Component {
     return (
       <div>
         <Grid container style={{borderBottom: '1px solid', borderColor: grey[300], paddingTop: 15}}>
+          {noCheckbox ? null :
           <Grid item xs={1}>
             <center>
               {atLeastOneChecked ?
@@ -104,7 +105,8 @@ class SortableList extends React.Component {
                   style={{cursor: 'pointer', width: 45, height: 45, color: grey[400]}} />
               }
             </center>
-          </Grid>
+          </Grid>}
+          {noSort ? null :
           <Grid item xs={11}>
             <Typography type="header" style={{marginTop: 10, float: 'left', marginRight: 15}}>Sort by</Typography>
             <Button aria-owns={this.state.open ? 'simple-menu' : null} aria-haspopup="true" onClick={this.handleClick} style={{backgroundColor: grey[300], float: 'left', marginRight: 15, height: '42px'}}>{sortFields[selectedIndex]}</Button>
@@ -112,9 +114,10 @@ class SortableList extends React.Component {
               { sortDown ?  <ArrowDownwardIcon style={{height: 20}}/> : <ArrowUpwardIcon style={{height: 20}}/> }
             </Button>
             {atLeastOneChecked ? <Button style={{backgroundColor: grey[300], float: 'left', marginRight: 15, height: '42px'}} onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button> : null}
-          </Grid>
+          </Grid>}
         </Grid>
 
+        {noSort ? null :
         <Menu
           id="simple-menu"
           anchorEl={this.state.anchorEl}
@@ -122,11 +125,12 @@ class SortableList extends React.Component {
           onRequestClose={this.handleRequestClose}
         >
           {sortFields.map((field, index) => <MenuItem onClick={(event) => this.handleMenuItemClick(event, index)}>{capitalize(field)}</MenuItem>)}
-        </Menu>
+        </Menu>}
 
         {items.length > 0 ? items.map((value, index) => (
           <div>
             <Grid container style={{borderBottom: '1px solid', borderColor: grey[300], paddingTop: 15}}>
+              {noCheckbox ? null :
               <Grid item xs={1}>
                 <center>
                   {checked[index] ? 
@@ -139,7 +143,7 @@ class SortableList extends React.Component {
                     onClick={() => this.updateChecked(index)} />
                   }
                 </center>
-              </Grid>
+              </Grid>}
               <Grid item xs={11} md={11 - Object.keys(properties).length}>
                 <div style={{flex: 1}}>
                   {disabledLink ? 

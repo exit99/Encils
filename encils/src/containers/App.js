@@ -7,7 +7,6 @@ import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
 
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import createPalette from 'material-ui/styles/palette';
 import { orange, blue } from 'material-ui/colors';
 
 import Login from './Login';
@@ -18,6 +17,7 @@ import Assignment from './Assignment';
 import StudentsAdd from './StudentsAdd';
 import AssignmentActive from './AssignmentActive';
 import Grades from './Grades';
+import Home from './Home';
 import Reports from './Reports';
 import Settings from './Settings';
 import PasswordReset from './PasswordReset';
@@ -26,10 +26,10 @@ import NotFound from './NotFound';
 import ScrollToTop from './router/ScrollToTop';
 
 const theme = createMuiTheme({
-  palette: createPalette({
+  palette: {
     primary: {...blue}, 
     accent: {...orange}
-  }),
+  },
   overrides: {
     MuiButton: {
       // Name of the styleSheet
@@ -54,7 +54,7 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
           <ScrollToTop>
             <Switch>
-              <Route exact path='/' component={Login} />
+              <Route exact path='/' component={Home} />
               <Route exact path='/login' component={Login} />
               <Route exact path='/classrooms' component={Classrooms} />
               <Route exact path='/classrooms/:classroomPk' component={Classroom} />

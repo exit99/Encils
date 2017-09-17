@@ -5,6 +5,7 @@ const getAssignment = (pk) => request('GET', `/assignments/${pk}/`, 'assignment'
 const createAssignment = request('POST', '/assignments/', 'assignment', 'assignmentForm');
 const editAssignment = (pk) => request('PUT', `/assignments/${pk}/`, 'assignment');
 const deleteAssignment = (pk) => request('DELETE', `/assignments/${pk}/`)();
+const getUngradedAssignments = request('GET', `/assignments/ungraded/`, 'ungradedAssignments');
 
 const getAssignmentQuestions = (pk) => request('GET', `/questions/?assignment=${pk}`, 'assignmentQuestions')();
 const createQuestion = request('POST', '/questions/', 'question', 'questionForm');
@@ -14,7 +15,7 @@ const getQuestionAnswers = (pk) => request('GET', `/answers/?question=${pk}`, 'q
 const editQuestionAnswer = (pk) => request('PUT', `/answers/${pk}/`, 'answer');
 const resetQuestionAnswers = (dispatch) => dispatch({ key: 'questionAnswers', data: [], type: 'API_SUCCESS'}) 
 
-const getAssignmentAnswers = (pk) => request('GET', `/answers/?assignment=${pk}`, 'assignmentAnswers')();
+const getAssignmentAnswers = (pk) => request('GET', `/answers/?assignment_pk=${pk}`, 'assignmentAnswers')();
 
 export {
   getAssignment,
@@ -24,10 +25,12 @@ export {
   deleteAssignment,
 
   getAssignmentQuestions,
+  getAssignmentAnswers,
   createQuestion,
   deleteQuestion,
 
   getQuestionAnswers,
   editQuestionAnswer,
   resetQuestionAnswers,
+  getUngradedAssignments,
 }

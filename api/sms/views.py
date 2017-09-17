@@ -75,6 +75,20 @@ class AssignmentList(generics.ListCreateAPIView):
         serializer.save(teacher=self.request.user)
 
 
+@decorators.api_view(['GET'])
+@decorators.permission_classes([])
+def ungraded_assignments(request):
+    teacher = request.user
+    answers = teacher.answer_set.filter(grade=None).all()
+    assignments = set([(a.classroom, a.assignment) for a in answers])
+    data = []
+    for classroom, assignment in assignments:
+        item = AssignmentSerializer(assignment).data
+        item['classroom'] = classroom.name
+        data.append(item)
+    return JsonResponse(data, safe=False)
+
+
 class AssignmentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Assignment.objects.all()
     serializer_class = AssignmentSerializer
@@ -103,7 +117,7 @@ class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
 class AnswerList(generics.ListAPIView):
     serializer_class = AnswerSerializer
     permission_classes = (permissions.IsAuthenticated,)
-    filter_fields = ('question', 'classroom', 'assignment')
+    filter_fields = ('question', 'classroom', 'grade')
 
     def get_queryset(self):
         teacher = self.request.user

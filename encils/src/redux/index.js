@@ -23,6 +23,7 @@ const initialState = {
   report: {},
   questionAnswers: [],
   passwordResponse: null,
+  ungradedAssignments: [],
 }
 
 const apiReducer = (previousState = initialState, { key, form, data, type }) => {

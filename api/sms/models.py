@@ -93,10 +93,6 @@ class Classroom(models.Model):
     def students(self):
         return [s.pk for s in Student.objects.filter(classroom=self).all()]
 
-    @property
-    def assignments_needing_grading(self):
-        Assignment.obje
-
 
 class Student(models.Model):
     classroom = models.ForeignKey(Classroom)
@@ -169,7 +165,8 @@ class Question(models.Model):
     @property
     def grade(self):
         answers = Answer.objects.filter(question=self).values('grade')
-        grades = [answer['grade'] for answer in answers]
+        grades = [answer['grade'] for answer in answers
+                  if isinstance(answer['grade'], int)]
         return round(mean(grades) if grades else 0, 0)
 
 

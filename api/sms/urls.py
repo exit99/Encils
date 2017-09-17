@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^students/$', views.StudentList.as_view()),
     url(r'^students/(?P<pk>[0-9]+)/$', views.StudentDetail.as_view()),
     url(r'^assignments/$', views.AssignmentList.as_view()),
+    url(r'^assignments/ungraded/$', views.ungraded_assignments),
     url(r'^assignments/(?P<pk>[0-9]+)/$', views.AssignmentDetail.as_view()),
     url(r'^questions/$', views.QuestionList.as_view()),
     url(r'^questions/(?P<pk>[0-9]+)/$', views.QuestionDetail.as_view()),

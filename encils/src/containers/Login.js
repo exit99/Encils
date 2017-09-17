@@ -21,7 +21,7 @@ class Login extends React.Component {
   onSubmit(values) {
     const { dispatch } = this.props
     dispatch(login(values)).then((res) => {
-      if(!isUndefined(res)) { dispatch(push('/classrooms')) };
+      if(!isUndefined(res)) { dispatch(push('/')) };
     });
   }
 

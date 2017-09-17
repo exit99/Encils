@@ -55,7 +55,8 @@ class AssignmentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Assignment
-        fields = ('pk', 'name', 'created', 'hide_answers', 'one_at_a_time', 'question_count')
+        fields = ('pk', 'name', 'created', 'hide_answers', 'one_at_a_time',
+                  'question_count')
         read_only_fields = ('pk', 'created')
 
 
@@ -78,10 +79,12 @@ class AnswerSerializer(serializers.ModelSerializer):
     student = StudentSerializer(read_only=True)
     assignment = AssignmentSerializer(read_only=True)
     question = QuestionSerializer(read_only=True)
+    classroom = ClassroomSerializer(read_only=True)
 
     class Meta:
         model = Answer
-        fields = ('pk', 'student', 'question', 'classroom', 'text', 'grade', 'created', 'assignment')
+        fields = ('pk', 'student', 'question', 'classroom', 'text', 'grade',
+                  'created', 'assignment')
         read_only_fields = ('pk', 'student', 'question', 'classroom', 'text', 'created')
 
 

@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
+import mean from 'lodash/mean'
+import round from 'lodash/round'
 import moment from 'moment';
+
+import ReactTable from "react-table";
+import "react-table/react-table.css";
 
 import Button from 'material-ui/Button';
 import Dialog, { DialogTitle, DialogContent, DialogContentText } from 'material-ui/Dialog';
@@ -22,11 +27,11 @@ import Tabs from '../components/Tabs';
 import Dashboard from './Dashboard';
 import QuestionForm from './forms/QuestionForm';
 
-import { editActiveItem } from '../api-client/activeItems';
-
 import { 
   getAssignment,
   getAssignmentQuestions,
+  getAssignmentAnswers,
+  editAssignment,
   createQuestion,
   deleteQuestion,
 } from '../api-client/assignments';
@@ -44,6 +49,7 @@ class Assignment extends React.Component {
     dispatch(getAssignment(this.props.match.params.assignmentPk))
       .then(() => {
         dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
+        dispatch(getAssignmentAnswers(this.props.match.params.assignmentPk))
       });
   }
 
@@ -68,7 +74,58 @@ class Assignment extends React.Component {
   }
 
   renderCompletedQuizzes() {
-    const { 
+    const { assignmentAnswers } = this.props;
+    return (
+      <ReactTable
+        data={assignmentAnswers}
+        columns={[
+          {
+            Header: "Grades",
+            columns: [
+              {
+                Header: "Classroom",
+                id: "classroom",
+                accessor: answer => answer.classroom.name,
+              },
+
+              {
+                Header: "Student",
+                id: "student",
+                accessor: answer => answer.student.name,
+              },
+            ]
+          },
+          {
+            columns: [
+              {
+                Header: "Question",
+                id: "question",
+                accessor: answer => answer.question.text,
+              },
+              {
+                Header: "Grade",
+                accessor: "grade",
+                Cell: row => `${row.value}%`,
+                Footer: (
+                    <span>
+                      <strong>Average:</strong>{" "}
+                      {round(mean(assignmentAnswers.map(d => d.grade)))}%
+                    </span>
+                  )
+              }
+            ]
+          }
+        ]}
+        pivotBy={["classroom", "student"]}
+        defaultPageSize={assignmentAnswers.length}
+        className="-striped -highlight"
+      />
+    );
+  }
+
+  updateAssignment(field) {
+    const { assignment, dispatch } = this.props;
+    return () => dispatch(editAssignment(assignment.pk)(assignment));
   }
 
   render() {
@@ -82,10 +139,26 @@ class Assignment extends React.Component {
       addQuestionsDialogOpen,
     } = this.state;
 
+    const switches = [
+      {
+        label: "Hide answers",
+        checked: assignment.hide_answers,
+        onClick: this.updateAssignment('hide_answers')
+      },
+      {
+        label: "Show one",
+        checked: assignment.one_at_a_time,
+        onClick: this.updateAssignment('one_at_a_time')
+      }
+    ];
+    
     return (
         <Dashboard>
           <div style={{padding:40}}>
-            <Header text={assignment.name} buttonText="Add Question" onClick={() => this.setState({ addQuestionsDialogOpen: true })} />
+            <Header 
+              text={assignment.name} buttonText="Add Question" 
+              onClick={() => this.setState({ addQuestionsDialogOpen: true })}
+              switches={switches} />
             <Grid container>
               <Grid item xs={12}>
                 <Tabs
@@ -123,6 +196,7 @@ const mapStateToProps = state => ({
   routing: state.routing,
   assignment: state.apiReducer.assignment,
   assignmentQuestions: state.apiReducer.assignmentQuestions,
+  assignmentAnswers: state.apiReducer.assignmentAnswers,
 })
 
 const mapDispatchToProps = (dispatch) => ({

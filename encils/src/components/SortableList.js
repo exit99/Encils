@@ -43,7 +43,7 @@ class SortableList extends React.Component {
   };
 
   handleMenuItemClick = (event, index) => {
-    this.setState({ selectedIndex: index, open: false });
+    this.setState({ selectedIndex: index, open: false, checked: this.props.items.map(() => false) });
   };
 
   handleRequestClose = () => {
@@ -73,20 +73,28 @@ class SortableList extends React.Component {
 
   onDelete() {
     const { checked } = this.state;
-    const { items, onDelete } = this.props;
+    const { onDelete } = this.props;
+    const items = this.getItems();
     checked.map((value, index) => {
       if (value) { onDelete(items[index].pk) };
     });
     this.setState({ deleteDialogOpen: false,  checked: items.map(() => false)});
   }
 
-  render() {
-    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg, disabledLink, noCheckbox, noSort } = this.props;
-    const { anchorEl, selectedIndex, sortDown, checked, deleteDialogOpen } = this.state;
+  getItems() {
+    const { sortFields } = this.props;
+    const { selectedIndex, sortDown } = this.state;
     const items = sortBy(this.props.items, sortFields[selectedIndex])
     if (!sortDown) { 
       items.reverse()
     };
+    return items
+  }
+
+  render() {
+    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg, disabledLink, noCheckbox, noSort } = this.props;
+    const { anchorEl, selectedIndex, sortDown, checked, deleteDialogOpen } = this.state;
+    const items = this.getItems();
     const atLeastOneChecked = this.atLeastOneChecked();
 
     return (
@@ -110,7 +118,7 @@ class SortableList extends React.Component {
           <Grid item xs={11}>
             <Typography type="header" style={{marginTop: 10, float: 'left', marginRight: 15}}>Sort by</Typography>
             <Button aria-owns={this.state.open ? 'simple-menu' : null} aria-haspopup="true" onClick={this.handleClick} style={{backgroundColor: grey[300], float: 'left', marginRight: 15, height: '42px'}}>{sortFields[selectedIndex]}</Button>
-            <Button onClick={() => this.setState({ sortDown: !sortDown})} style={{backgroundColor: grey[300], float: 'left', marginRight: 15}}>
+            <Button onClick={() => this.setState({ sortDown: !sortDown, checked: this.props.items.map(() => false)})} style={{backgroundColor: grey[300], float: 'left', marginRight: 15}}>
               { sortDown ?  <ArrowDownwardIcon style={{height: 20}}/> : <ArrowUpwardIcon style={{height: 20}}/> }
             </Button>
             {atLeastOneChecked ? <Button style={{backgroundColor: grey[300], float: 'left', marginRight: 15, height: '42px'}} onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button> : null}

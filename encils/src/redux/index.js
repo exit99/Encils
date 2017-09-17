@@ -10,6 +10,7 @@ import { reducer as formReducer } from 'redux-form'
 const initialState = {
   activeItem: {},
   answer: {},
+  answers: [],
   auth_token: '',
   assignment: {},
   assignments: [],

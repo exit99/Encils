@@ -85,6 +85,7 @@ def ungraded_assignments(request):
     for classroom, assignment in assignments:
         item = AssignmentSerializer(assignment).data
         item['classroom'] = classroom.name
+        item['classroom_pk'] = classroom.pk
         data.append(item)
     return JsonResponse(data, safe=False)
 
@@ -210,6 +211,3 @@ def demo_request(request):
         form.send_email()
         return HttpResponse()
     return HttpResponseBadRequest()
-        
-
-    

@@ -95,7 +95,7 @@ class Home extends React.Component {
                   getTitle={(assignment) => assignment.name}
                   getSubtitle={(assignment) => assignment.classroom}
                   properties={{
-                    '': (assignment) => <Button raised color="primary">Grade</Button>
+                  '': (assignment) => <Button raised color="primary" onClick={() => dispatch(push(`/grade/${assignment.classroom_pk}/${assignment.pk}`))}>Grade</Button>
                   }}
                   sortFields={['name', 'classroom']}
                   nothingText="Everything is graded. Way to go!"

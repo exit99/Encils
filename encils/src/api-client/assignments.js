@@ -16,6 +16,7 @@ const editQuestionAnswer = (pk) => request('PUT', `/answers/${pk}/`, 'answer');
 const resetQuestionAnswers = (dispatch) => dispatch({ key: 'questionAnswers', data: [], type: 'API_SUCCESS'}) 
 
 const getAssignmentAnswers = (pk) => request('GET', `/answers/?assignment_pk=${pk}`, 'assignmentAnswers')();
+const getAnswers = (classroom, assignment) => request('GET', `/answers/?classroom=${classroom}&assignment=${assignment}`, 'answers')();
 
 export {
   getAssignment,
@@ -33,4 +34,5 @@ export {
   editQuestionAnswer,
   resetQuestionAnswers,
   getUngradedAssignments,
+  getAnswers,
 }

@@ -129,7 +129,7 @@ class AssignmentActive extends React.Component {
   finish() { 
     const { dispatch } = this.props
     dispatch(editActiveItem({classroom: null, question: null}))
-      .then(() => dispatch(push('/classrooms')));
+      .then(() => dispatch(push('/')));
   }
 
   newQuestion(index) {

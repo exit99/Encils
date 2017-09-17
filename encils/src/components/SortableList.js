@@ -116,7 +116,7 @@ class SortableList extends React.Component {
           </Grid>}
           {noSort ? null :
           <Grid item xs={11}>
-            <Typography type="header" style={{marginTop: 10, float: 'left', marginRight: 15}}>Sort by</Typography>
+            <Typography style={{marginTop: 10, float: 'left', marginRight: 15}}>Sort by</Typography>
             <Button aria-owns={this.state.open ? 'simple-menu' : null} aria-haspopup="true" onClick={this.handleClick} style={{backgroundColor: grey[300], float: 'left', marginRight: 15, height: '42px'}}>{sortFields[selectedIndex]}</Button>
             <Button onClick={() => this.setState({ sortDown: !sortDown, checked: this.props.items.map(() => false)})} style={{backgroundColor: grey[300], float: 'left', marginRight: 15}}>
               { sortDown ?  <ArrowDownwardIcon style={{height: 20}}/> : <ArrowUpwardIcon style={{height: 20}}/> }
@@ -132,11 +132,11 @@ class SortableList extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleRequestClose}
         >
-          {sortFields.map((field, index) => <MenuItem onClick={(event) => this.handleMenuItemClick(event, index)}>{capitalize(field)}</MenuItem>)}
+          {sortFields.map((field, index) => <MenuItem key={index} onClick={(event) => this.handleMenuItemClick(event, index)}>{capitalize(field)}</MenuItem>)}
         </Menu>}
 
         {items.length > 0 ? items.map((value, index) => (
-          <div>
+          <div key={index}>
             <Grid container style={{borderBottom: '1px solid', borderColor: grey[300], paddingTop: 15}}>
               {noCheckbox ? null :
               <Grid item xs={1}>
@@ -160,8 +160,8 @@ class SortableList extends React.Component {
                   <Typography style={{paddingTop: 5}}>{getSubtitle(value)}</Typography>
                 </div>
               </Grid>
-              {Object.keys(properties).map(key => (
-                <Grid item xs={12} md={1}>
+              {Object.keys(properties).map((key, index) => (
+                <Grid item xs={12} md={1} key={index}>
                   <Typography><b>{properties[key](value)}</b></Typography>
                   <Typography>{key}</Typography>
                 </Grid>

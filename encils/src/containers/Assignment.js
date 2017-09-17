@@ -123,9 +123,18 @@ class Assignment extends React.Component {
     );
   }
 
-  updateAssignment(field) {
-    const { assignment, dispatch } = this.props;
-    return () => dispatch(editAssignment(assignment.pk)(assignment));
+  toggleHideAnswers(field) {
+    const { dispatch } = this.props;
+    let assignment = this.props.assignment;
+    assignment.hide_answers = !assignment.hide_answers;
+    dispatch(editAssignment(assignment.pk)(assignment));
+  }
+
+  toggleOneTime(field) {
+    const { dispatch } = this.props;
+    let assignment = this.props.assignment;
+    assignment.one_at_a_time = !assignment.one_at_a_time;
+    dispatch(editAssignment(assignment.pk)(assignment));
   }
 
   render() {
@@ -143,14 +152,15 @@ class Assignment extends React.Component {
       {
         label: "Hide answers",
         checked: assignment.hide_answers,
-        onClick: this.updateAssignment('hide_answers')
+        onClick: this.toggleHideAnswers.bind(this)
       },
       {
         label: "Show one",
         checked: assignment.one_at_a_time,
-        onClick: this.updateAssignment('one_at_a_time')
+        onClick: this.toggleOneTime.bind(this)
       }
     ];
+    console.log(assignment);
     
     return (
         <Dashboard>

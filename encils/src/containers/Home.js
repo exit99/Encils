@@ -16,7 +16,7 @@ import Header from '../components/Header';
 import SortableList from '../components/SortableList';
 
 import Dashboard from './Dashboard';
-import StartQuizForm from './forms/StudentForm';
+import WelcomeTour from './WelcomeTour';
 
 import { 
   getUngradedAssignments,
@@ -50,10 +50,6 @@ class Home extends React.Component {
     dispatch(getClassrooms());
   }
 
-  submitStartQuizForm(values) {
-    debugger;
-  }
-
   goToAssignmentStart(assignment_pk, classroom_pk) {
     const { dispatch, classroom } = this.props;
     dispatch(getAssignment(assignment_pk))
@@ -78,6 +74,10 @@ class Home extends React.Component {
       selectedClassroom,
       selectedAssignment,
     } = this.state;
+
+    if (classrooms.length !== 0 && assignments.length !== 0) {
+      return <WelcomeTour />
+    }
 
     return (
         <Dashboard>
@@ -118,7 +118,7 @@ class Home extends React.Component {
                 input={<Input id="age-simple" />}
               >
                 <MenuItem value={0}><em>None</em></MenuItem>
-                {classrooms.map((classroom) => <MenuItem value={classroom.pk}>{classroom.name}</MenuItem>)}
+                {classrooms.map((classroom, index) => <MenuItem key={index} value={classroom.pk}>{classroom.name}</MenuItem>)}
               </Select>
             </FormControl>
             <br /><br />
@@ -131,7 +131,7 @@ class Home extends React.Component {
                 input={<Input id="age-simple" />}
               >
                 <MenuItem value={0}><em>None</em></MenuItem>
-                {assignments.map((assignment) => <MenuItem value={assignment.pk}>{assignment.name}</MenuItem>)}
+                {assignments.map((assignment, index) => <MenuItem key={index} value={assignment.pk}>{assignment.name}</MenuItem>)}
               </Select>
             </FormControl>
             <br /><br />

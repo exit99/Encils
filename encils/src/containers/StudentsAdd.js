@@ -82,11 +82,11 @@ class StudentsAdd extends React.Component {
     const { requestCount } = this.state;
     return (
       <div style={style}>
-        <AppBar position="static" style={gradientBackground}>
+        <AppBar position="static" color="primary">
           <Toolbar>
-            <Typography type='headline' style={{flex: 1}}>Hello Students! Text your name to {profile.sms && phoneFormatter.format(profile.sms, "(NNN) NNN-NNNN")}</Typography>
+            <Typography type='headline' style={{flex: 1, color: 'white'}}>Hello Students! Text your name to {profile.sms && phoneFormatter.format(profile.sms, "(NNN) NNN-NNNN")}</Typography>
             <StudentCount count={classroomStudents.length} />
-            <Button onClick={this.finish.bind(this)}>Done</Button>
+            <Button color="contrast" onClick={this.finish.bind(this)}>Done</Button>
           </Toolbar>
         </AppBar>
         <div style={{padding: 25}}>

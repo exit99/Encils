@@ -11,7 +11,7 @@ const getAssignmentQuestions = (pk) => request('GET', `/questions/?assignment=${
 const createQuestion = request('POST', '/questions/', 'question', 'questionForm');
 const deleteQuestion = (pk) => request('DELETE', `/questions/${pk}/`)();
 
-const getQuestionAnswers = (pk) => request('GET', `/answers/?question=${pk}`, 'questionAnswers')();
+const getQuestionAnswers = (pk, classroomPk) => request('GET', `/answers/?question=${pk}&classroom=${classroomPk}`, 'questionAnswers')();
 const editQuestionAnswer = (pk) => request('PUT', `/answers/${pk}/`, 'answer');
 const resetQuestionAnswers = (dispatch) => dispatch({ key: 'questionAnswers', data: [], type: 'API_SUCCESS'}) 
 

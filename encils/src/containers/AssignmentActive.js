@@ -108,11 +108,11 @@ class AssignmentActive extends React.Component {
   }
 
   getAnswers() {
-    const { dispatch, assignmentQuestions } = this.props;
+    const { dispatch, assignmentQuestions, classroom } = this.props;
     const { requestCount } = this.state;
     if (assignmentQuestions.length && requestCount < requestLimit ) {
       const questionPk = assignmentQuestions[this.props.match.params.questionIndex].pk;
-      dispatch(getQuestionAnswers(questionPk));
+      dispatch(getQuestionAnswers(questionPk, classroom.pk));
       this.setState({ requestCount: requestCount + 1 });
     }
   }

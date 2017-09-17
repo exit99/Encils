@@ -10,7 +10,6 @@ import Headline from './Headline';
 export default ({ text, buttonText, buttonIcon, onClick, switches, body }) => {
 
   const renderedSwitches = switches && switches.map(({ label, checked, onClick }) => {
-    console.log(label, checked, typeof(checked));
     return <FormControlLabel control={ <Switch checked={checked} /> } label={label} onClick={onClick} />
   });
 

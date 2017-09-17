@@ -212,13 +212,13 @@ class AssignmentActive extends React.Component {
 
     return (
       <div style={style}>
-        <AppBar position="static" style={gradientBackground}>
+        <AppBar position="static" color="primary" style={{color: 'white'}}>
           <Toolbar>
-            <Typography type='headline' style={{flex: 1}}>
+            <Typography type='headline' style={{flex: 1, color: 'white'}}>
               { question ? `Q${questionIndex+1}: ${question.text}` : 'Loading...' }
             </Typography>
             {assignment.hide_answers ? 
-            <FormControlLabel style={{color: 'black'}}
+            <FormControlLabel style={{color: 'white'}}
               control={
                 <Switch
                   checked={!hideAnswers}
@@ -227,12 +227,12 @@ class AssignmentActive extends React.Component {
               }
               label="Show answers"
             /> : null}
-            <StudentCount count={questionAnswers.length} max={classroomStudents.length} />
-            <Button disabled={questionIndex === 0} onClick={() => this.newQuestion(questionIndex - 1)}><LeftIcon />Previous</Button>
-            <Typography style={{padding: 10}}>{questionIndex+1} of {assignmentQuestions.length}</Typography>
+            <StudentCount  count={questionAnswers.length} max={classroomStudents.length} />
+            <Button color="contrast" disabled={questionIndex === 0} onClick={() => this.newQuestion(questionIndex - 1)}><LeftIcon />Previous</Button>
+            <Typography style={{padding: 10, color: 'white'}}>{questionIndex+1} of {assignmentQuestions.length}</Typography>
             {questionIndex === assignmentQuestions.length - 1 ?
-              <Button onClick={this.finish.bind(this)}>Done</Button> :
-              <Button onClick={() => this.newQuestion(questionIndex + 1)}>Next<RightIcon /></Button>
+              <Button color="contrast" onClick={this.finish.bind(this)}>Done</Button> :
+              <Button color="contrast" onClick={() => this.newQuestion(questionIndex + 1)}>Next<RightIcon /></Button>
             }
           </Toolbar>
         </AppBar>

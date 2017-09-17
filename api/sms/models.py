@@ -178,7 +178,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question)
     classroom = models.ForeignKey(Classroom)
     text = models.CharField(max_length=160)
-    grade = models.IntegerField(null=True, blank=True, validators=[MaxValueValidator(5), MinValueValidator(0)])
+    grade = models.IntegerField(null=True, blank=True, validators=[MaxValueValidator(100), MinValueValidator(0)])
     created = models.DateTimeField(auto_now_add=True)
 
     @property

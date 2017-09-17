@@ -14,6 +14,8 @@ const getQuestionAnswers = (pk) => request('GET', `/answers/?question=${pk}`, 'q
 const editQuestionAnswer = (pk) => request('PUT', `/answers/${pk}/`, 'answer');
 const resetQuestionAnswers = (dispatch) => dispatch({ key: 'questionAnswers', data: [], type: 'API_SUCCESS'}) 
 
+const getAssignmentAnswers = (pk) => request('GET', `/answers/?assignment=${pk}`, 'assignmentAnswers')();
+
 export {
   getAssignment,
   getAssignments,

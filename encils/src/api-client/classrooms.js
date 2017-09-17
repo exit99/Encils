@@ -11,6 +11,7 @@ const createClassroomStudent = request('POST', '/students/', null, 'studentForm'
 const deleteStudent = (pk) => request('DELETE', `/students/${pk}/`)();
 
 const getClassroomReport = (pk) => request('GET', `/reports/${pk}/`, 'classroomReport')();
+const getClassroomAnswers = (pk) => request('GET', `/answers/?classroom=${pk}`, 'classroomAnswers')();
 
 export {
   getClassroom,
@@ -24,4 +25,5 @@ export {
   deleteStudent,
 
   getClassroomReport,
+  getClassroomAnswers,
 }

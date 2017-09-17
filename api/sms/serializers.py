@@ -60,9 +60,11 @@ class AssignmentSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    grade = serializers.ReadOnlyField()
+
     class Meta:
         model = Question
-        fields = ('pk', 'assignment', 'text', 'created')
+        fields = ('pk', 'assignment', 'text', 'created', 'grade')
         read_only_fields = ('pk', 'created')
 
     def validate_assignment(self, assignment):
@@ -74,10 +76,12 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     student = StudentSerializer(read_only=True)
+    assignment = AssignmentSerializer(read_only=True)
+    question = QuestionSerializer(read_only=True)
 
     class Meta:
         model = Answer
-        fields = ('pk', 'student', 'question', 'classroom', 'text', 'grade', 'created')
+        fields = ('pk', 'student', 'question', 'classroom', 'text', 'grade', 'created', 'assignment')
         read_only_fields = ('pk', 'student', 'question', 'classroom', 'text', 'created')
 
 

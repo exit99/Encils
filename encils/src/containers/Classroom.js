@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
+import mean from 'lodash/mean'
+import round from 'lodash/round'
 import phoneFormatter from 'phone-formatter';
+
+import ReactTable from "react-table";
+import "react-table/react-table.css";
 
 import Button from 'material-ui/Button';
 import Dialog, { DialogTitle, DialogContent, DialogContentText } from 'material-ui/Dialog';
@@ -27,6 +32,7 @@ import { editActiveItem } from '../api-client/activeItems';
 import { 
   getClassroom,
   getClassroomStudents,
+  getClassroomAnswers,
   createClassroomStudent,
   deleteStudent,
 } from '../api-client/classrooms';
@@ -45,6 +51,7 @@ class Classroom extends React.Component {
     dispatch(getClassroom(this.props.match.params.classroomPk))
       .then(() => {
         dispatch(getClassroomStudents(this.props.match.params.classroomPk))
+        dispatch(getClassroomAnswers(this.props.match.params.classroomPk))
       });
   }
 
@@ -83,6 +90,63 @@ class Classroom extends React.Component {
       .then(() => dispatch(push(`/students-add/${classroomPk}`)));
   }
 
+  renderGradeTable() {
+    const { classroomAnswers } = this.props;
+    return (
+      <ReactTable
+        data={classroomAnswers}
+        columns={[
+          {
+            Header: "Grades",
+            columns: [
+              {
+                Header: "Student",
+                id: "student",
+                accessor: answer => answer.student.name,
+              },
+              {
+                Header: "Assignment",
+                id: "assignment",
+                accessor: answer => answer.assignment.name,
+              },
+            ]
+          },
+          {
+            columns: [
+              {
+                Header: "Question",
+                id: "question",
+                accessor: answer => answer.question.text,
+              },
+              {
+                Header: "Grade",
+                accessor: "grade",
+                Cell: row => `${row.value}%`,
+                aggregate: vals => round(mean(vals)),
+                Aggregated: row => {
+                  return (
+                    <span>
+                      {row.value}% (avg)
+                    </span>
+                  );
+                  },
+                Footer: (
+                    <span>
+                      <strong>Average:</strong>{" "}
+                      {round(mean(classroomAnswers.map(d => d.grade)))}%
+                    </span>
+                  )
+              }
+            ]
+          }
+        ]}
+        pivotBy={["student", "assignment"]}
+        defaultPageSize={classroomAnswers.length}
+        className="-striped -highlight"
+      />
+    );
+  }
+
   render() {
     const {
       classroom,
@@ -115,8 +179,9 @@ class Classroom extends React.Component {
                       nothingText="You have no students in this class yet."
                       onDelete={this.deleteStudent.bind(this)}
                       deleteMsg="This will delete all of the student's grades."
+                      disabledLink={true}
                     />),
-                    null
+                    this.renderGradeTable(),
                   ]}
                 />
               </Grid>
@@ -160,6 +225,7 @@ const mapStateToProps = state => ({
   routing: state.routing,
   classroom: state.apiReducer.classroom,
   classroomStudents: state.apiReducer.classroomStudents,
+  classroomAnswers: state.apiReducer.classroomAnswers,
 })
 
 const mapDispatchToProps = (dispatch) => ({

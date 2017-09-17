@@ -81,7 +81,7 @@ class SortableList extends React.Component {
   }
 
   render() {
-    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg } = this.props;
+    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg, disabledLink } = this.props;
     const { anchorEl, selectedIndex, sortDown, checked, deleteDialogOpen } = this.state;
     const items = sortBy(this.props.items, sortFields[selectedIndex])
     if (!sortDown) { 
@@ -142,7 +142,9 @@ class SortableList extends React.Component {
               </Grid>
               <Grid item xs={11} md={11 - Object.keys(properties).length}>
                 <div style={{flex: 1}}>
-                  <Link onClick={() => onLinkClick(value)} text={getTitle(value)} />
+                  {disabledLink ? 
+                  <Link disabled={true} text={getTitle(value)} />
+                  : <Link onClick={() => onLinkClick(value)} text={getTitle(value)} />}
                   <Typography style={{paddingTop: 5}}>{getSubtitle(value)}</Typography>
                 </div>
               </Grid>

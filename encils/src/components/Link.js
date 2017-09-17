@@ -14,6 +14,11 @@ const hoverStyle = {
   cursor: 'pointer'
 }
 
+const disabledStyle = {
+  color: 'black',
+  fontSize: 20,
+}
+
 class Link extends React.Component {
   constructor(props) {
     super(props)
@@ -23,7 +28,7 @@ class Link extends React.Component {
   }
 
   render() {
-    const { text, onClick, highlighted, style } = this.props;
+    const { text, onClick, highlighted, style, disabled} = this.props;
     const { hover } = this.state;
 
     return (
@@ -32,7 +37,7 @@ class Link extends React.Component {
           onMouseEnter={() => this.setState({ hover: true })}
           onMouseLeave={() => this.setState({ hover: false })}
           onClick={onClick}
-          style={hover || highlighted ? hoverStyle : regularStyle}
+          style={disabled ? disabledStyle : hover || highlighted ? hoverStyle : regularStyle}
         >{text}</Typography>
       </div>
     );

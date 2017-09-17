@@ -67,6 +67,10 @@ class Assignment extends React.Component {
       });
   }
 
+  renderCompletedQuizzes() {
+    const { 
+  }
+
   render() {
     const {
       assignment,
@@ -91,15 +95,16 @@ class Assignment extends React.Component {
                       items={assignmentQuestions}
                       getTitle={(question) => question.text}
                       getSubtitle={(question) => moment(question.created).calendar()}
-                      sortFields={['text', 'grade']}
+                      sortFields={['created', 'text', 'grade']}
                       properties={{
                         'Avg. Grade': question => `${question.grade}%`
                       }}
                       nothingText="You have no questions in this quiz yet."
                       onDelete={this.deleteQuestion.bind(this)}
                       deleteMsg="This will delete all grades for this question and could change student averages."
+                      disabledLink={true}
                     />),
-                    null,
+                    this.renderCompletedQuizzes()
                   ]}
                 />
               </Grid>

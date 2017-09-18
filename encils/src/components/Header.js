@@ -6,6 +6,7 @@ import Switch from 'material-ui/Switch';
 import Typography from 'material-ui/Typography';
 
 import Headline from './Headline';
+import pointer from '../images/pointer.png'
 
 export default ({ text, buttonText, buttonIcon, onClick, switches, body }) => {
 
@@ -34,6 +35,7 @@ export default ({ text, buttonText, buttonIcon, onClick, switches, body }) => {
       {buttonText ?
       <Grid item md={2} sm={12} xs={12}>
         <Button raised color="accent" style={{ width: '100%' }} onClick={onClick}>{buttonText}</Button>
+        <center><img className="bounce" style={{ width: '2em' }} src={pointer} alt='pointer' /></center>
       </Grid> : null}
     </Grid>
   );

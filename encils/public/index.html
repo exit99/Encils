@@ -21,6 +21,21 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Encils</title>
+
+    <style>
+        .bounce {
+            -webkit-animation: mover 1s infinite  alternate;
+            animation: mover 1s infinite  alternate;
+        }
+        @-webkit-keyframes mover {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+        @keyframes mover {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+    </style>
   </head>
   <body>
     <noscript>

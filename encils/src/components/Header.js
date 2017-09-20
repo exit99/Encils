@@ -6,16 +6,16 @@ import Switch from 'material-ui/Switch';
 import Typography from 'material-ui/Typography';
 
 import Headline from './Headline';
-import pointer from '../images/pointer.png'
+import pointerImage from '../images/pointer.png'
 
-export default ({ text, buttonText, buttonIcon, onClick, switches, body }) => {
+export default ({ text, buttonText, buttonIcon, onClick, switches, body, pointer }) => {
 
   const renderedSwitches = switches && switches.map(({ label, checked, onClick }) => {
     return <FormControlLabel control={ <Switch checked={checked} /> } label={label} onClick={onClick} />
   });
 
   return (
-    <Grid container style={{paddingBottom: 50}}>
+    <Grid container style={{ paddingBottom: 30 }}>
       <Grid item md={switches ? 5 : 10} sm={12} xs={12}>
         <Headline style={{ paddingBottom: 10 }} text={text} />
         {body ?
@@ -35,7 +35,7 @@ export default ({ text, buttonText, buttonIcon, onClick, switches, body }) => {
       {buttonText ?
       <Grid item md={2} sm={12} xs={12}>
         <Button raised color="accent" style={{ width: '100%' }} onClick={onClick}>{buttonText}</Button>
-        <center><img className="bounce" style={{ width: '2em' }} src={pointer} alt='pointer' /></center>
+        {pointer ? <center><img className="bounce" src={pointerImage} alt='pointer' /></center> : null}
       </Grid> : null}
     </Grid>
   );

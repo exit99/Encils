@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
+import reduce from 'lodash/reduce';
+import moment from 'moment';
 
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
@@ -41,6 +43,7 @@ class Home extends React.Component {
       startQuizDialogOpen: false,
       selectedClassroom: 0,
       selectedAssignment: 0,
+      timeOfDay: this.timeOfDay(),
     }
   }
   componentWillMount() {
@@ -61,11 +64,33 @@ class Home extends React.Component {
       });
   }
 
+  timeOfDay() {
+    const m = moment();
+	  let g = null;
+	  
+	  if(!m || !m.isValid()) { return; }
+	  
+	  const split_afternoon = 12 
+	  const split_evening = 17
+	  const currentHour = parseFloat(m.format("HH"));
+	  
+	  if(currentHour >= split_afternoon && currentHour <= split_evening) {
+	  	g = "afternoon";
+	  } else if(currentHour >= split_evening) {
+	  	g = "evening";
+	  } else {
+	  	g = "morning";
+	  }
+	  
+	  return g;
+  }
+
   render() {
     const {
       ungradedAssignments,
       classrooms,
       assignments,
+      answers,
       dispatch,
     } = this.props;
 
@@ -73,18 +98,22 @@ class Home extends React.Component {
       startQuizDialogOpen,
       selectedClassroom,
       selectedAssignment,
+      timeOfDay,
     } = this.state;
 
-    if (classrooms.length !== 0 && assignments.length !== 0) {
+    if (classrooms.length === 0 && assignments.length === 0) {
       return <WelcomeTour />
-    }
+    } 
+
+    const noAnswers = reduce(classrooms, (sum, x) => sum + x.students.length, 0) > 0 && assignments.length > 0 && reduce(classrooms, (sum, x) => sum + x.gpa, 0) === 0 && ungradedAssignments.length === 0;
 
     return (
         <Dashboard>
           <div style={{padding:40}}>
             <Header 
-              text="Hello there, good to see you!" 
-              body="Below are some recommendations to help you get the most out of Encils."
+              text={timeOfDay != null ? `Good ${timeOfDay}!` : "Well hello there!"}
+              body={noAnswers ? "Almost there. Give your first quiz by clicking the <b>start quiz</b> button." : "Below are some recommendations to help you get the most out of Encils."}
+              pointer={noAnswers}
               buttonText="Start Quiz" 
               onClick={() => this.setState({ startQuizDialogOpen: true })} />
             <Grid container>
@@ -152,6 +181,7 @@ const mapStateToProps = state => ({
   ungradedAssignments: state.apiReducer.ungradedAssignments,
   classrooms: state.apiReducer.classrooms,
   assignments: state.apiReducer.assignments,
+  answers: state.apiReducer.answers,
 })
 
 const mapDispatchToProps = (dispatch) => ({

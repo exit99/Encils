@@ -62,7 +62,6 @@ class Teacher(AbstractUser):
 class Classroom(models.Model):
     teacher = models.ForeignKey(Teacher)
     name = models.CharField(max_length=50)
-    school = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now_add=True)
 
     @property

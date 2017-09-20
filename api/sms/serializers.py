@@ -28,7 +28,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Classroom
-        fields = ('pk', 'name', 'school', 'created', 'assignments_given', 'gpa',
+        fields = ('pk', 'name', 'created', 'assignments_given', 'gpa',
                   'answer_rate', 'students')
         read_only_fields = ('pk', 'created')
 

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
+import reduce from 'lodash/reduce';
 import moment from 'moment';
 
 import Grid from 'material-ui/Grid';
@@ -68,12 +69,11 @@ class Assignments extends React.Component {
     const { 
       assignmentDialogOpen,
     } = this.state;
-    console.log(assignments);
 
     return (
         <Dashboard>
           <div style={{padding:40}}>
-            <Header text="Quizzes" buttonText="Create Quiz" onClick={() => this.setState({ assignmentDialogOpen: true })} />
+            <Header text="Quizzes" buttonText="Create Quiz" onClick={() => this.setState({ assignmentDialogOpen: true })} pointer={assignments.length === 0} />
             <Grid container>
               <Grid item xs={12}>
                 <SortableList 
@@ -90,6 +90,7 @@ class Assignments extends React.Component {
                   deleteMsg="This will delete all of this quizzes grades and could change student averages."
                   nothingText="You have not made any quizzes yet."
                   onLinkClick={({pk}) => dispatch(push(`/assignments/${pk}`))}
+                  pointer={reduce(assignments, (sum, x) => sum + x.question_count, 0) === 0}
                 />
               </Grid>
             </Grid>

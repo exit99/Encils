@@ -160,7 +160,6 @@ class Assignment extends React.Component {
         onClick: this.toggleOneTime.bind(this)
       }
     ];
-    console.log(assignment);
     
     return (
         <Dashboard>
@@ -168,6 +167,7 @@ class Assignment extends React.Component {
             <Header 
               text={assignment.name} buttonText="Add Question" 
               onClick={() => this.setState({ addQuestionsDialogOpen: true })}
+              pointer={assignmentQuestions.length === 0}
               switches={switches} />
             <Grid container>
               <Grid item xs={12}>

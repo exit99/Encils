@@ -92,7 +92,7 @@ class SortableList extends React.Component {
   }
 
   render() {
-    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg, disabledLink, noCheckbox, noSort } = this.props;
+    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg, disabledLink, noCheckbox, noSort, pointer } = this.props;
     const { anchorEl, selectedIndex, sortDown, checked, deleteDialogOpen } = this.state;
     const items = this.getItems();
     const atLeastOneChecked = this.atLeastOneChecked();
@@ -156,7 +156,7 @@ class SortableList extends React.Component {
                 <div style={{flex: 1}}>
                   {disabledLink ? 
                   <Link disabled={true} text={getTitle(value)} />
-                  : <Link onClick={() => onLinkClick(value)} text={getTitle(value)} />}
+                  : <Link onClick={() => onLinkClick(value)} text={getTitle(value)} pointer={pointer && index === 0} />}
                   <Typography style={{paddingTop: 5}}>{getSubtitle(value)}</Typography>
                 </div>
               </Grid>

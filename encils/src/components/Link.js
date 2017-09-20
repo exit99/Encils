@@ -1,6 +1,7 @@
 import React from 'react';
 import Typography from 'material-ui/Typography';
 import { lightBlue } from 'material-ui/colors';
+import pointerImage from '../images/pointerLeft.png'
 
 const regularStyle = {
   color: lightBlue[800],
@@ -28,7 +29,7 @@ class Link extends React.Component {
   }
 
   render() {
-    const { text, onClick, highlighted, style, disabled} = this.props;
+    const { text, onClick, highlighted, style, disabled, pointer } = this.props;
     const { hover } = this.state;
 
     return (
@@ -38,7 +39,10 @@ class Link extends React.Component {
           onMouseLeave={() => this.setState({ hover: false })}
           onClick={onClick}
           style={disabled ? disabledStyle : hover || highlighted ? hoverStyle : regularStyle}
-        >{text}</Typography>
+        >
+          {text}
+          {pointer ? <img className="bounce-horizontal" style={{ paddingLeft: 20, marginBottom: -10, marginTop: -15 }} src={pointerImage} alt='pointer' /> : null}
+        </Typography>
       </div>
     );
   }

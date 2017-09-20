@@ -45,3 +45,7 @@ http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb3-cli-git.html
 
 Not sure how to do this yet.
 
+
+# Notes
+
+The tour is done in a bad way, and we should really use react-joyride later.

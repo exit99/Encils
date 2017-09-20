@@ -162,7 +162,7 @@ class Classroom extends React.Component {
     return (
         <Dashboard>
           <div style={{padding:40}}>
-            <Header text={classroom.name} buttonText="Add Students" onClick={() => this.setState({ addStudentsDialogOpen: true })} />
+            <Header text={classroom.name} buttonText="Add Students" onClick={() => this.setState({ addStudentsDialogOpen: true })} pointer={classroomStudents.length === 0 && !addStudentsDialogOpen} />
             <Grid container>
               <Grid item xs={12}>
                 <Tabs

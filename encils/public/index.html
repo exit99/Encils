@@ -24,17 +24,33 @@
 
     <style>
         .bounce {
-            -webkit-animation: mover 1s infinite  alternate;
-            animation: mover 1s infinite  alternate;
+            -webkit-animation: moverY 1s infinite  alternate;
+            animation: moverY 1s infinite  alternate;
+            width: 2em;
         }
-        @-webkit-keyframes mover {
+        @-webkit-keyframes moverY {
             0% { transform: translateY(0); }
             100% { transform: translateY(-15px); }
         }
-        @keyframes mover {
+        @keyframes moverY {
             0% { transform: translateY(0); }
             100% { transform: translateY(-15px); }
         }
+
+        .bounce-horizontal {
+            -webkit-animation: moverX 1s infinite  alternate;
+            animation: moverX 1s infinite  alternate;
+            height: 2em;
+        }
+        @-webkit-keyframes moverX {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-15px); }
+        }
+        @keyframes moverX {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-15px); }
+        }
+
     </style>
   </head>
   <body>

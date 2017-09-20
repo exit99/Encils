@@ -5,6 +5,7 @@ import { push } from 'react-router-redux';
 import Cookies from 'universal-cookie';
 import Gravatar from 'react-gravatar'
 import phoneFormatter from 'phone-formatter';
+import reduce from 'lodash/reduce';
 
 import AppBar from 'material-ui/AppBar';
 import Button from 'material-ui/Button';
@@ -17,12 +18,21 @@ import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
 import Logo from '../components/Logo';
+import pointerImage from '../images/pointer.png'
 
 import { gradientBackground, onDesktop, gutterPadding } from '../utils';
 import { getProfile } from '../api-client/auth';
+import { getClassrooms } from '../api-client/classrooms';
+import { getAssignments } from '../api-client/assignments';
 
 const highlightedStyle = {
   backgroundColor: 'rgba(255, 255, 255, 0.12)' 
+}
+
+const pointerStyle = {
+  marginBottom: -100,
+  marginLeft: -58,
+  marginRight: 26 
 }
 
 class Dashboard extends React.Component {
@@ -38,6 +48,8 @@ class Dashboard extends React.Component {
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(getProfile());
+    dispatch(getClassrooms());
+    dispatch(getAssignments());
   }
 
   logout() {
@@ -57,8 +69,18 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const { children, routing, dispatch, profile } = this.props;
+    const { children, routing, dispatch, profile, classrooms, assignments, answers, classroomStudents, assignmentQuestions } = this.props;
     const { open, onDesktop } = this.state;
+
+    const onHomePage = this.props.routing.location.pathname === '/';
+    const onAssignmentPage = this.props.routing.location.pathname.startsWith('/assignment');
+    const onClassroomPage = this.props.routing.location.pathname.startsWith('/classroom');
+    const studentCount = reduce(classrooms, (sum, x) => sum + x.students.length, 0) + classroomStudents.length;
+    const questionCount = reduce(assignments, (sum, x) => sum + x.question_count, 0) + assignmentQuestions.length;
+    const gpaTotal = reduce(classrooms, (sum, x) => sum + x.gpa, 0);
+    const renderQuizPointer = !onAssignmentPage && studentCount > 0 && assignments.length === 0;
+    const renderHomePointer = !onHomePage && studentCount > 0 && assignments.length > 0 && questionCount > 0 && gpaTotal === 0;
+    console.log(renderHomePointer, classrooms, assignments, answers.length);
 
     return (
       <div>
@@ -66,8 +88,10 @@ class Dashboard extends React.Component {
           <Toolbar style={gutterPadding}>
             <div style={{flex: 1}}>
               <Button color="contrast" onClick={() => dispatch(push('/'))}>ENCILS</Button>
-              <Button style={this.props.routing.location.pathname.startsWith('/assignment') ? highlightedStyle : {}}  color="contrast" onClick={() => dispatch(push('/assignments'))}>Quizzes</Button>
-              <Button style={this.props.routing.location.pathname.startsWith('/classroom') ? highlightedStyle : {}}color="contrast" onClick={() => dispatch(push('/classrooms'))}>Classrooms</Button>
+              {renderHomePointer ? <img style={pointerStyle} className="bounce" src={pointerImage} alt='pointer' /> : null}
+              <Button style={onAssignmentPage ? highlightedStyle : {}}  color="contrast" onClick={() => dispatch(push('/assignments'))}>Quizzes</Button>
+              {renderQuizPointer ? <img style={pointerStyle} className="bounce" src={pointerImage} alt='pointer' /> : null}
+              <Button style={onClassroomPage ? highlightedStyle : {}}color="contrast" onClick={() => dispatch(push('/classrooms'))}>Classrooms</Button>
             </div>
             <Avatar><Gravatar email={profile.email} /></Avatar>
             <div style={{ padding: 20 }}>
@@ -105,6 +129,11 @@ class Dashboard extends React.Component {
 const mapStateToProps = state => ({
   routing: state.routing,
   profile: state.apiReducer.profile,
+  answers: state.apiReducer.answers,
+  assignments: state.apiReducer.assignments,
+  assignmentQuestions: state.apiReducer.assignmentQuestions,
+  classrooms: state.apiReducer.classrooms,
+  classroomStudents: state.apiReducer.classroomStudents,
 })
 
 const mapDispatchToProps = (dispatch) => ({

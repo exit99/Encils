@@ -22,16 +22,6 @@ let ClassroomForm = props => {
           fullWidth={true}
           errors={error}
         />
-        <br />
-        <Field
-          name="school"
-          label="School"
-          type="text"
-          component={RenderedInput}
-          margin="normal"
-          fullWidth={true}
-          errors={error}
-        />
         {error && error.non_field_errors ? error.non_field_errors.map((message, index) => <Message key={index} type="error" message={message} />) : null}
       </form>
       <br />

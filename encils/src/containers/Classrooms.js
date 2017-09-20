@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
+import reduce from 'lodash/reduce';
 import moment from 'moment';
 
 import Grid from 'material-ui/Grid';
@@ -58,12 +59,12 @@ class Classrooms extends React.Component {
       dispatch,
     } = this.props;
 
-    const { classroomDialogOpen } = this.state;
+    const { classroomDialogOpen } = this.state; 
     
     return (
         <Dashboard>
           <div style={{padding:40}}>
-            <Header text="Classes" buttonText="Create Class" onClick={() => this.setState({ classroomDialogOpen: true })} />
+            <Header text="Classes" buttonText="Create Class" onClick={() => this.setState({ classroomDialogOpen: true })} pointer={classrooms.length === 0} />
             <Grid container>
               <Grid item xs={12}>
                 <SortableList 
@@ -81,6 +82,7 @@ class Classrooms extends React.Component {
                   deleteMsg="This will delete all students and grades related to this classroom."
                   nothingText="You have no classrooms yet."
                   onLinkClick={({pk}) => dispatch(push(`/classrooms/${pk}`))}
+                  pointer={reduce(classrooms, (sum, x) => sum + x.students.length, 0) === 0}
                 />
               </Grid>
             </Grid>

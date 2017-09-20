@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
-import reduce from 'lodash/reduce';
 import moment from 'moment';
 
 import Grid from 'material-ui/Grid';
@@ -11,7 +10,7 @@ import Typography from 'material-ui/Typography';
 
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
-import SortableList from '../components/SortableList';
+import SortableList from './SortableList';
 
 import Dashboard from './Dashboard';
 import ClassroomForm from './forms/ClassroomForm';
@@ -21,6 +20,8 @@ import {
   deleteClassroom,
   getClassrooms,
 } from '../api-client/classrooms';
+
+import { getProfile } from '../api-client/auth';
 
 class Classrooms extends React.Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class Classrooms extends React.Component {
       if (!isUndefined(res)) {
         this.setState({ classroomDialogOpen: false });
         dispatch(getClassrooms());
+        dispatch(getProfile());
       };
     });
   }
@@ -56,6 +58,7 @@ class Classrooms extends React.Component {
   render() {
     const {
       classrooms,
+      profile,
       dispatch,
     } = this.props;
 
@@ -64,7 +67,7 @@ class Classrooms extends React.Component {
     return (
         <Dashboard>
           <div style={{padding:40}}>
-            <Header text="Classes" buttonText="Create Class" onClick={() => this.setState({ classroomDialogOpen: true })} pointer={classrooms.length === 0} />
+            <Header text="Classes" buttonText="Create Class" onClick={() => this.setState({ classroomDialogOpen: true })} pointer={profile.pointer_step === 'classroom'} />
             <Grid container>
               <Grid item xs={12}>
                 <SortableList 
@@ -82,7 +85,7 @@ class Classrooms extends React.Component {
                   deleteMsg="This will delete all students and grades related to this classroom."
                   nothingText="You have no classrooms yet."
                   onLinkClick={({pk}) => dispatch(push(`/classrooms/${pk}`))}
-                  pointer={reduce(classrooms, (sum, x) => sum + x.students.length, 0) === 0}
+                  pointer={profile.pointer_step === 'student'}
                 />
               </Grid>
             </Grid>
@@ -99,6 +102,7 @@ class Classrooms extends React.Component {
 const mapStateToProps = state => ({
   routing: state.routing,
   classrooms: state.apiReducer.classrooms,
+  profile: state.apiReducer.profile,
 })
 
 const mapDispatchToProps = (dispatch) => ({

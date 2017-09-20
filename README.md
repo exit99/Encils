@@ -40,12 +40,6 @@ You will need to `pip install awscli` (version 1.11.140).
 2. Upload a new version in the ElasticBeanstalk console.  There may be a way to do it with git: 
 http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb3-cli-git.html
 
-
-### Rebuilding EC2 Container
-
-Not sure how to do this yet.
-
-
 # Notes
 
-The tour is done in a bad way, and we should really use react-joyride later.
+Should abstract out the form submit page / maybe all the pages really that have a basic list

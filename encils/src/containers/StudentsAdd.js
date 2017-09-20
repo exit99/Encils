@@ -53,6 +53,7 @@ class StudentsAdd extends React.Component {
   finish() { 
     const { dispatch, classroom } = this.props
     dispatch(editActiveItem({classroom: null, question: null}))
+      .then(() => dispatch(getProfile()))
       .then(() => dispatch(push(`/classrooms/${classroom.pk}`)));
   }
 

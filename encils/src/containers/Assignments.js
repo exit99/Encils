@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
-import reduce from 'lodash/reduce';
 import moment from 'moment';
 
 import Grid from 'material-ui/Grid';
@@ -13,7 +12,7 @@ import CloseIcon from 'material-ui-icons/Close';
 
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
-import SortableList from '../components/SortableList';
+import SortableList from './SortableList';
 
 import Dashboard from './Dashboard';
 import AssignmentForm from './forms/AssignmentForm';
@@ -23,6 +22,8 @@ import {
   createAssignment,
   deleteAssignment,
 } from '../api-client/assignments';
+
+import { getProfile } from '../api-client/auth';
 
 class Assignments extends React.Component {
     constructor(props) {
@@ -48,6 +49,7 @@ class Assignments extends React.Component {
       if (!isUndefined(res)) {
         this.closeUpdateAssignmentDialog();
         dispatch(getAssignments());
+        dispatch(getProfile());
       };
     });
   }
@@ -63,6 +65,7 @@ class Assignments extends React.Component {
   render() {
     const {
       assignments,
+      profile,
       dispatch,
     } = this.props;
     
@@ -73,7 +76,7 @@ class Assignments extends React.Component {
     return (
         <Dashboard>
           <div style={{padding:40}}>
-            <Header text="Quizzes" buttonText="Create Quiz" onClick={() => this.setState({ assignmentDialogOpen: true })} pointer={assignments.length === 0} />
+            <Header text="Quizzes" buttonText="Create Quiz" onClick={() => this.setState({ assignmentDialogOpen: true })} pointer={profile.pointer_step === 'assignment'} />
             <Grid container>
               <Grid item xs={12}>
                 <SortableList 
@@ -90,7 +93,7 @@ class Assignments extends React.Component {
                   deleteMsg="This will delete all of this quizzes grades and could change student averages."
                   nothingText="You have not made any quizzes yet."
                   onLinkClick={({pk}) => dispatch(push(`/assignments/${pk}`))}
-                  pointer={reduce(assignments, (sum, x) => sum + x.question_count, 0) === 0}
+                  pointer={profile.pointer_step === 'question'}
                 />
               </Grid>
             </Grid>
@@ -108,6 +111,7 @@ class Assignments extends React.Component {
 const mapStateToProps = state => ({
   routing: state.routing,
   assignments: state.apiReducer.assignments,
+  profile: state.apiReducer.profile,
 })
 
 const mapDispatchToProps = (dispatch) => ({

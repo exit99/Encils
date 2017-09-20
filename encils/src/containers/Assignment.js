@@ -21,7 +21,7 @@ import { grey } from 'material-ui/colors';
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
 import Message from '../components/Message';
-import SortableList from '../components/SortableList';
+import SortableList from './SortableList';
 import Tabs from '../components/Tabs';
 
 import Dashboard from './Dashboard';
@@ -35,6 +35,8 @@ import {
   createQuestion,
   deleteQuestion,
 } from '../api-client/assignments';
+
+import { getProfile } from '../api-client/auth';
 
 class Assignment extends React.Component {
     constructor(props) {
@@ -61,6 +63,7 @@ class Assignment extends React.Component {
       if (!isUndefined(res)) {
         this.setState({addQuestionsDialogOpen: false});
         dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk));
+        dispatch(getProfile());
       };
     });
   }
@@ -141,6 +144,7 @@ class Assignment extends React.Component {
     const {
       assignment,
       assignmentQuestions,
+      profile,
       dispatch,
     } = this.props;
     
@@ -167,7 +171,7 @@ class Assignment extends React.Component {
             <Header 
               text={assignment.name} buttonText="Add Question" 
               onClick={() => this.setState({ addQuestionsDialogOpen: true })}
-              pointer={assignmentQuestions.length === 0}
+              pointer={profile.pointer_step === 'question'}
               switches={switches} />
             <Grid container>
               <Grid item xs={12}>
@@ -207,6 +211,7 @@ const mapStateToProps = state => ({
   assignment: state.apiReducer.assignment,
   assignmentQuestions: state.apiReducer.assignmentQuestions,
   assignmentAnswers: state.apiReducer.assignmentAnswers,
+  profile: state.apiReducer.profile,
 })
 
 const mapDispatchToProps = (dispatch) => ({

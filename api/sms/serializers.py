@@ -15,9 +15,11 @@ serializers.BooleanField.FALSE_VALUES.add('')
 
 
 class TeacherSerializer(serializers.ModelSerializer):
+    pointer_step = serializers.ReadOnlyField()
+
     class Meta:
         model = Teacher
-        fields = ('pk', 'email', 'sms')
+        fields = ('pk', 'email', 'sms', 'pointer_step')
 
 
 class ClassroomSerializer(serializers.ModelSerializer):

@@ -58,6 +58,20 @@ class Teacher(AbstractUser):
         questions = self.question_set.all().values_list("pk")
         return Answer.objects.filter(question__in=questions)
 
+    @property
+    def pointer_step(self):
+        """Used in the frontend to display pointer over links"""
+        if not self.classroom_set.exists():
+            return "classroom"
+        elif not self.student_set.exists():
+            return "student"
+        elif not self.assignment_set.exists():
+            return "assignment"
+        elif not self.question_set.exists():
+            return "question"
+        elif not self.answer_set.exists():
+            return "answer"
+
 
 class Classroom(models.Model):
     teacher = models.ForeignKey(Teacher)

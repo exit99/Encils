@@ -12,7 +12,7 @@ import Typography from 'material-ui/Typography';
 import CloseIcon from 'material-ui-icons/Close';
 import Slide from 'material-ui/transitions/Slide';
 
-import { gradientBackground, gutterPadding } from '../utils';
+import { gutterPadding } from '../utils';
 import Header from './Header';
 
 const FullScreenDialog = (props) => {
@@ -26,12 +26,12 @@ const FullScreenDialog = (props) => {
         onRequestClose={onClose}
         transition={<Slide direction="up" />}
       >
-        <AppBar style={gradientBackground}>
+        <AppBar color="primary">
           <Toolbar style={gutterPadding}>
-            <Typography type="title" style={{flex: 1}}>
+            <Typography type="title" style={{flex: 1, color: 'white' }}>
               {title} 
             </Typography>
-            <IconButton onClick={onClose} aria-label="Close">
+            <IconButton style={{ color: 'white' }} onClick={onClose} aria-label="Close">
               <CloseIcon />
             </IconButton>
           </Toolbar>

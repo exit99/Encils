@@ -1,6 +1,6 @@
-// TODO: Need to adjust checkboxes for sort order.
-
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import capitalize from 'lodash/capitalize';
 import sortBy from 'lodash/sortBy';
 
@@ -23,8 +23,10 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 
-import Link from './Link';
-import NothingHere from './NothingHere';
+import Link from '../components/Link';
+import NothingHere from '../components/NothingHere';
+
+import { getProfile } from '../api-client/auth';
 
 class SortableList extends React.Component {
   componentWillMount() {
@@ -73,7 +75,7 @@ class SortableList extends React.Component {
 
   onDelete() {
     const { checked } = this.state;
-    const { onDelete } = this.props;
+    const { onDelete, dispatch } = this.props;
     const items = this.getItems();
     checked.map((value, index) => {
       if (value) { onDelete(items[index].pk) };
@@ -193,4 +195,12 @@ class SortableList extends React.Component {
   }
 }
 
-export default SortableList;
+const mapStateToProps = state => ({
+  routing: state.routing,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatch: dispatch
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SortableList);

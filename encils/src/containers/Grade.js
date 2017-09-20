@@ -11,7 +11,7 @@ import Typography from 'material-ui/Typography';
 
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
-import SortableList from '../components/SortableList';
+import SortableList from './SortableList';
 
 import Dashboard from './Dashboard';
 import ClassroomForm from './forms/ClassroomForm';

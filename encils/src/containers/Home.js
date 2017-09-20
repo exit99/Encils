@@ -15,7 +15,7 @@ import Select from 'material-ui/Select';
 
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
-import SortableList from '../components/SortableList';
+import SortableList from './SortableList';
 
 import Dashboard from './Dashboard';
 import WelcomeTour from './WelcomeTour';
@@ -90,7 +90,7 @@ class Home extends React.Component {
       ungradedAssignments,
       classrooms,
       assignments,
-      answers,
+      profile,
       dispatch,
     } = this.props;
 
@@ -105,15 +105,13 @@ class Home extends React.Component {
       return <WelcomeTour />
     } 
 
-    const noAnswers = reduce(classrooms, (sum, x) => sum + x.students.length, 0) > 0 && assignments.length > 0 && reduce(classrooms, (sum, x) => sum + x.gpa, 0) === 0 && ungradedAssignments.length === 0;
-
     return (
         <Dashboard>
           <div style={{padding:40}}>
             <Header 
               text={timeOfDay != null ? `Good ${timeOfDay}!` : "Well hello there!"}
-              body={noAnswers ? "Almost there. Give your first quiz by clicking the <b>start quiz</b> button." : "Below are some recommendations to help you get the most out of Encils."}
-              pointer={noAnswers}
+              body={profile.pointer_step === 'answer' ? "Almost there. Give your first quiz by clicking the <b>start quiz</b> button." : "Below are some recommendations to help you get the most out of Encils."}
+              pointer={profile.pointer_step === 'answer'}
               buttonText="Start Quiz" 
               onClick={() => this.setState({ startQuizDialogOpen: true })} />
             <Grid container>
@@ -181,7 +179,7 @@ const mapStateToProps = state => ({
   ungradedAssignments: state.apiReducer.ungradedAssignments,
   classrooms: state.apiReducer.classrooms,
   assignments: state.apiReducer.assignments,
-  answers: state.apiReducer.answers,
+  profile: state.apiReducer.profile,
 })
 
 const mapDispatchToProps = (dispatch) => ({

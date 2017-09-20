@@ -21,7 +21,7 @@ import { grey } from 'material-ui/colors';
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
 import Message from '../components/Message';
-import SortableList from '../components/SortableList';
+import SortableList from './SortableList';
 import Tabs from '../components/Tabs';
 
 import Dashboard from './Dashboard';
@@ -36,6 +36,8 @@ import {
   createClassroomStudent,
   deleteStudent,
 } from '../api-client/classrooms';
+
+import { getProfile } from '../api-client/auth';
 
 class Classroom extends React.Component {
     constructor(props) {
@@ -71,6 +73,7 @@ class Classroom extends React.Component {
       if (!isUndefined(res)) {
         this.closeDialogs();
         dispatch(getClassroomStudents(this.props.match.params.classroomPk));
+        dispatch(getProfile());
       };
     });
   }
@@ -151,6 +154,7 @@ class Classroom extends React.Component {
     const {
       classroom,
       classroomStudents,
+      profile,
       dispatch,
     } = this.props;
     
@@ -162,7 +166,7 @@ class Classroom extends React.Component {
     return (
         <Dashboard>
           <div style={{padding:40}}>
-            <Header text={classroom.name} buttonText="Add Students" onClick={() => this.setState({ addStudentsDialogOpen: true })} pointer={classroomStudents.length === 0 && !addStudentsDialogOpen} />
+            <Header text={classroom.name} buttonText="Add Students" onClick={() => this.setState({ addStudentsDialogOpen: true })} pointer={profile.pointer_step === "student" && !addStudentsDialogOpen} />
             <Grid container>
               <Grid item xs={12}>
                 <Tabs
@@ -226,6 +230,7 @@ const mapStateToProps = state => ({
   classroom: state.apiReducer.classroom,
   classroomStudents: state.apiReducer.classroomStudents,
   classroomAnswers: state.apiReducer.classroomAnswers,
+  profile: state.apiReducer.profile,
 })
 
 const mapDispatchToProps = (dispatch) => ({

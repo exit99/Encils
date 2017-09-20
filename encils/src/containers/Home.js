@@ -110,7 +110,7 @@ class Home extends React.Component {
           <div style={{padding:40}}>
             <Header 
               text={timeOfDay != null ? `Good ${timeOfDay}!` : "Well hello there!"}
-              body={profile.pointer_step === 'answer' ? "Almost there. Give your first quiz by clicking the <b>start quiz</b> button." : "Below are some recommendations to help you get the most out of Encils."}
+              body={profile.pointer_step === 'answer' ? "Almost there. Give your first quiz by clicking the start quiz button." : "Below are some recommendations to help you get the most out of Encils."}
               pointer={profile.pointer_step === 'answer'}
               buttonText="Start Quiz" 
               onClick={() => this.setState({ startQuizDialogOpen: true })} />

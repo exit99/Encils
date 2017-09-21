@@ -32,7 +32,7 @@ You will need to `pip install awscli` (version 1.11.140).
 
 ## Dashboard
 
-`cd encils && yarn build && aws s3 sync build/ s3://dashboard.encils`
+`cd encils && yarn build && aws s3 sync build/ s3://dashboard.encils.com`
 
 ## API
 

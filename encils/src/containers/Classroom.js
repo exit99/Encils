@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
-import mean from 'lodash/mean'
-import round from 'lodash/round'
+import mean from 'lodash/mean';
+import round from 'lodash/round';
+import reduce from 'lodash/reduce';
 import phoneFormatter from 'phone-formatter';
 
 import ReactTable from "react-table";
@@ -13,6 +14,7 @@ import "react-table/react-table.css";
 import Button from 'material-ui/Button';
 import Dialog, { DialogTitle, DialogContent, DialogContentText } from 'material-ui/Dialog';
 import Grid from 'material-ui/Grid';
+import List, { ListItem, ListItemText, } from 'material-ui/List';
 import Typography from 'material-ui/Typography';
 import CreateIcon from 'material-ui-icons/Create';
 import SMSIcon from 'material-ui-icons/Sms';
@@ -45,6 +47,7 @@ class Classroom extends React.Component {
     this.state = {
       addStudentsDialogOpen: false,
       addStudentsManuallyDialogOpen: false,
+      updateGradesDialogOpen: false,
     }
   }
 
@@ -61,6 +64,7 @@ class Classroom extends React.Component {
     this.setState({
       addStudentsDialogOpen: false,
       addStudentsManuallyDialogOpen: false,
+      updateGradesDialogOpen: false,
     });
   }
 
@@ -150,6 +154,20 @@ class Classroom extends React.Component {
     );
   }
 
+  renderAssignments() {
+    const { classroomAnswers, dispatch } = this.props;
+    const assignments = reduce(classroomAnswers, (data, answer) => {
+      data[answer.assignment.name] = {classroomPk: answer.classroom.pk, assignmentPk: answer.assignment.pk};
+      return data;
+    }, {});
+
+    const listItems = Object.keys(assignments).map((key) => {
+      const assignment = assignments[key];
+      return <ListItem button><ListItemText primary={key} onClick={() => dispatch(push(`/grade/${assignment.classroomPk}/${assignment.assignmentPk}`))} /></ListItem>
+    });
+    return <List>{listItems}</List>
+  }
+
   render() {
     const {
       classroom,
@@ -161,7 +179,13 @@ class Classroom extends React.Component {
     const { 
       addStudentsDialogOpen,
       addStudentsManuallyDialogOpen,
+      updateGradesDialogOpen,
     } = this.state;
+
+    const tabButtons = [
+      null,
+      <Button raised color="primary" style={{ width: '100%' }} onClick={() => this.setState({updateGradesDialogOpen: true})}>Edit Grades</Button>
+    ]
 
     return (
         <Dashboard>
@@ -171,6 +195,7 @@ class Classroom extends React.Component {
               <Grid item xs={12}>
                 <Tabs
                   titles={['Students', 'Grades']}
+                  buttons={tabButtons}
                   items={[
                     (<SortableList
                       items={classroomStudents}
@@ -220,6 +245,11 @@ class Classroom extends React.Component {
           <FullScreenDialog title="Add Student" open={addStudentsManuallyDialogOpen} onClose={this.closeDialogs.bind(this)}>
             <StudentForm dispatch={dispatch} onSubmit={this.submitStudentForm.bind(this)} />
           </FullScreenDialog>
+
+          <FullScreenDialog title="Select Assignment" open={updateGradesDialogOpen} onClose={this.closeDialogs.bind(this)}>
+            {this.renderAssignments()}
+          </FullScreenDialog>
+
         </Dashboard>
     );
   }

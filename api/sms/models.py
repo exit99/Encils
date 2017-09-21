@@ -206,6 +206,8 @@ class ActiveItem(models.Model):
     question = models.ForeignKey(Question, null=True, default=None)
 
     def activate_classroom(self, classroom):
+        if isinstance(classroom, str):
+            classroom = int(classroom)
         if isinstance(classroom, int):
             classroom = Classroom.objects.filter(pk=classroom).first()
         self.classroom = classroom
@@ -213,6 +215,8 @@ class ActiveItem(models.Model):
         self.save()
 
     def activate_question(self, question):
+        if isinstance(question, str):
+            question = int(question)
         if isinstance(question, int):
             question = Question.objects.filter(pk=question).first()
         self.question = question

@@ -14,7 +14,7 @@ class Tabs extends React.Component {
   }
 
   render() {
-    const { titles, items } = this.props;
+    const { titles, items, buttons } = this.props;
     const { tabIndex } = this.state;
 
     return (
@@ -27,7 +27,14 @@ class Tabs extends React.Component {
           ))}
         </Grid>
         <hr style={{border: `1px solid ${grey[300]}`}}/>
-        <Typography type="title" style={{paddingTop: 40, paddingBottom: 40}}>{titles[tabIndex]}</Typography>
+        <Grid container style={{paddingTop: 40, paddingBottom: 40}}>
+          <Grid item sm={12} md={10}>
+            <Typography type="title">{titles[tabIndex]}</Typography>
+          </Grid>
+          <Grid item sm={12} md={2}>
+            {buttons && buttons[tabIndex]}
+          </Grid>
+        </Grid>
         {items[tabIndex]}
       </div>
     );

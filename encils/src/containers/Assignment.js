@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
 import mean from 'lodash/mean'
+import reduce from 'lodash/reduce';
 import round from 'lodash/round'
 import moment from 'moment';
 
@@ -13,6 +14,7 @@ import "react-table/react-table.css";
 import Button from 'material-ui/Button';
 import Dialog, { DialogTitle, DialogContent, DialogContentText } from 'material-ui/Dialog';
 import Grid from 'material-ui/Grid';
+import List, { ListItem, ListItemText, } from 'material-ui/List';
 import Typography from 'material-ui/Typography';
 import CreateIcon from 'material-ui-icons/Create';
 import SMSIcon from 'material-ui-icons/Sms';
@@ -43,6 +45,7 @@ class Assignment extends React.Component {
     super(props);
     this.state = {
       addQuestionsDialogOpen: false,
+      updateGradesDialogOpen: false,
     }
   }
 
@@ -140,6 +143,20 @@ class Assignment extends React.Component {
     dispatch(editAssignment(assignment.pk)(assignment));
   }
 
+  renderClassrooms() {
+    const { assignmentAnswers, dispatch } = this.props;
+    const classrooms = reduce(assignmentAnswers, (data, answer) => {
+      data[answer.classroom.name] = {classroomPk: answer.classroom.pk, assignmentPk: answer.assignment.pk};
+      return data;
+    }, {});
+
+    const listItems = Object.keys(classrooms).map((key) => {
+      const classroom = classrooms[key];
+      return <ListItem button><ListItemText primary={key} onClick={() => dispatch(push(`/grade/${classroom.classroomPk}/${classroom.assignmentPk}`))} /></ListItem>
+    });
+    return <List>{listItems}</List>
+  }
+
   render() {
     const {
       assignment,
@@ -150,6 +167,7 @@ class Assignment extends React.Component {
     
     const { 
       addQuestionsDialogOpen,
+      updateGradesDialogOpen,
     } = this.state;
 
     const switches = [
@@ -164,7 +182,12 @@ class Assignment extends React.Component {
         onClick: this.toggleOneTime.bind(this)
       }
     ];
-    
+
+    const tabButtons = [
+      null,
+      <Button raised color="primary" style={{ width: '100%' }} onClick={() => this.setState({updateGradesDialogOpen: true})}>Edit Grades</Button>
+    ]
+
     return (
         <Dashboard>
           <div style={{padding:40}}>
@@ -177,6 +200,7 @@ class Assignment extends React.Component {
               <Grid item xs={12}>
                 <Tabs
                   titles={['Questions', 'Completed Quizzes']}
+                  buttons={tabButtons}
                   items={[
                     (<SortableList
                       items={assignmentQuestions}
@@ -201,6 +225,11 @@ class Assignment extends React.Component {
           <FullScreenDialog title="Add Question" open={addQuestionsDialogOpen} onClose={() => this.setState({addQuestionsDialogOpen: false})}>
             <QuestionForm dispatch={dispatch} onSubmit={this.submitQuestionForm.bind(this)} />
           </FullScreenDialog>
+
+          <FullScreenDialog title="Select Classroom" open={updateGradesDialogOpen} onClose={() => this.setState({updateGradesDialogOpen: false})}>
+            {this.renderClassrooms()}
+          </FullScreenDialog>
+
         </Dashboard>
     );
   }

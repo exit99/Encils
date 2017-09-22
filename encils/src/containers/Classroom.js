@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
 import mean from 'lodash/mean';
-import round from 'lodash/round';
 import reduce from 'lodash/reduce';
+import round from 'lodash/round';
 import phoneFormatter from 'phone-formatter';
 
 import ReactTable from "react-table";

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { push } from 'react-router-redux';
+import { push, goBack } from 'react-router-redux';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 
@@ -92,11 +92,13 @@ class Grade extends React.Component {
       dispatch,
     } = this.props;
 
+    debugger;
+
 
     return (
       <Dashboard>
         <div style={{padding:40}}>
-          <Header text={assignment.name} body={classroom.name} buttonText="Done" onClick={() => dispatch(push('/'))} />
+          <Header text={assignment.name} body={classroom.name} buttonText="Done" onClick={() => dispatch(goBack())} />
           <Grid container>
             <Grid item xs={12}>
               {this.groupedAnswers()}

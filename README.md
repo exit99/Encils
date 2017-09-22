@@ -54,3 +54,4 @@ Edit students
 tooltips for create quiz checkboxes
 tabs need to be in redux state.
 Fix unused imports, warnings etc
+Make sure enter always submits form

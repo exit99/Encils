@@ -43,3 +43,14 @@ http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb3-cli-git.html
 # Notes
 
 Should abstract out the form submit page / maybe all the pages really that have a basic list
+
+# TODO
+
+Download Excel of grades, download for grade book
+Overall Style (font, color [palette], etc, logo, frontpage, color of switch on answer page)
+Add icons to all buttons
+Mobile Friendly
+Edit students
+tooltips for create quiz checkboxes
+tabs need to be in redux state.
+Fix unused imports, warnings etc

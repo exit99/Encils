@@ -17,6 +17,7 @@ import Grid from 'material-ui/Grid';
 import List, { ListItem, ListItemText, } from 'material-ui/List';
 import Typography from 'material-ui/Typography';
 import CreateIcon from 'material-ui-icons/Create';
+import FileDownloadIcon from 'material-ui-icons/FileDownload';
 import SMSIcon from 'material-ui-icons/Sms';
 import { grey } from 'material-ui/colors';
 
@@ -184,7 +185,14 @@ class Classroom extends React.Component {
 
     const tabButtons = [
       null,
-      <Button raised color="primary" style={{ width: '100%' }} onClick={() => this.setState({updateGradesDialogOpen: true})}>Edit Grades</Button>
+      (<Grid container>
+        <Grid item xs={6}>
+          <Button style={{ width: '100%' }} raised color="primary"><FileDownloadIcon /> Download</Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button style={{ width: '100%' }} raised color="primary" onClick={() => this.setState({updateGradesDialogOpen: true})}>Edit Grades</Button>
+        </Grid>
+      </Grid>)
     ]
 
     return (

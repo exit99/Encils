@@ -28,10 +28,10 @@ class Tabs extends React.Component {
         </Grid>
         <hr style={{border: `1px solid ${grey[300]}`}}/>
         <Grid container style={{paddingTop: 40, paddingBottom: 40}}>
-          <Grid item sm={12} md={10}>
+          <Grid item sm={12} md={8}>
             <Typography type="title">{titles[tabIndex]}</Typography>
           </Grid>
-          <Grid item sm={12} md={2}>
+          <Grid item sm={12} md={4}>
             {buttons && buttons[tabIndex]}
           </Grid>
         </Grid>

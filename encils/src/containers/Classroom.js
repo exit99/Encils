@@ -6,6 +6,7 @@ import isUndefined from 'lodash/isUndefined';
 import mean from 'lodash/mean';
 import reduce from 'lodash/reduce';
 import round from 'lodash/round';
+import isEmpty from 'lodash/isEmpty';
 import phoneFormatter from 'phone-formatter';
 
 import ReactTable from "react-table";
@@ -41,6 +42,7 @@ import {
   getClassroomStudents,
   getClassroomAnswers,
   createClassroomStudent,
+  editClassroomStudent,
   deleteStudent,
 } from '../api-client/classrooms';
 
@@ -53,6 +55,7 @@ class Classroom extends React.Component {
       addStudentsDialogOpen: false,
       addStudentsManuallyDialogOpen: false,
       updateGradesDialogOpen: false,
+      editStudent: {},
     }
   }
 
@@ -70,15 +73,17 @@ class Classroom extends React.Component {
       addStudentsDialogOpen: false,
       addStudentsManuallyDialogOpen: false,
       updateGradesDialogOpen: false,
+      editStudent: {},
     });
   }
 
   submitStudentForm(values) {
     const { dispatch, classroom } = this.props;
+    const { editStudent } = this.state;
     values.classroom = classroom.pk;
     values.phone = `1${phoneFormatter.normalize(values.phone)}`;
-
-    dispatch(createClassroomStudent(values)).then((res) => {
+    const method = isEmpty(editStudent) ? createClassroomStudent : editClassroomStudent(editStudent.pk);
+    dispatch(method(values)).then((res) => {
       if (!isUndefined(res)) {
         this.closeDialogs();
         dispatch(getClassroomStudents(this.props.match.params.classroomPk));
@@ -95,11 +100,15 @@ class Classroom extends React.Component {
       });
   }
 
- goToAddStudents() {
+  goToAddStudents() {
     const { dispatch } = this.props;
     const classroomPk = this.props.match.params.classroomPk;
     dispatch(editActiveItem({classroom: classroomPk, question: null}))
       .then(() => dispatch(push(`/students-add/${classroomPk}`)));
+  }
+
+  editStudent(student) {
+    this.setState({addStudentsManuallyDialogOpen: true, editStudent: student})
   }
 
   renderGradeTable() {
@@ -190,6 +199,7 @@ class Classroom extends React.Component {
       addStudentsDialogOpen,
       addStudentsManuallyDialogOpen,
       updateGradesDialogOpen,
+      editStudent,
     } = this.state;
 
     const tabButtons = classroomAnswers.length == 0 ? [] : [
@@ -225,7 +235,7 @@ class Classroom extends React.Component {
                       nothingText="There are no students in this classroom yet."
                       onDelete={this.deleteStudent.bind(this)}
                       deleteMsg="This will delete all of the student's grades."
-                      disabledLink={true}
+                      onLinkClick={(student) => this.editStudent(student)}
                     />),
                     this.renderGradeTable(),
                   ]}
@@ -259,8 +269,8 @@ class Classroom extends React.Component {
             </DialogContent>
           </Dialog>
 
-          <FullScreenDialog title="Add Student" open={addStudentsManuallyDialogOpen} onClose={this.closeDialogs.bind(this)}>
-            <StudentForm dispatch={dispatch} onSubmit={this.submitStudentForm.bind(this)} />
+          <FullScreenDialog title={`${isEmpty(editStudent) ? 'Add' : 'Edit'} Student`} open={addStudentsManuallyDialogOpen} onClose={this.closeDialogs.bind(this)}>
+            <StudentForm dispatch={dispatch} onSubmit={this.submitStudentForm.bind(this)} initialValues={editStudent} />
           </FullScreenDialog>
 
           <FullScreenDialog title="Select Assignment" open={updateGradesDialogOpen} onClose={this.closeDialogs.bind(this)}>

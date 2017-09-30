@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { request } from './rest';
 
 const getAssignments = request('GET', '/assignments/', 'assignments');
@@ -15,8 +16,10 @@ const getQuestionAnswers = (pk, classroomPk) => request('GET', `/answers/?questi
 const editQuestionAnswer = (pk) => request('PUT', `/answers/${pk}/`, 'answer');
 const resetQuestionAnswers = (dispatch) => dispatch({ key: 'questionAnswers', data: [], type: 'API_SUCCESS'}) 
 
-const getAssignmentAnswers = (pk) => request('GET', `/answers/?assignment_pk=${pk}`, 'assignmentAnswers')();
+const getAssignmentAnswers = (pk) => request('GET', `/answers/?assignment=${pk}`, 'assignmentAnswers')();
 const getAnswers = (classroom, assignment) => request('GET', `/answers/?classroom=${classroom}&assignment=${assignment}`, 'answers')();
+
+const downloadAssignmentGrades = ({pk, name}) => request('GET', `/assignments/${pk}/grades/download/`, null, null, `${name} grades ${moment().format('MM_DD_YYYY')}.csv`)();
 
 export {
   getAssignment,
@@ -35,4 +38,6 @@ export {
   resetQuestionAnswers,
   getUngradedAssignments,
   getAnswers,
+
+  downloadAssignmentGrades,
 }

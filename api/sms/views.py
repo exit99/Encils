@@ -126,7 +126,7 @@ class AnswerList(generics.ListAPIView):
         return answers.all()
 
     def filter_by_assignment_if_specified(self, answers):
-        pk =  self.request.query_params.get('assignment', None)
+        pk = self.request.query_params.get('assignment', None)
         if pk:
             assignment = Assignment.objects.filter(pk=pk).first()
             questions = Question.objects.filter(assignment=assignment).all().values_list('pk')
@@ -204,9 +204,17 @@ def demo_request(request):
 
 @decorators.api_view(['GET'])
 @decorators.permission_classes([])
-def grades_download(classroom_pk):
+def grades_download(request, pk):
     classroom = get_object_or_404(Classroom, pk=pk)
     if not is_owner(request.user, classroom):
         raise Http404
-    csv = clasrooms.grades_csv
-    return HttpResponseBadRequest()
+    return classroom.csv_response
+
+
+@decorators.api_view(['GET'])
+@decorators.permission_classes([])
+def assignment_grades_download(request, pk):
+    assignment = get_object_or_404(Assignment, pk=pk)
+    if not is_owner(request.user, assignment):
+        raise Http404
+    return assignment.csv_response

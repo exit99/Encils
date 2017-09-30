@@ -1,3 +1,4 @@
+import csv
 from datetime import datetime
 from statistics import mean
 
@@ -8,6 +9,7 @@ from django.core.validators import (
     RegexValidator,
 )
 from django.db import models
+from django.http import HttpResponse
 
 from sms.manager import TeacherManager
 
@@ -106,6 +108,19 @@ class Classroom(models.Model):
     def students(self):
         return [s.pk for s in Student.objects.filter(classroom=self).all()]
 
+    @property
+    def csv_response(self):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="grades.csv"'
+        writer = csv.writer(response)
+
+        assignments = sorted(self.assignments, key=lambda x: x.created)
+        writer.writerow([''] + [a.name for a in assignments])
+        for student in self.student_set.order_by('name').all():
+            grades = [a.student_grade(student) for a in assignments]
+            writer.writerow([student.name] + grades)
+        return response
+
 
 class Student(models.Model):
     classroom = models.ForeignKey(Classroom)
@@ -164,6 +179,27 @@ class Assignment(models.Model):
     @property
     def question_count(self):
         return Question.objects.filter(assignment=self).count()
+
+    @property
+    def csv_response(self):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="grades.csv"'
+        writer = csv.writer(response)
+
+        assignments = sorted(self.assignments, key=lambda x: x.created)
+        writer.writerow([''] + [a.name for a in assignments])
+        for student in self.student_set.order_by('name').all():
+            grades = [a.student_grade(student) for a in assignments]
+            writer.writerow([student.name] + grades)
+        return response
+
+    def student_grade(self, student):
+        grades = []
+        for question in self.question_set.all():
+            answer = Answer.objects.filter(student=student, question=question).first()
+            if answer and answer.grade:
+                grades.append(answer.grade)
+        return mean(grades) if grades else None
 
 
 class Question(models.Model):

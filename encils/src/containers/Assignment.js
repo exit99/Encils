@@ -17,12 +17,14 @@ import Grid from 'material-ui/Grid';
 import List, { ListItem, ListItemText, } from 'material-ui/List';
 import Typography from 'material-ui/Typography';
 import CreateIcon from 'material-ui-icons/Create';
+import FileDownloadIcon from 'material-ui-icons/FileDownload';
 import SMSIcon from 'material-ui-icons/Sms';
 import { grey } from 'material-ui/colors';
 
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
 import Message from '../components/Message';
+import NothingHere from '../components/NothingHere';
 import SortableList from './SortableList';
 import Tabs from '../components/Tabs';
 
@@ -36,6 +38,7 @@ import {
   editAssignment,
   createQuestion,
   deleteQuestion,
+  downloadAssignmentGrades,
 } from '../api-client/assignments';
 
 import { getProfile } from '../api-client/auth';
@@ -81,52 +84,56 @@ class Assignment extends React.Component {
 
   renderCompletedQuizzes() {
     const { assignmentAnswers } = this.props;
-    return (
-      <ReactTable
-        data={assignmentAnswers}
-        columns={[
-          {
-            Header: "Grades",
-            columns: [
-              {
-                Header: "Classroom",
-                id: "classroom",
-                accessor: answer => answer.classroom.name,
-              },
+    if (assignmentAnswers.length > 0) {
+      return (
+        <ReactTable
+          data={assignmentAnswers}
+          columns={[
+            {
+              Header: "Grades",
+              columns: [
+                {
+                  Header: "Classroom",
+                  id: "classroom",
+                  accessor: answer => answer.classroom.name,
+                },
 
-              {
-                Header: "Student",
-                id: "student",
-                accessor: answer => answer.student.name,
-              },
-            ]
-          },
-          {
-            columns: [
-              {
-                Header: "Question",
-                id: "question",
-                accessor: answer => answer.question.text,
-              },
-              {
-                Header: "Grade",
-                accessor: "grade",
-                Cell: row => `${row.value}%`,
-                Footer: (
-                    <span>
-                      <strong>Average:</strong>{" "}
-                      {round(mean(assignmentAnswers.map(d => d.grade)))}%
-                    </span>
-                  )
-              }
-            ]
-          }
-        ]}
-        pivotBy={["classroom", "student"]}
-        defaultPageSize={assignmentAnswers.length}
-        className="-striped -highlight"
-      />
-    );
+                {
+                  Header: "Student",
+                  id: "student",
+                  accessor: answer => answer.student.name,
+                },
+              ]
+            },
+            {
+              columns: [
+                {
+                  Header: "Question",
+                  id: "question",
+                  accessor: answer => answer.question.text,
+                },
+                {
+                  Header: "Grade",
+                  accessor: "grade",
+                  Cell: row => `${row.value}%`,
+                  Footer: (
+                      <span>
+                        <strong>Average:</strong>{" "}
+                        {round(mean(assignmentAnswers.map(d => d.grade)))}%
+                      </span>
+                    )
+                }
+              ]
+            }
+          ]}
+          pivotBy={["classroom", "student"]}
+          defaultPageSize={assignmentAnswers.length}
+          className="-striped -highlight"
+        />
+      );
+    } else {
+      return <NothingHere text="No grades for this classroom yet." />
+    }
   }
 
   toggleHideAnswers(field) {
@@ -161,6 +168,7 @@ class Assignment extends React.Component {
     const {
       assignment,
       assignmentQuestions,
+      assignmentAnswers,
       profile,
       dispatch,
     } = this.props;
@@ -183,9 +191,16 @@ class Assignment extends React.Component {
       }
     ];
 
-    const tabButtons = [
+    const tabButtons = assignmentAnswers.length === 0 ? [] : [
       null,
-      <Button raised color="primary" style={{ width: '100%' }} onClick={() => this.setState({updateGradesDialogOpen: true})}>Edit Grades</Button>
+      (<Grid container>
+        <Grid item xs={0} sm={6}>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Button style={{ width: '100%' }} raised color="primary" onClick={() => this.setState({updateGradesDialogOpen: true})}>Edit Grades</Button>
+        </Grid>
+      </Grid>)
+
     ]
 
     return (
@@ -210,7 +225,7 @@ class Assignment extends React.Component {
                       properties={{
                         'Avg. Grade': question => `${question.grade}%`
                       }}
-                      nothingText="You have no questions in this quiz yet."
+                      nothingText="This quiz has no questions yet."
                       onDelete={this.deleteQuestion.bind(this)}
                       deleteMsg="This will delete all grades for this question and could change student averages."
                       disabledLink={true}

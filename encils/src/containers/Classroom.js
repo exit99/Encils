@@ -24,13 +24,17 @@ import { grey } from 'material-ui/colors';
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
 import Message from '../components/Message';
+import NothingHere from '../components/NothingHere';
 import SortableList from './SortableList';
 import Tabs from '../components/Tabs';
 
 import Dashboard from './Dashboard';
 import StudentForm from './forms/StudentForm';
 
+import { onDesktop } from '../utils';
+
 import { editActiveItem } from '../api-client/activeItems';
+import { downloadGrades } from '../api-client/classrooms';
 
 import { 
   getClassroom,
@@ -100,59 +104,63 @@ class Classroom extends React.Component {
 
   renderGradeTable() {
     const { classroomAnswers } = this.props;
-    return (
-      <ReactTable
-        data={classroomAnswers}
-        columns={[
-          {
-            Header: "Grades",
-            columns: [
-              {
-                Header: "Student",
-                id: "student",
-                accessor: answer => answer.student.name,
-              },
-              {
-                Header: "Assignment",
-                id: "assignment",
-                accessor: answer => answer.assignment.name,
-              },
-            ]
-          },
-          {
-            columns: [
-              {
-                Header: "Question",
-                id: "question",
-                accessor: answer => answer.question.text,
-              },
-              {
-                Header: "Grade",
-                accessor: "grade",
-                Cell: row => `${row.value}%`,
-                aggregate: vals => round(mean(vals)),
-                Aggregated: row => {
-                  return (
-                    <span>
-                      {row.value}% (avg)
-                    </span>
-                  );
-                  },
-                Footer: (
-                    <span>
-                      <strong>Average:</strong>{" "}
-                      {round(mean(classroomAnswers.map(d => d.grade)))}%
-                    </span>
-                  )
-              }
-            ]
-          }
-        ]}
-        pivotBy={["student", "assignment"]}
-        defaultPageSize={classroomAnswers.length}
-        className="-striped -highlight"
-      />
-    );
+    if (classroomAnswers.length > 0) {
+      return (
+        <ReactTable
+          data={classroomAnswers}
+          columns={[
+            {
+              Header: "Grades",
+              columns: [
+                {
+                  Header: "Student",
+                  id: "student",
+                  accessor: answer => answer.student.name,
+                },
+                {
+                  Header: "Assignment",
+                  id: "assignment",
+                  accessor: answer => answer.assignment.name,
+                },
+              ]
+            },
+            {
+              columns: [
+                {
+                  Header: "Question",
+                  id: "question",
+                  accessor: answer => answer.question.text,
+                },
+                {
+                  Header: "Grade",
+                  accessor: "grade",
+                  Cell: row => `${row.value}%`,
+                  aggregate: vals => round(mean(vals)),
+                  Aggregated: row => {
+                    return (
+                      <span>
+                        {row.value}% (avg)
+                      </span>
+                    );
+                    },
+                  Footer: (
+                      <span>
+                        <strong>Average:</strong>{" "}
+                        {round(mean(classroomAnswers.map(d => d.grade)))}%
+                      </span>
+                    )
+                }
+              ]
+            }
+          ]}
+          pivotBy={["student", "assignment"]}
+          defaultPageSize={classroomAnswers.length}
+          className="-striped -highlight"
+        />
+      );
+    } else {
+      return <NothingHere text="No grades for this classroom yet." />
+    }
   }
 
   renderAssignments() {
@@ -173,6 +181,7 @@ class Classroom extends React.Component {
     const {
       classroom,
       classroomStudents,
+      classroomAnswers,
       profile,
       dispatch,
     } = this.props;
@@ -183,17 +192,17 @@ class Classroom extends React.Component {
       updateGradesDialogOpen,
     } = this.state;
 
-    const tabButtons = [
+    const tabButtons = classroomAnswers.length == 0 ? [] : [
       null,
       (<Grid container>
         <Grid item xs={6}>
-          <Button style={{ width: '100%' }} raised color="primary"><FileDownloadIcon /> Download</Button>
+          <Button style={{ width: '100%' }} raised color="primary" onClick={() => dispatch(downloadGrades(classroom))}><FileDownloadIcon /> Download</Button>
         </Grid>
         <Grid item xs={6}>
-          <Button style={{ width: '100%' }} raised color="primary" onClick={() => this.setState({updateGradesDialogOpen: true})}>Edit Grades</Button>
+          <Button style={{ width: '100%', padding: (onDesktop() ? 0 : 15) }} raised color="primary" onClick={() => this.setState({updateGradesDialogOpen: true})}>Edit Grades</Button>
         </Grid>
       </Grid>)
-    ]
+    ];
 
     return (
         <Dashboard>
@@ -213,7 +222,7 @@ class Classroom extends React.Component {
                       properties={{
                         'Grade': student => `${student.grade}%`
                       }}
-                      nothingText="You have no students in this class yet."
+                      nothingText="There are no students in this classroom yet."
                       onDelete={this.deleteStudent.bind(this)}
                       deleteMsg="This will delete all of the student's grades."
                       disabledLink={true}

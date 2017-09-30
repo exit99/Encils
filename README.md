@@ -46,14 +46,8 @@ Should abstract out the form submit page / maybe all the pages really that have 
 
 # TODO
 
-Download Excel of grades, download for grade book
 Overall Style (font, color [palette], etc, logo, frontpage, color of switch on answer page)
 Add icons to all buttons
-Mobile Friendly
-Edit students
-tooltips for create quiz checkboxes
-tabs need to be in redux state.
 Fix unused imports, warnings etc
 Make sure enter always submits form
 Change the recomendations to be better
-Change what happens when no grades found

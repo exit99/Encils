@@ -92,9 +92,6 @@ class Grade extends React.Component {
       dispatch,
     } = this.props;
 
-    debugger;
-
-
     return (
       <Dashboard>
         <div style={{padding:40}}>

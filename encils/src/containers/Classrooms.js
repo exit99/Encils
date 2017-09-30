@@ -77,7 +77,7 @@ class Classrooms extends React.Component {
                   properties={{
                     'Avg. Score': (classroom) => `${classroom.gpa}%`,
                     'Answer Rate': (classroom) => `${classroom.answer_rate}%`,
-                    'Assignments': (classroom) => classroom.assignments_given.length,
+                    'Quizzes': (classroom) => classroom.assignments_given.length,
                     'Students': (classroom) => classroom.students.length,
                   }}
                   sortFields={['name', 'created']}

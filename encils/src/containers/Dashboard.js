@@ -7,14 +7,15 @@ import Gravatar from 'react-gravatar'
 import phoneFormatter from 'phone-formatter';
 
 import AppBar from 'material-ui/AppBar';
+import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
+import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
-import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-import Avatar from 'material-ui/Avatar';
-import Typography from 'material-ui/Typography';
-import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
 import Menu, { MenuItem } from 'material-ui/Menu';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import MenuIcon from 'material-ui-icons/Menu';
 
 import Logo from '../components/Logo';
 import pointerImage from '../images/pointer.png'
@@ -30,7 +31,6 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      onDesktop: onDesktop(),
       anchorEl: undefined,
       open: false,
     };
@@ -59,7 +59,7 @@ class Dashboard extends React.Component {
 
   render() {
     const { children, routing, dispatch, profile,  } = this.props;
-    const { open, onDesktop } = this.state;
+    const { open } = this.state;
 
     const onHomePage = this.props.routing.location.pathname === '/';
     const onAssignmentPage = this.props.routing.location.pathname.startsWith('/assignment');
@@ -68,10 +68,13 @@ class Dashboard extends React.Component {
     const renderAssignmentPointer = !onAssignmentPage && (profile.pointer_step === 'assignment' || profile.pointer_step === 'question');
     const renderClassroomPointer = !onClassroomPage && !onHomePage && (profile.pointer_step === 'classroom' || profile.pointer_step === 'student');
 
+    const gutterStyle = onDesktop() ? gutterPadding : {};
+
     return (
       <div>
         <AppBar position="static" color="primary" elevation={0}>
-          <Toolbar style={gutterPadding}>
+          <Toolbar style={gutterStyle}>
+            {onDesktop() ?
             <div style={{flex: 1}}>
               <Button color="contrast" onClick={() => dispatch(push('/'))}>ENCILS</Button>
               {renderHomePointer ? <img style={{ marginBottom: -100, marginLeft: -58, marginRight: 26 }} className="bounce" src={pointerImage} alt='pointer' /> : null}
@@ -80,31 +83,57 @@ class Dashboard extends React.Component {
               <Button style={onClassroomPage ? highlightedStyle : {}}color="contrast" onClick={() => dispatch(push('/classrooms'))}>Classrooms</Button>
               {renderClassroomPointer ? <img style={{ marginBottom: -100, marginLeft: -80, marginRight: 26 }} className="bounce" src={pointerImage} alt='pointer' /> : null}
             </div>
+            :
+            <div style={{flex: 1}}>
+              <Button
+                color="contrast"
+                aria-owns={this.state.open ? 'simple-menu' : null}
+                aria-haspopup="true"
+                onClick={this.handleClick}
+              >
+                <MenuIcon />
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={this.state.anchorEl}
+                open={this.state.open}
+                onRequestClose={this.handleRequestClose}
+              >
+                <MenuItem onClick={() => dispatch(push('/'))}>Home</MenuItem>
+                <MenuItem onClick={() => dispatch(push('/assignments'))}>Quizzes</MenuItem>
+                <MenuItem onClick={() => dispatch(push('/classrooms'))}>Classrooms</MenuItem>
+                <MenuItem onClick={this.logout.bind(this)}>Logout</MenuItem>
+              </Menu>
+            </div>
+            }
             <Avatar><Gravatar email={profile.email} /></Avatar>
             <div style={{ padding: 20 }}>
               <Typography style={{ color: 'white' }}>{profile.email}</Typography>
               <Typography style={{ color: 'white' }} type="body1"><i>{profile.sms && phoneFormatter.format(profile.sms, "(NNN) NNN-NNNN")}</i></Typography>
             </div>
-            <Button
-              color="contrast"
-              aria-owns={this.state.open ? 'simple-menu' : null}
-              aria-haspopup="true"
-              onClick={this.handleClick}
-            >
-              <ArrowDropDownIcon />
-            </Button>
-            <Menu
-              id="simple-menu"
-              anchorEl={this.state.anchorEl}
-              open={this.state.open}
-              onRequestClose={this.handleRequestClose}
-            >
-              <MenuItem onClick={this.logout.bind(this)}>Logout</MenuItem>
-            </Menu>
+            {onDesktop() ?
+            <div>
+              <Button
+                color="contrast"
+                aria-owns={this.state.open ? 'simple-menu' : null}
+                aria-haspopup="true"
+                onClick={this.handleClick}
+              >
+                <ArrowDropDownIcon />
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={this.state.anchorEl}
+                open={this.state.open}
+                onRequestClose={this.handleRequestClose}
+              >
+                <MenuItem onClick={this.logout.bind(this)}>Logout</MenuItem>
+              </Menu>
+            </div> : null}
           </Toolbar>
         </AppBar>
-        <Grid container style={{paddingTop: 40}}>
-          <Grid item xs={12} style={gutterPadding}>
+        <Grid container style={{paddingTop: onDesktop() ? 40 : 10}}>
+          <Grid item xs={12} style={gutterStyle}>
             {children}
           </Grid>
         </Grid>

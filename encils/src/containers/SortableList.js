@@ -28,6 +28,8 @@ import NothingHere from '../components/NothingHere';
 
 import { getProfile } from '../api-client/auth';
 
+import { onDesktop } from '../utils';
+
 class SortableList extends React.Component {
   componentWillMount() {
     this.state = {
@@ -99,6 +101,9 @@ class SortableList extends React.Component {
     const items = this.getItems();
     const atLeastOneChecked = this.atLeastOneChecked();
 
+    const sortStyle = {backgroundColor: grey[300], float: 'left', marginRight: 15, height: '42px'};
+    if (!onDesktop()) { sortStyle.marginLeft = 30 };
+
     return (
       <div>
         <Grid container style={{borderBottom: '1px solid', borderColor: grey[300], paddingTop: 15}}>
@@ -118,11 +123,13 @@ class SortableList extends React.Component {
           </Grid>}
           {noSort ? null :
           <Grid item xs={11}>
-            <Typography style={{marginTop: 10, float: 'left', marginRight: 15}}>Sort by</Typography>
-            <Button aria-owns={this.state.open ? 'simple-menu' : null} aria-haspopup="true" onClick={this.handleClick} style={{backgroundColor: grey[300], float: 'left', marginRight: 15, height: '42px'}}>{sortFields[selectedIndex]}</Button>
+            {onDesktop() ? <Typography style={{marginTop: 10, float: 'left', marginRight: 15}}>Sort by</Typography> : null }
+            <Button aria-owns={this.state.open ? 'simple-menu' : null} aria-haspopup="true" onClick={this.handleClick} style={sortStyle}>{onDesktop() ? sortFields[selectedIndex] : 'Sort by'}</Button>
+            { onDesktop() ?
             <Button onClick={() => this.setState({ sortDown: !sortDown, checked: this.props.items.map(() => false)})} style={{backgroundColor: grey[300], float: 'left', marginRight: 15}}>
               { sortDown ?  <ArrowDownwardIcon style={{height: 20}}/> : <ArrowUpwardIcon style={{height: 20}}/> }
             </Button>
+            : null }
             {atLeastOneChecked ? <Button style={{backgroundColor: grey[300], float: 'left', marginRight: 15, height: '42px'}} onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button> : null}
           </Grid>}
         </Grid>
@@ -141,7 +148,7 @@ class SortableList extends React.Component {
           <div key={index}>
             <Grid container style={{borderBottom: '1px solid', borderColor: grey[300], paddingTop: 15}}>
               {noCheckbox ? null :
-              <Grid item xs={1}>
+              <Grid item xs={2} sm={1}>
                 <center>
                   {checked[index] ? 
                   <CheckboxIcon
@@ -154,7 +161,7 @@ class SortableList extends React.Component {
                   }
                 </center>
               </Grid>}
-              <Grid item xs={11} md={11 - Object.keys(properties).length}>
+              <Grid item xs={10} sm={11} md={11 - Object.keys(properties).length}>
                 <div style={{flex: 1}}>
                   {disabledLink ? 
                   <Link disabled={true} text={getTitle(value)} />
@@ -163,7 +170,7 @@ class SortableList extends React.Component {
                 </div>
               </Grid>
               {Object.keys(properties).map((key, index) => (
-                <Grid item xs={12} md={1} key={index}>
+                <Grid item xs={3} sm={1} key={index}>
                   <Typography><b>{properties[key](value)}</b></Typography>
                   <Typography>{key}</Typography>
                 </Grid>

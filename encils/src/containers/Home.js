@@ -20,6 +20,8 @@ import SortableList from './SortableList';
 import Dashboard from './Dashboard';
 import WelcomeTour from './WelcomeTour';
 
+import { onDesktop } from '../utils';
+
 import { 
   getUngradedAssignments,
   getAssignments,
@@ -125,7 +127,7 @@ class Home extends React.Component {
                   '': (assignment) => <Button raised color="primary" onClick={() => dispatch(push(`/grade/${assignment.classroom_pk}/${assignment.pk}`))}>Grade</Button>
                   }}
                   sortFields={['name', 'classroom']}
-                  nothingText="Everything is graded. Way to go!"
+                  nothingText="Everything is graded!"
                   noCheckbox={true}
                   noSort={true}
                   disabledLink={true}
@@ -139,7 +141,7 @@ class Home extends React.Component {
             <FormControl>
               <InputLabel htmlFor="age-native-simple">Classroom</InputLabel>
               <Select
-                style={{width: 400}}
+                style={{width: onDesktop() ? 400 : 100}}
                 value={selectedClassroom}
                 onChange={(event) => this.setState({selectedClassroom: event.target.value})}
                 input={<Input id="age-simple" />}
@@ -152,7 +154,7 @@ class Home extends React.Component {
             <FormControl>
               <InputLabel htmlFor="age-native-simple">Assignment</InputLabel>
               <Select
-                style={{width: 400}}
+                style={{width: onDesktop() ? 400 : 100}}
                 value={selectedAssignment}
                 onChange={(event) => this.setState({selectedAssignment: event.target.value})}
                 input={<Input id="age-simple" />}

@@ -12,7 +12,7 @@ import Typography from 'material-ui/Typography';
 import CloseIcon from 'material-ui-icons/Close';
 import Slide from 'material-ui/transitions/Slide';
 
-import { gutterPadding } from '../utils';
+import { gutterPadding, onDesktop } from '../utils';
 import Header from './Header';
 
 const FullScreenDialog = (props) => {
@@ -27,7 +27,7 @@ const FullScreenDialog = (props) => {
         transition={<Slide direction="up" />}
       >
         <AppBar color="primary">
-          <Toolbar style={gutterPadding}>
+          <Toolbar style={onDesktop() ? gutterPadding : {}}>
             <Typography type="title" style={{flex: 1, color: 'white' }}>
               {title} 
             </Typography>
@@ -37,7 +37,7 @@ const FullScreenDialog = (props) => {
           </Toolbar>
         </AppBar>
         <div style={{marginTop: 75}}>
-          <div style={gutterPadding}>
+          <div style={onDesktop() ? gutterPadding : {padding: 20}}>
             {children}
           </div>
         </div>

@@ -17,6 +17,8 @@ import LoginForm from './forms/LoginForm';
 
 import { login } from '../api-client/auth';
 
+import { onDesktop } from '../utils';
+
 class Login extends React.Component {
   onSubmit(values) {
     const { dispatch } = this.props
@@ -28,9 +30,12 @@ class Login extends React.Component {
   render() {
     const { dispatch } = this.props;
 
+    let cardStyle = { padding: 20 };
+    if (onDesktop()) { cardStyle.minWidth = 400 };
+
     return (
       <Main gradient={true}>
-        <Card style={{padding: 20, minWidth: 400}}>
+        <Card style={cardStyle}>
           <CardContent>
             <Logo style={{marginBottom: 10}}/>
             <Typography type="subheading">Sign in to continue</Typography>

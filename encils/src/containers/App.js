@@ -48,6 +48,13 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
+  componentDidMount() {
+    window.addEventListener("resize", () => this.forceUpdate());
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", () => this.forceUpdate());
+  }
+
   render() {
     return (
       <div className="App">

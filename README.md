@@ -55,3 +55,5 @@ tooltips for create quiz checkboxes
 tabs need to be in redux state.
 Fix unused imports, warnings etc
 Make sure enter always submits form
+Change the recomendations to be better
+Change what happens when no grades found

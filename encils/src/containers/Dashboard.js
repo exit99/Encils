@@ -14,6 +14,7 @@ import Grid from 'material-ui/Grid';
 import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Toolbar from 'material-ui/Toolbar';
+import Tooltip from 'material-ui/Tooltip';
 import Typography from 'material-ui/Typography';
 import MenuIcon from 'material-ui-icons/Menu';
 
@@ -106,7 +107,9 @@ class Dashboard extends React.Component {
               </Menu>
             </div>
             }
-            <Avatar><Gravatar email={profile.email} /></Avatar>
+            <Tooltip id="tooltip-bottom" title="Click to update Gravatar image." placement="bottom">
+              <a href="https://en.gravatar.com/" target="_blank"><Avatar style={{ cursor: 'pointer' }}><Gravatar email={profile.email} /></Avatar></a>
+            </Tooltip>
             <div style={{ padding: 20 }}>
               <Typography style={{ color: 'white' }}>{profile.email}</Typography>
               <Typography style={{ color: 'white' }} type="body1"><i>{profile.sms && phoneFormatter.format(profile.sms, "(NNN) NNN-NNNN")}</i></Typography>

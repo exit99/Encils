@@ -27,25 +27,49 @@ import {
 } from '../api-client/classrooms';
 
 class Grade extends React.Component {
+  constructor(props) {
+      super(props);
+      this.state = {
+        grades: {},
+      }
+  }
+
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(getAnswers(
       this.props.match.params.classroomPk,
       this.props.match.params.assignmentPk,
-    ));
+    )).then((answers) => {
+      const grades = answers.reduce(function(obj, x) { 
+        obj[x.pk] = x.grade;
+        return obj;
+      }, {});
+      this.setState({ grades });
+    });
     dispatch(getAssignment(this.props.match.params.assignmentPk));
     dispatch(getClassroom(this.props.match.params.classroomPk));
   }
 
   updateGrade(answerPk) {
     const { dispatch } = this.props;
+    const { grades } = this.state;
+
     return (event) => {
-      dispatch(editQuestionAnswer(answerPk)({ grade: event.target.value }))
+      const newGrade = event.target.value;
+
+      let newGrades = Object.assign({}, grades);
+      newGrades[answerPk] = newGrade;
+      this.setState({ grades: newGrades });
+
+      dispatch(editQuestionAnswer(answerPk)({ grade: newGrade }))
+        .then(() => { 
+        });
     }
   }
 
   groupedAnswers() {
     const { answers } = this.props;
+    const { grades } = this.state;
     const groupedAnswers = groupBy(answers, (answer) => answer.question.pk)
     const groupedValues = Object.values(groupedAnswers);
     return groupedValues.map((ans) => {
@@ -59,17 +83,22 @@ class Grade extends React.Component {
             getSubtitle={(answer) => answer.student.name}
             properties={{
               '': (answer) => {
-                return (<TextField
-                  label="Grade %"
-                  type="number"
-                  style={{ width: '100%' }}
-                  value={answer.grade}
-                  onChange={this.updateGrade(answer.pk)}
-                  inputProps={{
-                    'min': '0',
-                    'max': '100',
-                  }}
-                />)
+                return (
+                  <div>
+                    <TextField
+                      type="number"
+                      style={{ width: '100%' }}
+                      value={grades[answer.pk]}
+                      onChange={this.updateGrade(answer.pk)}
+                      inputProps={{
+                        'min': '0',
+                        'max': '100',
+                      }}
+                      style={{ display: 'inline', fontSize: 20 }}
+                    />
+                    <span style={{ display: 'inline' }}>%</span>
+                  </div>
+                )
               },
             }}
             sortFields={['text']}

@@ -47,7 +47,6 @@ Should abstract out the form submit page / maybe all the pages really that have 
 # TODO
 
 Overall Style (font, color [palette], etc, logo, frontpage, color of switch on answer page)
-Add icons to all buttons
 Fix unused imports, warnings etc
 Make sure enter always submits form
 Change the recomendations to be better

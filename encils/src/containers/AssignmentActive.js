@@ -71,6 +71,7 @@ class AssignmentActive extends React.Component {
       hideAnswers: true,
       oneByOne: false,
       answerIndex: 0,
+      blockAnswers: false,
     }
   }
 
@@ -109,8 +110,8 @@ class AssignmentActive extends React.Component {
 
   getAnswers() {
     const { dispatch, assignmentQuestions, classroom } = this.props;
-    const { requestCount } = this.state;
-    if (assignmentQuestions.length && requestCount < requestLimit ) {
+    const { requestCount, blockAnswers } = this.state;
+    if (assignmentQuestions.length && requestCount < requestLimit && !blockAnswers) {
       const questionPk = assignmentQuestions[this.props.match.params.questionIndex].pk;
       dispatch(getQuestionAnswers(questionPk, classroom.pk));
       this.setState({ requestCount: requestCount + 1 });
@@ -137,7 +138,7 @@ class AssignmentActive extends React.Component {
     dispatch(editActiveItem({classroom: classroom.pk, question: assignmentQuestions[index].pk}))
       .then(() => {
         dispatch(push(`/assignment-active/${classroom.pk}/${assignment.pk}/${index}`));
-        this.setState({ requestCount: 0, answerIndex: 0, hideAnswers: assignment.hide_answers });
+        this.setState({ requestCount: 0, answerIndex: 0, hideAnswers: assignment.hide_answers, blockAnswers: false });
       });
   }
 
@@ -205,7 +206,7 @@ class AssignmentActive extends React.Component {
       questionAnswers,
       dispatch,
     } = this.props;
-    const { requestCount, hideAnswers } = this.state;
+    const { requestCount, hideAnswers, blockAnswers } = this.state;
 
     const questionIndex = parseInt(this.props.match.params.questionIndex)
     const question = assignmentQuestions && assignmentQuestions[questionIndex];
@@ -217,8 +218,16 @@ class AssignmentActive extends React.Component {
             <Typography type='headline' style={{flex: 1, color: 'white'}}>
               { question ? `Q${questionIndex+1}: ${question.text}` : 'Loading...' }
             </Typography>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={blockAnswers}
+                  onChange={(event, checked) => this.setState({ blockAnswers: !blockAnswers })}
+                />
+              }
+              label="Block answers" />
             {assignment.hide_answers ? 
-            <FormControlLabel style={{color: 'white'}}
+            <FormControlLabel
               control={
                 <Switch
                   checked={!hideAnswers}
@@ -246,9 +255,18 @@ class AssignmentActive extends React.Component {
         <div style={waitingStyle}>
           <Card>
             <CardContent>
-              <Typography type='subheading'>Text answers to: {profile.sms && phoneFormatter.format(profile.sms, "(NNN) NNN-NNNN")}</Typography>
-              <Typography>Waiting on...</Typography>
-              <Typography type="headline">{this.renderWaitingOnName()}</Typography>
+              {blockAnswers ?
+              <div>
+                <Typography type="headline">Answering blocked.</Typography>
+                <Typography type="subheading">No more answers accepted at this time.</Typography>
+              </div>
+              :
+              <div>
+                <Typography type='subheading'>Text answers to: {profile.sms && phoneFormatter.format(profile.sms, "(NNN) NNN-NNNN")}</Typography>
+                <Typography>Waiting on...</Typography>
+                <Typography type="headline">{this.renderWaitingOnName()}</Typography>
+              </div>
+              }
               <ReactInterval timeout={1000} enabled={true} callback={this.updateWaitingOnIndex.bind(this)} />
               <ReactInterval timeout={3000} enabled={true} callback={this.getAnswers.bind(this)} />
             </CardContent>

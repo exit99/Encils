@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
 import moment from 'moment';
 
 import Grid from 'material-ui/Grid';
-import Typography from 'material-ui/Typography';
 
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
@@ -32,12 +30,12 @@ class Classrooms extends React.Component {
   }
 
   componentWillMount() {
-    const { dispatch, classroom } = this.props;
+    const { dispatch } = this.props;
     dispatch(getClassrooms());
   }
 
   submitClassroomForm(values) {
-    const { dispatch, classroom } = this.props;
+    const { dispatch } = this.props;
     dispatch(createClassroom(values)).then((res) => {
       if (!isUndefined(res)) {
         this.setState({ classroomDialogOpen: false });

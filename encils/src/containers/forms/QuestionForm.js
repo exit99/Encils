@@ -2,7 +2,6 @@ import React from 'react';
 import { Field, reduxForm, submit } from 'redux-form';
 
 import Button from 'material-ui/Button';
-import Grid from 'material-ui/Button';
 
 import Message from '../../components/Message';
 import RenderedInput from '../../components/RenderedInput';

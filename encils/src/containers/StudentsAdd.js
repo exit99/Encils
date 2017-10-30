@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 
 import AppBar from 'material-ui/AppBar';
@@ -18,7 +17,7 @@ import ReactInterval from 'react-interval';
 
 import balloons from '../images/hot-air-balloon.jpeg'
 
-import { gradientBackground, onDesktop, requestLimit } from '../utils';
+import { requestLimit } from '../utils';
 
 import { getProfile } from '../api-client/auth';
 import { getClassroom, getClassroomStudents } from '../api-client/classrooms';
@@ -79,7 +78,7 @@ class StudentsAdd extends React.Component {
   }
 
   render() {
-    const { dispatch, classroom, classroomStudents, profile} = this.props;
+    const { classroomStudents, profile} = this.props;
     const { requestCount } = this.state;
     return (
       <div style={style}>

@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
 import moment from 'moment';
 
 import Grid from 'material-ui/Grid';
-import Typography from 'material-ui/Typography';
 import CheckIcon from 'material-ui-icons/Check';
 import CloseIcon from 'material-ui-icons/Close';
 
@@ -34,7 +32,7 @@ class Assignments extends React.Component {
   }
 
   componentWillMount() {
-    const { dispatch, assignment } = this.props;
+    const { dispatch } = this.props;
     dispatch(getAssignments())
   }
 
@@ -43,8 +41,7 @@ class Assignments extends React.Component {
   }
 
   submitAssignmentForm(values) {
-    const { dispatch, assignment } = this.props;
-    const { assignmentEdit } = this.state;
+    const { dispatch } = this.props;
     dispatch(createAssignment(values)).then((res) => {
       if (!isUndefined(res)) {
         this.closeUpdateAssignmentDialog();

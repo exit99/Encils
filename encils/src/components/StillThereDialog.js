@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import Button from 'material-ui/Button';
 import Dialog, {
@@ -7,7 +7,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 
 const StillThereDialog = (props) => {
-  const { open, onClose, children } = props;
+  const { open, onClose } = props;
 
   return (
      <Dialog open={open} onRequestClose={onClose}>

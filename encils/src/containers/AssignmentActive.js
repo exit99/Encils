@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import filter from 'lodash/filter';
 import isUndefined from 'lodash/isUndefined';
@@ -24,14 +23,13 @@ import ReactInterval from 'react-interval';
 
 import balloons from '../images/hot-air-balloon.jpeg'
 
-import { gradientBackground, onDesktop, requestLimit } from '../utils';
+import { requestLimit } from '../utils';
 
 import { getProfile } from '../api-client/auth';
 import { getClassroom, getClassroomStudents } from '../api-client/classrooms';
 import { editActiveItem } from '../api-client/activeItems';
 import { 
   getAssignment,
-  getAssignments,
   getAssignmentQuestions,
   getQuestionAnswers,
   resetQuestionAnswers,
@@ -81,8 +79,10 @@ class AssignmentActive extends React.Component {
     dispatch(getProfile());
     dispatch(getAssignment(this.props.match.params.assignmentPk))
       .then((assignment) => { 
-        this.state.hideAnswers = assignment.hide_answers
-        this.state.oneByOne = assignment.one_at_a_time
+        this.setState({
+          hideAnswers: assignment.hide_answers,
+          oneByOne: assignment.on_at_a_time
+        })
       });
     dispatch(getClassroomStudents(this.props.match.params.classroomPk));
     dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
@@ -198,17 +198,15 @@ class AssignmentActive extends React.Component {
 
   render() {
     const { 
-      classroom,
       classroomStudents, 
       assignment,
       assignmentQuestions,
       profile,
       questionAnswers,
-      dispatch,
     } = this.props;
     const { requestCount, hideAnswers, blockAnswers } = this.state;
 
-    const questionIndex = parseInt(this.props.match.params.questionIndex)
+    const questionIndex = parseInt(this.props.match.params.questionIndex, 10)
     const question = assignmentQuestions && assignmentQuestions[questionIndex];
 
     return (

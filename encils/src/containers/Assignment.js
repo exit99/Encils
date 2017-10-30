@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
 import mean from 'lodash/mean'
@@ -12,18 +11,11 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 
 import Button from 'material-ui/Button';
-import Dialog, { DialogTitle, DialogContent, DialogContentText } from 'material-ui/Dialog';
 import Grid from 'material-ui/Grid';
 import List, { ListItem, ListItemText, } from 'material-ui/List';
-import Typography from 'material-ui/Typography';
-import CreateIcon from 'material-ui-icons/Create';
-import FileDownloadIcon from 'material-ui-icons/FileDownload';
-import SMSIcon from 'material-ui-icons/Sms';
-import { grey } from 'material-ui/colors';
 
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
-import Message from '../components/Message';
 import NothingHere from '../components/NothingHere';
 import SortableList from './SortableList';
 import Tabs from '../components/Tabs';
@@ -38,7 +30,6 @@ import {
   editAssignment,
   createQuestion,
   deleteQuestion,
-  downloadAssignmentGrades,
 } from '../api-client/assignments';
 
 import { getProfile } from '../api-client/auth';
@@ -53,7 +44,7 @@ class Assignment extends React.Component {
   }
 
   componentWillMount() {
-    const { dispatch, assignment } = this.props;
+    const { dispatch } = this.props;
     dispatch(getAssignment(this.props.match.params.assignmentPk))
       .then(() => {
         dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))

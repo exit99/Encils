@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import Button from 'material-ui/Button';
 import Dialog from 'material-ui/Dialog';
-import Grid from 'material-ui/Grid';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Divider from 'material-ui/Divider';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
@@ -13,7 +9,6 @@ import CloseIcon from 'material-ui-icons/Close';
 import Slide from 'material-ui/transitions/Slide';
 
 import { gutterPadding, onDesktop } from '../utils';
-import Header from './Header';
 
 const FullScreenDialog = (props) => {
   const { title, open, onClose, children } = props;

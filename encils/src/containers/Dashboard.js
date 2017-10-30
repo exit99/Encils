@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import Cookies from 'universal-cookie';
 import Gravatar from 'react-gravatar'
@@ -11,14 +10,12 @@ import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
 import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
-import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Toolbar from 'material-ui/Toolbar';
 import Tooltip from 'material-ui/Tooltip';
 import Typography from 'material-ui/Typography';
 import MenuIcon from 'material-ui-icons/Menu';
 
-import Logo from '../components/Logo';
 import pointerImage from '../images/pointer.png'
 
 import { onDesktop, gutterPadding } from '../utils';
@@ -59,8 +56,7 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const { children, routing, dispatch, profile,  } = this.props;
-    const { open } = this.state;
+    const { children, dispatch, profile,  } = this.props;
 
     const onHomePage = this.props.routing.location.pathname === '/';
     const onAssignmentPage = this.props.routing.location.pathname.startsWith('/assignment');
@@ -108,7 +104,7 @@ class Dashboard extends React.Component {
             </div>
             }
             <Tooltip id="tooltip-bottom" title="Click to update Gravatar image." placement="bottom">
-              <a href="https://en.gravatar.com/" target="_blank"><Avatar style={{ cursor: 'pointer' }}><Gravatar email={profile.email} /></Avatar></a>
+              <a href="https://en.gravatar.com/" target="_blank" rel="noopener noreferrer"><Avatar style={{ cursor: 'pointer' }}><Gravatar email={profile.email} /></Avatar></a>
             </Tooltip>
             <div style={{ padding: 20 }}>
               <Typography style={{ color: 'white' }}>{profile.email}</Typography>

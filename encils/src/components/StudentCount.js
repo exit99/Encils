@@ -1,7 +1,6 @@
 import React from 'react';
 import isUndefined from 'lodash/isUndefined';
 
-import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import PermIdentity from 'material-ui-icons/PermIdentity';
 

@@ -3,7 +3,6 @@ import { Field, reduxForm } from 'redux-form';
 import { submit } from 'redux-form'
 
 import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
 
 import Message from '../../components/Message';
 import RenderedInput from '../../components/RenderedInput';

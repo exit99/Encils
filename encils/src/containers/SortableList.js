@@ -1,16 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import capitalize from 'lodash/capitalize';
 import sortBy from 'lodash/sortBy';
 
 import Button from 'material-ui/Button';
-import Checkbox from 'material-ui/Checkbox';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
-import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
-import CommentIcon from 'material-ui-icons/Comment';
 import ArrowUpwardIcon from 'material-ui-icons/ArrowUpward';
 import ArrowDownwardIcon from 'material-ui-icons/ArrowDownward';
 import CheckboxIcon from 'material-ui-icons/CheckBox';
@@ -25,8 +21,6 @@ import Dialog, {
 
 import Link from '../components/Link';
 import NothingHere from '../components/NothingHere';
-
-import { getProfile } from '../api-client/auth';
 
 import { onDesktop } from '../utils';
 
@@ -77,7 +71,7 @@ class SortableList extends React.Component {
 
   onDelete() {
     const { checked } = this.state;
-    const { onDelete, dispatch } = this.props;
+    const { onDelete } = this.props;
     const items = this.getItems();
     checked.map((value, index) => {
       if (value) { onDelete(items[index].pk) };
@@ -97,7 +91,7 @@ class SortableList extends React.Component {
 
   render() {
     const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg, disabledLink, noCheckbox, noSort, pointer } = this.props;
-    const { anchorEl, selectedIndex, sortDown, checked, deleteDialogOpen } = this.state;
+    const { selectedIndex, sortDown, checked, deleteDialogOpen } = this.state;
     const items = this.getItems();
     const atLeastOneChecked = this.atLeastOneChecked();
 

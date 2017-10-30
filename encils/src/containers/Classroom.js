@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import isUndefined from 'lodash/isUndefined';
 import mean from 'lodash/mean';
@@ -24,7 +23,6 @@ import { grey } from 'material-ui/colors';
 
 import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
-import Message from '../components/Message';
 import NothingHere from '../components/NothingHere';
 import SortableList from './SortableList';
 import Tabs from '../components/Tabs';
@@ -60,7 +58,7 @@ class Classroom extends React.Component {
   }
 
   componentWillMount() {
-    const { dispatch, classroom } = this.props;
+    const { dispatch } = this.props;
     dispatch(getClassroom(this.props.match.params.classroomPk))
       .then(() => {
         dispatch(getClassroomStudents(this.props.match.params.classroomPk))
@@ -202,7 +200,7 @@ class Classroom extends React.Component {
       editStudent,
     } = this.state;
 
-    const tabButtons = classroomAnswers.length == 0 ? [] : [
+    const tabButtons = classroomAnswers.length === 0 ? [] : [
       null,
       (<Grid container>
         <Grid item xs={6}>

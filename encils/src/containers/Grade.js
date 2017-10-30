@@ -1,20 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push, goBack } from 'react-router-redux';
+import { goBack } from 'react-router-redux';
 import groupBy from 'lodash/groupBy';
-import sortBy from 'lodash/sortBy';
 
 import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
 
-import FullScreenDialog from '../components/FullScreenDialog';
 import Header from '../components/Header';
 import SortableList from './SortableList';
 
 import Dashboard from './Dashboard';
-import ClassroomForm from './forms/ClassroomForm';
 
 import { 
   getAnswers,
@@ -87,7 +83,6 @@ class Grade extends React.Component {
                   <div>
                     <TextField
                       type="number"
-                      style={{ width: '100%' }}
                       value={grades[answer.pk]}
                       onChange={this.updateGrade(answer.pk)}
                       inputProps={{
@@ -115,7 +110,6 @@ class Grade extends React.Component {
 
   render() {
     const {
-      answers,
       assignment,
       classroom,
       dispatch,

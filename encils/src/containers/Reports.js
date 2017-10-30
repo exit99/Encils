@@ -1,14 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push } from 'react-router-redux';
-import filter from 'lodash/filter';
-import isUndefined from 'lodash/isUndefined';
 import isEmpty from 'lodash/isEmpty';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import Button from 'material-ui/Button';
 import Card, { CardContent } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import Tabs, { Tab } from 'material-ui/Tabs';
@@ -51,7 +46,6 @@ class Reports extends React.Component {
       classroom,
       classrooms,
       classroomReport,
-      dispatch,
     } = this.props;
     
     return (

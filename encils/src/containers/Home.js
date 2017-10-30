@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
-import reduce from 'lodash/reduce';
 import moment from 'moment';
 
 import Button from 'material-ui/Button';
@@ -10,7 +8,7 @@ import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
-import { FormControl, FormHelperText } from 'material-ui/Form';
+import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 
 import FullScreenDialog from '../components/FullScreenDialog';
@@ -33,11 +31,6 @@ import {
   getClassrooms,
 } from '../api-client/classrooms';
 
-import {
-  getActiveItem,
-  editActiveItem,
-} from '../api-client/activeItems';
-
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -56,7 +49,7 @@ class Home extends React.Component {
   }
 
   goToAssignmentStart(assignment_pk, classroom_pk) {
-    const { dispatch, classroom } = this.props;
+    const { dispatch } = this.props;
     dispatch(getAssignment(assignment_pk))
       .then(() => {
         dispatch(getAssignmentQuestions(assignment_pk))

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { submit } from 'redux-form'
 import { push } from 'react-router-redux';
 

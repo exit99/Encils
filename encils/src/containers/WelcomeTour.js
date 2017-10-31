@@ -19,13 +19,11 @@ class WelcomeTour extends React.Component {
   getStarted() {
     const { dispatch } = this.props;
     const cookies = new Cookies();
-    const welcomeTour = cookies.set("welcomeTour", true);
+    cookies.set("welcomeTour", true);
     dispatch(push('/classrooms'))
   }
 
   render() {
-    const { dispatch } = this.props;
-
     return (
         <Dashboard>
           <div style={{padding:40}}>

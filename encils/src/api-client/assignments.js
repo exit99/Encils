@@ -17,7 +17,7 @@ const editQuestionAnswer = (pk) => request('PUT', `/answers/${pk}/`, 'answer');
 const resetQuestionAnswers = (dispatch) => dispatch({ key: 'questionAnswers', data: [], type: 'API_SUCCESS'}) 
 
 const getAssignmentAnswers = (pk) => request('GET', `/answers/?assignment=${pk}`, 'assignmentAnswers')();
-const getAnswers = (classroom, assignment) => request('GET', `/answers/?classroom=${classroom}&assignment=${assignment}`, 'answers')();
+const getAnswers = (classroom, assignment) => request('GET', `/answers/?classroom=${classroom}&question__assignment=${assignment}`, 'answers')();
 
 const downloadAssignmentGrades = ({pk, name}) => request('GET', `/assignments/${pk}/grades/download/`, null, null, `${name} grades ${moment().format('MM_DD_YYYY')}.csv`)();
 

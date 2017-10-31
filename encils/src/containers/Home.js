@@ -40,13 +40,15 @@ class Home extends React.Component {
       selectedClassroom: 0,
       selectedAssignment: 0,
       timeOfDay: this.timeOfDay(),
-      loading: true,
+      isLoading: true,
     }
   }
   componentWillMount() {
     const { dispatch  } = this.props;
     dispatch(getAssignments());
     dispatch(getClassrooms());
+    dispatch(getUngradedAssignments())
+      .then(() => this.setState({ isLoading: false }))
   }
 
   goToAssignmentStart(assignment_pk, classroom_pk) {
@@ -95,7 +97,7 @@ class Home extends React.Component {
       selectedClassroom,
       selectedAssignment,
       timeOfDay,
-      loading,
+      isLoading,
     } = this.state;
 
     const cookies = new Cookies();
@@ -119,6 +121,7 @@ class Home extends React.Component {
                 <Typography type="title">Needs Grading</Typography>
                 <SortableList 
                   items={ungradedAssignments}
+                  isLoading={isLoading}
                   getTitle={(assignment) => assignment.name}
                   getSubtitle={(assignment) => assignment.classroom}
                   properties={{

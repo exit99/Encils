@@ -4,6 +4,7 @@ import { goBack } from 'react-router-redux';
 import groupBy from 'lodash/groupBy';
 
 import Grid from 'material-ui/Grid';
+import { LinearProgress } from 'material-ui/Progress';
 import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
 
@@ -27,6 +28,7 @@ class Grade extends React.Component {
       super(props);
       this.state = {
         grades: {},
+        isLoading: true,
       }
   }
 
@@ -40,7 +42,7 @@ class Grade extends React.Component {
         obj[x.pk] = x.grade;
         return obj;
       }, {});
-      this.setState({ grades });
+      this.setState({ grades, isLoading: false });
     });
     dispatch(getAssignment(this.props.match.params.assignmentPk));
     dispatch(getClassroom(this.props.match.params.classroomPk));
@@ -57,9 +59,7 @@ class Grade extends React.Component {
       newGrades[answerPk] = newGrade;
       this.setState({ grades: newGrades });
 
-      dispatch(editQuestionAnswer(answerPk)({ grade: newGrade }))
-        .then(() => { 
-        });
+      dispatch(editQuestionAnswer(answerPk)({ grade: newGrade }));
     }
   }
 
@@ -114,6 +114,7 @@ class Grade extends React.Component {
       classroom,
       dispatch,
     } = this.props;
+    const { isLoading } = this.state;
 
     return (
       <Dashboard>
@@ -121,7 +122,7 @@ class Grade extends React.Component {
           <Header text={assignment.name} body={classroom.name} buttonText="Done" onClick={() => dispatch(goBack())} />
           <Grid container>
             <Grid item xs={12}>
-              {this.groupedAnswers()}
+              {isLoading ? <LinearProgress /> : this.groupedAnswers()}
             </Grid>
           </Grid>
         </div>

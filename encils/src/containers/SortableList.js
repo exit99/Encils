@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import capitalize from 'lodash/capitalize';
 import sortBy from 'lodash/sortBy';
-import { LinearProgress } from 'material-ui/Progress';
 
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
+import { LinearProgress } from 'material-ui/Progress';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import ArrowUpwardIcon from 'material-ui-icons/ArrowUpward';
 import ArrowDownwardIcon from 'material-ui-icons/ArrowDownward';

@@ -79,15 +79,12 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     student = StudentSerializer(read_only=True)
-    assignment = AssignmentSerializer(read_only=True)
     question = QuestionSerializer(read_only=True)
-    classroom = ClassroomSerializer(read_only=True)
 
     class Meta:
         model = Answer
-        fields = ('pk', 'student', 'question', 'classroom', 'text', 'grade',
-                  'created', 'assignment')
-        read_only_fields = ('pk', 'student', 'question', 'classroom', 'text', 'created')
+        fields = ('pk', 'student', 'question', 'text', 'grade', 'created')
+        read_only_fields = ('pk', 'student', 'question', 'text', 'created')
 
 
 class AttendanceSerializer(serializers.ModelSerializer):

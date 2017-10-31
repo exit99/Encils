@@ -62,7 +62,6 @@ class Classrooms extends React.Component {
 
     const { classroomDialogOpen, isLoading } = this.state; 
     
-    console.log(isLoading);
     return (
         <Dashboard>
           <div style={{padding:40}}>

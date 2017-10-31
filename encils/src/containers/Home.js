@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import moment from 'moment';
+import Cookies from 'universal-cookie';
 
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
@@ -39,11 +40,11 @@ class Home extends React.Component {
       selectedClassroom: 0,
       selectedAssignment: 0,
       timeOfDay: this.timeOfDay(),
+      loading: true,
     }
   }
   componentWillMount() {
     const { dispatch  } = this.props;
-    dispatch(getUngradedAssignments());
     dispatch(getAssignments());
     dispatch(getClassrooms());
   }
@@ -94,9 +95,13 @@ class Home extends React.Component {
       selectedClassroom,
       selectedAssignment,
       timeOfDay,
+      loading,
     } = this.state;
 
-    if (classrooms.length === 0 && assignments.length === 0) {
+    const cookies = new Cookies();
+    const welcomeTour = cookies.get("welcomeTour");
+
+    if (!welcomeTour) {
       return <WelcomeTour />
     } 
 

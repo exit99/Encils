@@ -54,6 +54,7 @@ class Classroom extends React.Component {
       addStudentsManuallyDialogOpen: false,
       updateGradesDialogOpen: false,
       editStudent: {},
+      isLoading: true,
     }
   }
 
@@ -62,6 +63,7 @@ class Classroom extends React.Component {
     dispatch(getClassroom(this.props.match.params.classroomPk))
       .then(() => {
         dispatch(getClassroomStudents(this.props.match.params.classroomPk))
+          .then(() => this.setState({ isLoading: false }))
         dispatch(getClassroomAnswers(this.props.match.params.classroomPk))
       });
   }
@@ -198,6 +200,7 @@ class Classroom extends React.Component {
       addStudentsManuallyDialogOpen,
       updateGradesDialogOpen,
       editStudent,
+      isLoading,
     } = this.state;
 
     const tabButtons = classroomAnswers.length === 0 ? [] : [
@@ -224,6 +227,7 @@ class Classroom extends React.Component {
                   items={[
                     (<SortableList
                       items={classroomStudents}
+                      isLoading={isLoading}
                       getTitle={(student) => student.name}
                       getSubtitle={(student) => phoneFormatter.format(student.phone, "(NNN) NNN-NNNN")}
                       sortFields={['name', 'grade']}

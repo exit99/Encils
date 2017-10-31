@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import capitalize from 'lodash/capitalize';
 import sortBy from 'lodash/sortBy';
+import { LinearProgress } from 'material-ui/Progress';
 
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
@@ -31,8 +32,9 @@ class SortableList extends React.Component {
       open: false,
       selectedIndex: 0,
       sortDown: true,
-      checked: this.props.items.map(() => false),
       deleteDialogOpen: false,
+      loading: null,
+      checked: this.props.items.map(() => false),
     }
   }
 
@@ -80,17 +82,27 @@ class SortableList extends React.Component {
   }
 
   getItems() {
-    const { sortFields } = this.props;
+    const { sortFields, items } = this.props;
     const { selectedIndex, sortDown } = this.state;
-    const items = sortBy(this.props.items, sortFields[selectedIndex])
+    const allItems = sortBy(items, sortFields[selectedIndex])
     if (!sortDown) { 
-      items.reverse()
+      allItems.reverse()
     };
-    return items
+    return allItems
   }
 
   render() {
-    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg, disabledLink, noCheckbox, noSort, pointer } = this.props;
+    const { getTitle, getSubtitle, properties, sortFields, nothingText, onLinkClick, deleteMsg, disabledLink, noCheckbox, noSort, pointer, isLoading } = this.props;
+    const { loading } = this.state;
+    if (loading || isLoading) {
+      return (
+        <Grid container style={{borderBottom: '1px solid', borderColor: grey[300], paddingTop: 15}}>
+          <Grid item xs={12}>
+            <LinearProgress />
+          </Grid>
+        </Grid>
+      )
+    }
     const { selectedIndex, sortDown, checked, deleteDialogOpen } = this.state;
     const items = this.getItems();
     const atLeastOneChecked = this.atLeastOneChecked();

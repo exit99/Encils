@@ -26,12 +26,12 @@ class Classrooms extends React.Component {
     super(props);
     this.state = {
       classroomDialogOpen: false,
+      isLoading: false,
     }
   }
 
   componentWillMount() {
-    const { dispatch } = this.props;
-    dispatch(getClassrooms());
+    this.props.dispatch(getClassrooms()).then(() => this.setState({ isLoading: false }));
   }
 
   submitClassroomForm(values) {
@@ -60,7 +60,7 @@ class Classrooms extends React.Component {
       dispatch,
     } = this.props;
 
-    const { classroomDialogOpen } = this.state; 
+    const { classroomDialogOpen, isLoading } = this.state; 
     
     return (
         <Dashboard>
@@ -70,6 +70,7 @@ class Classrooms extends React.Component {
               <Grid item xs={12}>
                 <SortableList 
                   items={classrooms}
+                  isLoading={isLoading}
                   getTitle={(classroom) => classroom.name}
                   getSubtitle={(classroom) => `Created: ${moment(classroom.created).calendar()}`}
                   properties={{

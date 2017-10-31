@@ -28,12 +28,13 @@ class Assignments extends React.Component {
     super(props);
     this.state = {
       assignmentDialogOpen: false,
+      isLoading: true,
     }
   }
 
   componentWillMount() {
     const { dispatch } = this.props;
-    dispatch(getAssignments())
+    dispatch(getAssignments()).then(() => this.setState({ isLoading: false }));
   }
 
   closeUpdateAssignmentDialog() {
@@ -68,6 +69,7 @@ class Assignments extends React.Component {
     
     const { 
       assignmentDialogOpen,
+      isLoading,
     } = this.state;
 
     return (
@@ -78,6 +80,7 @@ class Assignments extends React.Component {
               <Grid item xs={12}>
                 <SortableList 
                   items={assignments}
+                  isLoading={isLoading}
                   getTitle={(assignment) => assignment.name}
                   getSubtitle={(assignment) => `Created: ${moment(assignment.created).calendar()}`}
                   properties={{

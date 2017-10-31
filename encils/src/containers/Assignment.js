@@ -40,6 +40,7 @@ class Assignment extends React.Component {
     this.state = {
       addQuestionsDialogOpen: false,
       updateGradesDialogOpen: false,
+      isLoading: true,
     }
   }
 
@@ -48,6 +49,7 @@ class Assignment extends React.Component {
     dispatch(getAssignment(this.props.match.params.assignmentPk))
       .then(() => {
         dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
+          .then(() => this.setState({ isLoading: false }))
         dispatch(getAssignmentAnswers(this.props.match.params.assignmentPk))
       });
   }
@@ -167,6 +169,7 @@ class Assignment extends React.Component {
     const { 
       addQuestionsDialogOpen,
       updateGradesDialogOpen,
+      isLoading,
     } = this.state;
 
     const switches = [
@@ -210,6 +213,7 @@ class Assignment extends React.Component {
                   items={[
                     (<SortableList
                       items={assignmentQuestions}
+                      isLoading={isLoading}
                       getTitle={(question) => question.text}
                       getSubtitle={(question) => moment(question.created).calendar()}
                       sortFields={['created', 'text', 'grade']}

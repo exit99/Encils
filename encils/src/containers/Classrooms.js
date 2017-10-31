@@ -26,7 +26,7 @@ class Classrooms extends React.Component {
     super(props);
     this.state = {
       classroomDialogOpen: false,
-      isLoading: false,
+      isLoading: true,
     }
   }
 
@@ -62,6 +62,7 @@ class Classrooms extends React.Component {
 
     const { classroomDialogOpen, isLoading } = this.state; 
     
+    console.log(isLoading);
     return (
         <Dashboard>
           <div style={{padding:40}}>

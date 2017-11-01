@@ -5,6 +5,7 @@ import isUndefined from 'lodash/isUndefined';
 import mean from 'lodash/mean'
 import reduce from 'lodash/reduce';
 import round from 'lodash/round'
+import find from 'lodash/find'
 import moment from 'moment';
 
 import ReactTable from "react-table";
@@ -31,7 +32,7 @@ import {
   createQuestion,
   deleteQuestion,
 } from '../api-client/assignments';
-
+import { getClassrooms } from '../api-client/classrooms';
 import { getProfile } from '../api-client/auth';
 
 class Assignment extends React.Component {
@@ -48,10 +49,13 @@ class Assignment extends React.Component {
     const { dispatch } = this.props;
     dispatch(getAssignment(this.props.match.params.assignmentPk))
       .then(() => {
-        dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
-          .then(() => this.setState({ isLoading: false }))
-        dispatch(getAssignmentAnswers(this.props.match.params.assignmentPk))
-      });
+        dispatch(getClassrooms())
+          .then(() => {
+            dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk))
+              .then(() => this.setState({ isLoading: false }))
+          })
+          dispatch(getAssignmentAnswers(this.props.match.params.assignmentPk))
+        })
   }
 
   submitQuestionForm(values) {
@@ -76,7 +80,7 @@ class Assignment extends React.Component {
   }
 
   renderCompletedQuizzes() {
-    const { assignmentAnswers } = this.props;
+    const { assignmentAnswers, classrooms } = this.props;
     if (assignmentAnswers.length > 0) {
       return (
         <ReactTable
@@ -88,7 +92,7 @@ class Assignment extends React.Component {
                 {
                   Header: "Classroom",
                   id: "classroom",
-                  accessor: answer => answer.classroom.name,
+                  accessor: answer => find(classrooms, (classroom) => answer.classroom === classroom.pk)['name'],
                 },
 
                 {
@@ -144,14 +148,15 @@ class Assignment extends React.Component {
   }
 
   renderClassrooms() {
-    const { assignmentAnswers, dispatch } = this.props;
-    const classrooms = reduce(assignmentAnswers, (data, answer) => {
-      data[answer.classroom.name] = {classroomPk: answer.classroom.pk, assignmentPk: answer.assignment.pk};
+    const { assignmentAnswers, classrooms, dispatch } = this.props;
+    const classroomGrades = reduce(assignmentAnswers, (data, answer) => {
+      const classroom = find(classrooms, (classroom) => classroom.pk === answer.classroom);
+      data[classroom.name] = {classroomPk: classroom.pk, assignmentPk: answer.assignment};
       return data;
     }, {});
 
-    const listItems = Object.keys(classrooms).map((key) => {
-      const classroom = classrooms[key];
+    const listItems = Object.keys(classroomGrades).map((key) => {
+      const classroom = classroomGrades[key];
       return <ListItem button><ListItemText primary={key} onClick={() => dispatch(push(`/grade/${classroom.classroomPk}/${classroom.assignmentPk}`))} /></ListItem>
     });
     return <List>{listItems}</List>
@@ -250,6 +255,7 @@ const mapStateToProps = state => ({
   assignment: state.apiReducer.assignment,
   assignmentQuestions: state.apiReducer.assignmentQuestions,
   assignmentAnswers: state.apiReducer.assignmentAnswers,
+  classrooms: state.apiReducer.classrooms,
   profile: state.apiReducer.profile,
 })
 

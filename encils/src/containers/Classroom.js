@@ -6,6 +6,7 @@ import mean from 'lodash/mean';
 import reduce from 'lodash/reduce';
 import round from 'lodash/round';
 import isEmpty from 'lodash/isEmpty';
+import find from 'lodash/find';
 import phoneFormatter from 'phone-formatter';
 
 import ReactTable from "react-table";
@@ -43,7 +44,7 @@ import {
   editClassroomStudent,
   deleteStudent,
 } from '../api-client/classrooms';
-
+import { getAssignments } from '../api-client/assignments';
 import { getProfile } from '../api-client/auth';
 
 class Classroom extends React.Component {
@@ -63,7 +64,10 @@ class Classroom extends React.Component {
     dispatch(getClassroom(this.props.match.params.classroomPk))
       .then(() => {
         dispatch(getClassroomStudents(this.props.match.params.classroomPk))
-          .then(() => this.setState({ isLoading: false }))
+          .then(() => {
+            dispatch(getAssignments())
+              .then(() => this.setState({ isLoading: false }));
+          })
         dispatch(getClassroomAnswers(this.props.match.params.classroomPk))
       });
   }
@@ -112,7 +116,7 @@ class Classroom extends React.Component {
   }
 
   renderGradeTable() {
-    const { classroomAnswers } = this.props;
+    const { classroomAnswers, assignments } = this.props;
     if (classroomAnswers.length > 0) {
       return (
         <ReactTable
@@ -129,7 +133,7 @@ class Classroom extends React.Component {
                 {
                   Header: "Assignment",
                   id: "assignment",
-                  accessor: answer => answer.assignment.name,
+                  accessor: answer => find(assignments, (assignment) => assignment.pk === answer.assignment)['name'],
                 },
               ]
             },
@@ -173,17 +177,20 @@ class Classroom extends React.Component {
   }
 
   renderAssignments() {
-    const { classroomAnswers, dispatch } = this.props;
-    const assignments = reduce(classroomAnswers, (data, answer) => {
-      data[answer.assignment.name] = {classroomPk: answer.classroom.pk, assignmentPk: answer.assignment.pk};
-      return data;
-    }, {});
+    const { assignments, classroomAnswers, dispatch } = this.props;
+    if (assignments.length > 0) {
+      const assignmentAns = reduce(classroomAnswers, (data, answer) => { 
+        const assignment = find(assignments, (assignment) => assignment.pk === answer.assignment);
+        data[assignment.name] = {classroomPk: answer.classroom, assignmentPk: assignment.pk};
+        return data;
+      }, {});
 
-    const listItems = Object.keys(assignments).map((key) => {
-      const assignment = assignments[key];
-      return <ListItem button><ListItemText primary={key} onClick={() => dispatch(push(`/grade/${assignment.classroomPk}/${assignment.assignmentPk}`))} /></ListItem>
-    });
-    return <List>{listItems}</List>
+      const listItems = Object.keys(assignmentAns).map((key) => {
+        const assignment = assignmentAns[key];
+        return <ListItem button><ListItemText primary={key} onClick={() => dispatch(push(`/grade/${assignment.classroomPk}/${assignment.assignmentPk}`))} /></ListItem>
+      });
+      return <List>{listItems}</List>
+    }
   }
 
   render() {
@@ -286,6 +293,7 @@ class Classroom extends React.Component {
 
 const mapStateToProps = state => ({
   routing: state.routing,
+  assignments: state.apiReducer.assignments,
   classroom: state.apiReducer.classroom,
   classroomStudents: state.apiReducer.classroomStudents,
   classroomAnswers: state.apiReducer.classroomAnswers,

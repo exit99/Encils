@@ -223,13 +223,10 @@ class Answer(models.Model):
     student = models.ForeignKey(Student)
     question = models.ForeignKey(Question)
     classroom = models.ForeignKey(Classroom)
+    assignment = models.ForeignKey(Assignment)
     text = models.CharField(max_length=160)
     grade = models.IntegerField(null=True, blank=True, validators=[MaxValueValidator(100), MinValueValidator(0)])
     created = models.DateTimeField(auto_now_add=True)
-
-    @property
-    def assignment(self):
-        return self.question.assignment
 
     @property
     def teacher(self):

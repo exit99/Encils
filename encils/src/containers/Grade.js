@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { goBack } from 'react-router-redux';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 
 import Grid from 'material-ui/Grid';
 import IconButton from 'material-ui/IconButton';
-import { LinearProgress } from 'material-ui/Progress';
+import { CircularProgress, LinearProgress } from 'material-ui/Progress';
 import TextField from 'material-ui/TextField';
 import Tooltip from 'material-ui/Tooltip';
 import Typography from 'material-ui/Typography';
@@ -14,7 +16,6 @@ import ContentCopyIcon from 'material-ui-icons/ContentCopy';
 import Header from '../components/Header';
 import SortableList from './SortableList';
 import Dashboard from './Dashboard';
-import GradeSection from './GradeSection';
 
 import { 
   getAnswers,
@@ -54,48 +55,35 @@ class Grade extends React.Component {
   updateGrade(answerPk) {
     const { dispatch } = this.props;
     const { grades } = this.state;
-
     return (event) => {
-      const newGrade = event.target.value;
+      const value = event.target.value;
 
       let newGrades = Object.assign({}, grades);
-      newGrades[answerPk] = newGrade;
+      newGrades[answerPk] = value;
       this.setState({ grades: newGrades });
 
-      dispatch(editQuestionAnswer(answerPk)({ grade: newGrade }));
+      dispatch(editQuestionAnswer(answerPk)({ grade: value }));
     }
   }
 
-  copyToMatching(answer) {
-  }
+  copyGrade(answer) {
+    const { answers, dispatch } = this.props;
+    const { grades } = this.state;
 
-  render() {
-    const { answer, grades } = this.props;
-    const { saving } = this.state;
-    return (
-      <div>
-        <TextField
-          type="number"
-          value={grades[answer.pk]}
-          onChange={this.updateGrade(answer.pk)}
-          inputProps={{
-            'min': '0',
-            'max': '100',
-          }}
-          style={{ display: 'inline', fontSize: 20 }}
-        />
-        <span style={{ display: 'inline' }}>%</span>
-        {saving ?
-        <span style={{ display: 'inline', marginLeft: 5, marginBottom: -5 }}><CircularProgress size={25} /></span>
-        : null}
-      </div>
-    )
-  }
+    let newGrades = Object.assign({}, grades);
+    const answerTargets = filter(answers, (ans) => {
+      return ans.text === answer.text && ans.questionPk === answer.questionPk && ans.pk != answer.pk
+    });
+    answerTargets.map(ans => newGrades[ans.pk] = answer.grade);
+    this.setState({ grades: newGrades });
 
+    answerTargets.map(ans => dispatch(editQuestionAnswer(ans.pk)({ grade: answer.grade })));
+  }
 
   groupedAnswers() {
     const { answers } = this.props;
     const { grades } = this.state;
+    console.log("grouped", this.state.grades);
     const groupedAnswers = groupBy(answers, (answer) => answer.question.pk)
     const groupedValues = Object.values(groupedAnswers);
     return groupedValues.map((ans) => {
@@ -108,8 +96,25 @@ class Grade extends React.Component {
             getTitle={(answer) => answer.text}
             getSubtitle={(answer) => answer.student.name}
             properties={{
-            '': (answer) => (<GradeSection answer={answer} grades={grades} updateGrades={(grades) => this.setState({ grades })} />),
-            ' ': (answer) => (<Tooltip title="Copy grade to matching answers" placement="bottom-right"><IconButton color="primary"><ContentCopyIcon /></IconButton></Tooltip>),
+            '': (answer) => (
+              <div>
+                <TextField
+                  type="number"
+                  value={grades[answer.pk]}
+                  onChange={this.updateGrade(answer.pk)}
+                  inputProps={{
+                    'min': '0',
+                    'max': '100',
+                  }}
+                  style={{ display: 'inline', fontSize: 20 }}
+                />
+                <span style={{ display: 'inline' }}>%</span>
+                {false ?
+                <span style={{ display: 'inline', marginLeft: 5, marginBottom: -5 }}><CircularProgress size={25} /></span>
+                : null}
+              </div>
+            ),
+            ' ': (answer) => (<Tooltip title="Copy grade to matching answers" placement="bottom-right"><IconButton color="primary" onClick={() => this.copyGrade(answer)}><ContentCopyIcon /></IconButton></Tooltip>),
             }}
             sortFields={['text']}
             nothingText="This assignment is graded."
@@ -130,6 +135,8 @@ class Grade extends React.Component {
       dispatch,
     } = this.props;
     const { isLoading } = this.state;
+
+    console.log("rend", this.state.grades);
 
     return (
       <Dashboard>

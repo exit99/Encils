@@ -19,7 +19,7 @@ const FullScreenDialog = (props) => {
         fullScreen
         open={open}
         onRequestClose={onClose}
-        transition={<Slide direction="up" />}
+        transition={(props) => <Slide direction="up" {...props} />}
       >
         <AppBar color="primary">
           <Toolbar style={onDesktop() ? gutterPadding : {}}>

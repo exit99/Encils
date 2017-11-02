@@ -4,14 +4,17 @@ import { goBack } from 'react-router-redux';
 import groupBy from 'lodash/groupBy';
 
 import Grid from 'material-ui/Grid';
+import IconButton from 'material-ui/IconButton';
 import { LinearProgress } from 'material-ui/Progress';
 import TextField from 'material-ui/TextField';
+import Tooltip from 'material-ui/Tooltip';
 import Typography from 'material-ui/Typography';
+import ContentCopyIcon from 'material-ui-icons/ContentCopy';
 
 import Header from '../components/Header';
 import SortableList from './SortableList';
-
 import Dashboard from './Dashboard';
+import GradeSection from './GradeSection';
 
 import { 
   getAnswers,
@@ -63,6 +66,33 @@ class Grade extends React.Component {
     }
   }
 
+  copyToMatching(answer) {
+  }
+
+  render() {
+    const { answer, grades } = this.props;
+    const { saving } = this.state;
+    return (
+      <div>
+        <TextField
+          type="number"
+          value={grades[answer.pk]}
+          onChange={this.updateGrade(answer.pk)}
+          inputProps={{
+            'min': '0',
+            'max': '100',
+          }}
+          style={{ display: 'inline', fontSize: 20 }}
+        />
+        <span style={{ display: 'inline' }}>%</span>
+        {saving ?
+        <span style={{ display: 'inline', marginLeft: 5, marginBottom: -5 }}><CircularProgress size={25} /></span>
+        : null}
+      </div>
+    )
+  }
+
+
   groupedAnswers() {
     const { answers } = this.props;
     const { grades } = this.state;
@@ -78,23 +108,8 @@ class Grade extends React.Component {
             getTitle={(answer) => answer.text}
             getSubtitle={(answer) => answer.student.name}
             properties={{
-              '': (answer) => {
-                return (
-                  <div>
-                    <TextField
-                      type="number"
-                      value={grades[answer.pk]}
-                      onChange={this.updateGrade(answer.pk)}
-                      inputProps={{
-                        'min': '0',
-                        'max': '100',
-                      }}
-                      style={{ display: 'inline', fontSize: 20 }}
-                    />
-                    <span style={{ display: 'inline' }}>%</span>
-                  </div>
-                )
-              },
+            '': (answer) => (<GradeSection answer={answer} grades={grades} updateGrades={(grades) => this.setState({ grades })} />),
+            ' ': (answer) => (<Tooltip title="Copy grade to matching answers" placement="bottom-right"><IconButton color="primary"><ContentCopyIcon /></IconButton></Tooltip>),
             }}
             sortFields={['text']}
             nothingText="This assignment is graded."

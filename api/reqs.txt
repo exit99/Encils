@@ -43,6 +43,7 @@ Pygments==2.2.0
 pyparsing==2.2.0
 python-dateutil==2.6.1
 PyYAML==3.12
+raven==6.3.0
 requests==2.13.0
 requests-oauthlib==0.8.0
 rsa==3.4.2

@@ -14,6 +14,7 @@
     "moment": "^2.19.1",
     "phone-formatter": "^0.0.2",
     "react": "^15.6.1",
+    "react-animations": "^1.0.0",
     "react-dom": "^15.6.1",
     "react-gravatar": "^2.6.3",
     "react-interval": "^2.0.1",

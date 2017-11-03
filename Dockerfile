@@ -30,6 +30,8 @@ RUN pip install https://github.com/unbit/uwsgi/archive/uwsgi-2.0.zip#egg=uwsgi
 RUN mkdir /etc/uwsgi
 ADD docker/uwsgi /etc/uwsgi/
 
+ADD docker/newrelic.ini /app/newrelic.ini
+
 RUN rm /etc/supervisord.conf
 ADD docker/supervisord/supervisord.conf /etc/
 

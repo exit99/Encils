@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { goBack } from 'react-router-redux';
 import filter from 'lodash/filter';
-import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 
 import Grid from 'material-ui/Grid';
@@ -72,7 +71,7 @@ class Grade extends React.Component {
 
     let newGrades = Object.assign({}, grades);
     const answerTargets = filter(answers, (ans) => {
-      return ans.text === answer.text && ans.questionPk === answer.questionPk && ans.pk != answer.pk
+      return ans.text === answer.text && ans.questionPk === answer.questionPk && ans.pk !== answer.pk
     });
     answerTargets.map(ans => newGrades[ans.pk] = answer.grade);
     this.setState({ grades: newGrades });

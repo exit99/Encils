@@ -6,7 +6,6 @@ import mean from 'lodash/mean'
 import reduce from 'lodash/reduce';
 import round from 'lodash/round'
 import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
 import moment from 'moment';
 
 import ReactTable from "react-table";

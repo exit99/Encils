@@ -8,6 +8,7 @@ import AppBar from 'material-ui/AppBar';
 import Button from 'material-ui/Button';
 import Card, { CardContent } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
+import { CircularProgress } from 'material-ui/Progress';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import { FormControlLabel } from 'material-ui/Form';
@@ -70,6 +71,7 @@ class AssignmentActive extends React.Component {
       oneByOne: false,
       answerIndex: 0,
       blockAnswers: false,
+      initialLoad: true,
     }
   }
 
@@ -113,7 +115,12 @@ class AssignmentActive extends React.Component {
     const { requestCount, blockAnswers } = this.state;
     if (assignmentQuestions.length && requestCount < requestLimit && !blockAnswers) {
       const questionPk = assignmentQuestions[this.props.match.params.questionIndex].pk;
-      dispatch(getQuestionAnswers(questionPk, classroom.pk));
+      dispatch(getQuestionAnswers(questionPk, classroom.pk))
+        .then(() => {
+          if(this.state.initialLoad) {
+            this.setState({ initialLoad: false });
+          }
+        });
       this.setState({ requestCount: requestCount + 1 });
     }
   }
@@ -138,7 +145,7 @@ class AssignmentActive extends React.Component {
     dispatch(editActiveItem({classroom: classroom.pk, question: assignmentQuestions[index].pk}))
       .then(() => {
         dispatch(push(`/assignment-active/${classroom.pk}/${assignment.pk}/${index}`));
-        this.setState({ requestCount: 0, answerIndex: 0, hideAnswers: assignment.hide_answers, blockAnswers: false });
+        this.setState({ requestCount: 0, answerIndex: 0, hideAnswers: assignment.hide_answers, blockAnswers: false, initialLoad: true });
       });
   }
 
@@ -204,7 +211,7 @@ class AssignmentActive extends React.Component {
       profile,
       questionAnswers,
     } = this.props;
-    const { requestCount, hideAnswers, blockAnswers } = this.state;
+    const { requestCount, hideAnswers, blockAnswers, initialLoad } = this.state;
 
     const questionIndex = parseInt(this.props.match.params.questionIndex, 10)
     const question = assignmentQuestions && assignmentQuestions[questionIndex];
@@ -246,7 +253,7 @@ class AssignmentActive extends React.Component {
 
         <div style={{padding: 25}}>
           <Grid container direction='row' justify='flex-start'>
-            {questionAnswers.map(this.renderAnswer.bind(this))} 
+            {initialLoad ? <div><Typography>Preparing to receive answers...</Typography><CircularProgress /></div> : questionAnswers.map(this.renderAnswer.bind(this))} 
           </Grid>
         </div>
 

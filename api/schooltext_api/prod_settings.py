@@ -4,6 +4,7 @@ from schooltext_api.settings import *
 
 DEBUG = False
 SECRET_KEY = "WKLHLEGHWWfekh2g89ehge2ghEbGHieklgh2"
+PROD = True
 
 DATABASES['default'] = {
     'ENGINE': 'django.db.backends.mysql',
@@ -24,4 +25,9 @@ LOGGING = {
             'level': 'ERROR', 'handlers': ['console'],
          },
     }
+}
+
+INSTALLED_APPS.append('raven.contrib.django.raven_compat')
+RAVEN_CONFIG = {
+    'dsn': 'https://6e67d23db89e48cd81d9275515c7286a:754268566e124efdaaf8f83bac21d78a@sentry.io/239371',
 }

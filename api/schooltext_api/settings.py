@@ -24,7 +24,7 @@ SECRET_KEY = '2&%eujkpp%xvcjvhpsoclk%^*s_lp6rns&x1%&#w8sj=tni!0x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+PROD = False
 ALLOWED_HOSTS = ["*"]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework_swagger',
     'corsheaders',
-    'raven.contrib.django.raven_compat',
 ]
 
 MIDDLEWARE = [
@@ -157,7 +156,3 @@ DJOSER = {
 APPEND_SLASH = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-RAVEN_CONFIG = {
-    'dsn': 'https://6e67d23db89e48cd81d9275515c7286a:754268566e124efdaaf8f83bac21d78a@sentry.io/239371',
-}

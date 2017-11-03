@@ -12,7 +12,10 @@ newrelic.agent.initialize('/app/newrelic.ini', 'core')
 import os
 
 from django.core.wsgi import get_wsgi_application
+from django.conf import settings
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "schooltext_api.local")
 
-application = newrelic.agent.wsgi_application()(get_wsgi_application())
+application = get_wsgi_application()
+if settings.PROD:
+    application = newrelic.agent.wsgi_application()(application)

@@ -6,6 +6,7 @@ import mean from 'lodash/mean'
 import reduce from 'lodash/reduce';
 import round from 'lodash/round'
 import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
 import moment from 'moment';
 
 import ReactTable from "react-table";
@@ -30,6 +31,7 @@ import {
   getAssignmentAnswers,
   editAssignment,
   createQuestion,
+  editQuestion,
   deleteQuestion,
 } from '../api-client/assignments';
 import { getClassrooms } from '../api-client/classrooms';
@@ -41,6 +43,7 @@ class Assignment extends React.Component {
     this.state = {
       addQuestionsDialogOpen: false,
       updateGradesDialogOpen: false,
+      targetQuestion: null,
       isLoading: true,
     }
   }
@@ -60,11 +63,12 @@ class Assignment extends React.Component {
 
   submitQuestionForm(values) {
     const { dispatch, assignment } = this.props;
+    const { targetQuestion } = this.state;
+    const func = targetQuestion ? editQuestion(targetQuestion.pk) : createQuestion;
     values.assignment = assignment.pk;
-
-    dispatch(createQuestion(values)).then((res) => {
+    dispatch(func(values)).then((res) => {
       if (!isUndefined(res)) {
-        this.setState({addQuestionsDialogOpen: false});
+        this.setState({addQuestionsDialogOpen: false, targetQuestion: null})
         dispatch(getAssignmentQuestions(this.props.match.params.assignmentPk));
         dispatch(getProfile());
       };
@@ -157,7 +161,7 @@ class Assignment extends React.Component {
 
     const listItems = Object.keys(classroomGrades).map((key) => {
       const classroom = classroomGrades[key];
-      return <ListItem button><ListItemText primary={key} onClick={() => dispatch(push(`/grade/${classroom.classroomPk}/${classroom.assignmentPk}`))} /></ListItem>
+      return <ListItem button key={key}><ListItemText primary={key} onClick={() => dispatch(push(`/grade/${classroom.classroomPk}/${classroom.assignmentPk}`))} /></ListItem>
     });
     return <List>{listItems}</List>
   }
@@ -174,6 +178,7 @@ class Assignment extends React.Component {
     const { 
       addQuestionsDialogOpen,
       updateGradesDialogOpen,
+      targetQuestion,
       isLoading,
     } = this.state;
 
@@ -220,6 +225,7 @@ class Assignment extends React.Component {
                       items={assignmentQuestions}
                       isLoading={isLoading}
                       getTitle={(question) => question.text}
+                      onLinkClick={(question) => this.setState({ targetQuestion: question })}
                       getSubtitle={(question) => moment(question.created).calendar()}
                       sortFields={['created', 'text', 'grade']}
                       properties={{
@@ -228,7 +234,6 @@ class Assignment extends React.Component {
                       nothingText="This quiz has no questions yet."
                       onDelete={this.deleteQuestion.bind(this)}
                       deleteMsg="This will delete all grades for this question and could change student averages."
-                      disabledLink={true}
                     />),
                     this.renderCompletedQuizzes()
                   ]}
@@ -236,6 +241,10 @@ class Assignment extends React.Component {
               </Grid>
             </Grid>
           </div>
+
+          <FullScreenDialog title="Edit Question" open={targetQuestion} onClose={() => this.setState({targetQuestion: null})}>
+            <QuestionForm dispatch={dispatch} onSubmit={this.submitQuestionForm.bind(this)} initialValues={targetQuestion} />
+          </FullScreenDialog>
 
           <FullScreenDialog title="Add Question" open={addQuestionsDialogOpen} onClose={() => this.setState({addQuestionsDialogOpen: false})}>
             <QuestionForm dispatch={dispatch} onSubmit={this.submitQuestionForm.bind(this)} />

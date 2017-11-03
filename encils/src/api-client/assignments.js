@@ -10,6 +10,7 @@ const getUngradedAssignments = request('GET', `/assignments/ungraded/`, 'ungrade
 
 const getAssignmentQuestions = (pk) => request('GET', `/questions/?assignment=${pk}`, 'assignmentQuestions')();
 const createQuestion = request('POST', '/questions/', 'question', 'questionForm');
+const editQuestion = (pk) => request('PUT', `/questions/${pk}/`, 'question', 'questionForm');
 const deleteQuestion = (pk) => request('DELETE', `/questions/${pk}/`)();
 
 const getQuestionAnswers = (pk, classroomPk) => request('GET', `/answers/?question=${pk}&classroom=${classroomPk}`, 'questionAnswers')();
@@ -31,6 +32,7 @@ export {
   getAssignmentQuestions,
   getAssignmentAnswers,
   createQuestion,
+  editQuestion,
   deleteQuestion,
 
   getQuestionAnswers,

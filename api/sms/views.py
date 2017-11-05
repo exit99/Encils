@@ -120,7 +120,7 @@ class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
 class AnswerList(generics.ListAPIView):
     serializer_class = AnswerSerializer
     permission_classes = (permissions.IsAuthenticated,)
-    filter_fields = ('question', 'classroom', 'grade')
+    filter_fields = ('question', 'classroom', 'grade', 'question__assignment')
 
     def get_queryset(self):
         teacher = self.request.user

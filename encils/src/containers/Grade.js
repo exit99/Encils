@@ -82,7 +82,8 @@ class Grade extends React.Component {
   groupedAnswers() {
     const { answers } = this.props;
     const { grades } = this.state;
-    console.log("grouped", this.state.grades);
+
+    console.log("answers", answers);
     const groupedAnswers = groupBy(answers, (answer) => answer.question.pk)
     const groupedValues = Object.values(groupedAnswers);
     return groupedValues.map((ans) => {
@@ -134,8 +135,6 @@ class Grade extends React.Component {
       dispatch,
     } = this.props;
     const { isLoading } = this.state;
-
-    console.log("rend", this.state.grades);
 
     return (
       <Dashboard>

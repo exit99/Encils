@@ -92,8 +92,8 @@ class Grade extends React.Component {
           <br />
           <SortableList 
             items={ans}
-            getTitle={(answer) => answer.text}
-            getSubtitle={(answer) => answer.student.name}
+            getSubtitle={(answer) => answer.text}
+            getTitle={(answer) => answer.student.name}
             properties={{
             '': (answer) => (
               <div>

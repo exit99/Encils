@@ -7,7 +7,6 @@ class SMSMessage(object):
     def __init__(self, sms=None):
         sms = sms or SMSMessage._default()
         self.phone = sms['msisdn']
-        self.type = sms['type']
         self.text = sms['text']
         self.teacher = Teacher.objects.filter(sms=sms['to']).first()
         activeitem = getattr(self.teacher, 'activeitem', None)
@@ -24,6 +23,7 @@ class SMSMessage(object):
 
     def create_or_update_answer(self):
         answer, _ = Answer.objects.get_or_create(
+            assignment=self.question.assignment,
             question=self.question,
             classroom=self.classroom,
             student=self.student, 

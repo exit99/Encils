@@ -78,7 +78,10 @@ class AssignmentList(generics.ListCreateAPIView):
 @decorators.permission_classes([])
 def ungraded_assignments(request):
     teacher = request.user
-    answers = teacher.answer_set.filter(grade=None).all()
+    try:
+        answers = teacher.answer_set.filter(grade=None).all()
+    except AttributeError:
+        raise Http404
     assignments = set([(a.classroom, a.assignment) for a in answers])
     data = []
     for classroom, assignment in assignments:

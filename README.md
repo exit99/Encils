@@ -1,5 +1,8 @@
 # Encils
 
+Homepage located at: [www.encils.com](http://www.encils.com)
+Dashboard located at: [dashboard.encils.com](http://dashboard.encils.com)
+
 ## Quickstart
 
 1. Clone the repo: `git clone git@gitlab.com:kazanz/schooltext.git`.
